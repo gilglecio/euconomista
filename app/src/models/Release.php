@@ -2,21 +2,30 @@
 
 use App\Util\Toolkit;
 
-class Release extends Model
+final class Release extends Model
 {
 	const STATUS_ABERTO = 1;
 	const STATUS_LIQUIDADO = 2;
 
+	/**
+	 * @var array
+	 */
 	public static $belongs_to = [
 		['user'],
         ['people'],
         ['category']
     ];
 
+    /**
+	 * @var array
+	 */
     public static $has_many = [
         ['logs', 'class_name' => 'ReleaseLog']
     ];
 
+    /**
+	 * @var array
+	 */
 	public static $validates_presence_of = [
 		['number'],
 		['category_id'],
@@ -26,22 +35,57 @@ class Release extends Model
 		['data_vencimento']
 	];
 
+	/**
+	 * @var array
+	 */
 	public static $validates_uniqueness_of = [
 		[['entity', 'number', 'data_vencimento', 'people_id']]
 	];
 
+	/**
+	 * @var array
+	 */
 	public static $validates_length_of = [
 		['number', 'within' => [1, 15]],
 	];
 
 	/**
-	 * Salva um pessoa no banco de dados.
+	 * @var array
+	 */
+	public static $before_destroy = [
+		'deleteAllLogs'
+	];
+
+	/**
+	 * Apaga todos os logs do lançamento.
+	 * 
+	 * @throws \Exception Falha ao apagar os logs do lançamento.
+	 * @return boolean
+	 */
+	public function deleteAllLogs()
+	{
+		if (! ReleaseLog::delete_all(['release_id' => $this->id])) {
+			throw new \Exception('Falha ao apagar os logs do lançamento.');
+		}
+
+		return true;
+	}
+
+	/**
+	 * Salva um lançamento no banco de dados.
 	 * 
 	 * @param array $fields
-	 * @return People
+	 * @throws \Exception A soma dos lançamentos não confere com o total do documento.
+	 * @throws \Exception Mensagem de erro do model
+	 * @return array Lançamentos gerados
 	 */
 	public static function generate($fields)
 	{
+		/**
+		 * Se a quantidade não for infromada, o padrão é 1.
+		 * 
+		 * @var integer
+		 */
 		$quantity = (isset($fields['quantity']) && is_numeric($fields['quantity'])) ? (int) $fields['quantity'] : 1;
 
 		/**
@@ -55,6 +99,9 @@ class Release extends Model
 		$value = (float) number_format($full_value / $quantity, 2, '.', '');
 
 		/**
+		 * Armazena a diferença, quando houver.
+		 * esta diferença é somada no último lançamento.
+		 * 
 		 * @var float
 		 */
 		$diff = $full_value - ($value * $quantity);
@@ -65,7 +112,7 @@ class Release extends Model
 		$total = $diff + ($value * $quantity);
 
 		if ($total != $full_value) {
-			throw new \Exception('Total not match');
+			throw new \Exception('A soma dos lançamentos não confere com o total do documento.');
 		}
 
 		/**
@@ -78,6 +125,11 @@ class Release extends Model
 		 */
 		$process = Toolkit::uniqHash();
 
+		/**
+		 * Armazena os lançamentos criados para retornar.
+		 * 
+		 * @var array
+		 */
 		$releases = [];
 
 		try {
@@ -93,7 +145,7 @@ class Release extends Model
 				/**
 				 * @var Release
 				 */
-				$row = Release::create([
+				$row = self::create([
 					'number' => $fields['number'] . ($quantity > 1 ? '/' . ($i+1) : ''),
 					'value' => $value,
 					'natureza' => $fields['natureza'],
@@ -108,6 +160,8 @@ class Release extends Model
 				}
 
 				/**
+				 * Gera o log de emissão.
+				 * 
 				 * @var ReleaseLog
 				 */
 				$log = ReleaseLog::create([
@@ -122,6 +176,9 @@ class Release extends Model
 
 				$releases[] = $row;
 
+				/**
+				 * Adiciona 1 mês a data de vencimento a cada loop.
+				 */
 				$vencimento->add(new \DateInterval('P1M'));
 			}
 
@@ -134,6 +191,16 @@ class Release extends Model
 		return $releases;
 	}
 
+	/**
+	 * Liquida um lançamento.
+	 * Aceita liquidação parcial.
+	 * Aceita pagamento maior que o valor do lançamento,
+	 * neste caso entende-se que seja encargos.
+	 * 
+	 * @param array $fields 
+	 * @throws \Exception Mensagem de erro do model
+	 * @return boolean
+	 */
 	static function liquidar($fields)
 	{
 		try {
@@ -141,11 +208,34 @@ class Release extends Model
 			$connection = static::connection();
 			$connection->transaction();
 
+			/**
+			 * @var Release
+			 */
 			$release = self::find($fields['release_id']);
+
+			/**
+			 * Todo o registro do lançamento em formato JSON.
+			 * 
+			 * @var string
+			 */
 			$backup = $release->to_json();
 
+			/**
+			 * Quando o usuário liquida um vlaor menor que o valor do lançamento.
+			 * 
+			 * @var boolean
+			 */
 			$partial = $fields['value'] < $release->value;
 
+			/**
+			 * Quando a liquidação é parcial,
+			 * o valor do lançamento é atualizado.
+			 * O novo valor do lançamento é o valor atual menos o valor pago.
+			 *
+			 * Quando a liquidação não é parcial,
+			 * O valor do lançamento é atualizado para
+			 * a soma de todas as liquidações feitas. 
+			 */
 			if ($partial) {
 
 				$release->value = $release->value - $fields['value'];
@@ -160,6 +250,9 @@ class Release extends Model
 				$release->save();
 			}
 
+			/**
+			 * @var ReleaseLog
+			 */
 			$log = ReleaseLog::create([
 				'action' => ReleaseLog::ACTION_LIQUIDACAO,
 				'release_id' => $release->id,
@@ -177,31 +270,121 @@ class Release extends Model
 			$connection->rollback();
 			throw $e;
 		}
+
+		return true;
 	}
 
+	/**
+	 * Cancela o ultimo log do lançamento.
+	 * 
+	 * @param integer $release_id
+	 * @throws \Exception Não foi possível cancelar o ultimo log do lançamento.
+	 * @return boolean
+	 */
 	static function rollback($release_id)
 	{
 		$release = self::find($release_id);
 
 		if (! $release->canDesfazer()) {
-			throw new \Exception('Release log empty');
+			throw new \Exception('Não foi possível cancelar o ultimo log do lançamento.');
 		}
 
 		return $release->getLastLog()->rollback();
 	}
 
+	/**
+	 * Apaga um lançamento específico,
+	 * caso o lançamento foi lançado parcelado
+	 * ao alterar $delete_all_by_process_key para TRUE
+	 * todos os lançamentos serão apagados.
+	 * 
+	 * @param integer $release_id
+	 * @param boolean $delete_all_by_process_key Se TRUE, apaga todos os lançamentos que possui o mesmo numero de processo que o lançamento passado pelo $release_id.
+	 * @throws \Exception O lançamento '{$release->number}' foi movimentado.
+	 * @throws \Exception Falha ao apagar o lançamento '{$relase->number}'.
+	 * @return void
+	 */
+	static function remove($release_id, $delete_all_by_process_key = false)
+	{
+		/**
+		 * @var Release
+		 */
+		$release = self::find($release_id);
+
+		if ($delete_all_by_process_key) {
+			try {
+
+				$connection = static::connection();
+				$connection->transaction();
+				
+				/**
+				 * @var array
+				 */
+				$releases = self::find('all', [
+					'conditions' => [
+						'process = ?',
+						$release->process
+					]
+				]);
+
+				foreach ($releases as $release) {
+
+					if ($release->isLiquidado()) {
+						throw new \Exception("O lançamento '{$release->number}' foi movimentado.");
+					}
+
+					if (! $release->delete()) {
+						throw new \Exception("Falha ao apagar o lançamento '{$relase->number}'.");
+					}
+				}
+
+				$connection->commit();
+
+			} catch (\Exception $e) {
+				$connection->rollback();
+				throw $e;
+			}
+
+			return;
+		}
+
+		if ($release->isLiquidado()) {
+			throw new \Exception("O lançamento '{$release->number}' foi movimentado.");
+		}
+
+		if (! $release->delete()) {
+			throw new \Exception("Falha ao apagar o lançamento '{$relase->number}'.");
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retorna o ultimo log do lançamento.
+	 * Não leva em consideração o log de emissão do lançamento.
+	 * 
+	 * @return ReleaseLog
+	 */
 	public function getLastLog()
 	{
-		return ReleaseLog::find('last', ['conditions' => [
-			'action = ? and release_id = ?', 
-			ReleaseLog::ACTION_LIQUIDACAO, 
-			$this->id]
+		return ReleaseLog::find('last', [
+			'conditions' => [
+				'action <> ? and release_id = ?', 
+				ReleaseLog::ACTION_EMISSAO, 
+				$this->id
+			]
 		]);
 	}
 
+	/**
+	 * Retorna a soma de todas as liquidações 
+	 * fetias para o lançamento.
+	 * 
+	 * @return float
+	 */
 	public function getSumLiquidacoes()
 	{
-		return (int) ReleaseLog::find('first', [
+		return (float) ReleaseLog::find('first', [
 			'conditions' => [
 				'release_id = ? and action = ?', 
 				$this->id, 
@@ -211,6 +394,11 @@ class Release extends Model
 		])->total;
 	}
 
+	/**
+	 * Retorna o valor da coluna natureza por extenso.
+	 * 
+	 * @return string
+	 */
 	public function getNaturezaName()
 	{
 		return [
@@ -219,15 +407,32 @@ class Release extends Model
         ][$this->natureza];
 	}
 
+	/**
+	 * Retorna o valor da coluna status por extenso.
+	 * 
+	 * @return string
+	 */
 	public function getStatusName()
 	{
+		$status = $this->status;
+
+		if (! $this->isLiquidado() && $this->data_vencimento < (new \Datetime(date('Y-m-d')))) {
+            $status = 3;
+        }
+
 		return [
 	        self::STATUS_ABERTO => 'Aberto',
 	        self::STATUS_LIQUIDADO => 'Pago',
 	        3 => 'Vencido'
-	    ][$this->status];
+	    ][$status];
 	}
 
+	/**
+	 * Retorna uma cor de identifcação 
+	 * com base na natureza do lanamento.
+	 * 
+	 * @return string
+	 */
 	public function getColor()
 	{
 		return [
@@ -236,16 +441,31 @@ class Release extends Model
         ][$this->natureza];
 	}
 
+	/**
+	 * Apenas lançamentos abertos podem ser liquidados.
+	 * 
+	 * @return boolean
+	 */
 	public function canLiquidar()
 	{
 		return ! $this->isLiquidado();
 	}
 
+	/**
+	 * Só é possivel desfazer lançamentos com liquidações.
+	 * 
+	 * @return boolean
+	 */
 	public function canDesfazer()
 	{
 		return $this->getLastLog()->action == ReleaseLog::ACTION_LIQUIDACAO;
 	}
 
+	/**
+	 * Verifica se o lançamento está liquidado.
+	 * 
+	 * @return boolean
+	 */
 	public function isLiquidado()
 	{
 		return $this->status == self::STATUS_LIQUIDADO;

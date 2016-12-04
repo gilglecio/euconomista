@@ -7,13 +7,7 @@
 
     <p><a href="/app/releases">Lista de Lançamentos</a></p>
 
-    {% if error|length %}
-    <div class="alert alert-danger">
-        {% for e in error %}
-        <p>{{ e }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
+    {% include 'macro.twig' with {error:error} %}
 
     <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/releases">
@@ -62,7 +56,7 @@
 	    	<div class="form-group">
 	    		<label for="value" class="control-label col-xs-2">Valor</label>
 	    		<div class="col-xs-5">
-	    			<input type="number" min="1" max="99999999" id="value" required name="value" class="form-control">
+	    			<input step="0.01" type="number" min="1" max="99999999" id="value" required name="value" class="form-control">
 	    		</div>
 	    	</div>
 

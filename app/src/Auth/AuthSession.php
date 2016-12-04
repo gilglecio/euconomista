@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @package AuthSession
+ * @subpackage App\Auth
+ * @version v1.0
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ * 
+ * @uses App\Interfaces\UserAuthInterface
+ */
 namespace App\Auth;
 
 use App\Interfaces\UserAuthInterface;
@@ -12,23 +20,25 @@ class AuthSession
 	const AUTH_SESSION_NAME = 'user';
 
 	/**
+	 * Faz a tentiva de login com o $email e $password.
+	 * 
 	 * @param UserAuthInterface $user
 	 * @param string            $email
 	 * @param string            $password
 	 * 
-	 * @throws \Exception User email not found
-	 * @throws \Exception User password not match
+	 * @throws \Exception Este e-mail não está cadastrado.
+	 * @throws \Exception A senha fornecida não confere com o cadastro do usuário.
 	 * 
 	 * @return bool
 	 */
 	static function attemp(UserAuthInterface $user, $email, $password)
 	{
 		if (! $user = $user->getIdEntityPasswordAndNameByEmail($email)) {
-			throw new \Exception('User email not found.');
+			throw new \Exception('Este e-mail não está cadastrado.');
 		}
 
 		if (! password_verify($password, $user->password)) {
-			throw new \Exception('User password not match.');
+			throw new \Exception('A senha fornecida não confere com o cadastro do usuário.');
 		}
 
 		$_SESSION[self::AUTH_SESSION_NAME] = [
@@ -61,6 +71,11 @@ class AuthSession
 		return $_SESSION[self::AUTH_SESSION_NAME]['entity'];
 	}
 
+	/**
+	 * Limpa a sessão que armazena os dados do usuário logado.
+	 * 
+	 * @return boolean
+	 */
 	static function clear()
 	{
 		unset($_SESSION[self::AUTH_SESSION_NAME]);

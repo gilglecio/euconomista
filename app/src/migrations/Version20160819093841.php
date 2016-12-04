@@ -28,6 +28,11 @@ class Version20160819093841 extends AbstractMigration
             'notnull' => true
         ]);
 
+        $table->addColumn('user_id', 'integer', [
+            'unsigned' => true,
+            'notnull' => false
+        ]);
+
         $table->addColumn('name', 'string', [
             'length' => 45,
             'notnull' => true
@@ -51,12 +56,15 @@ class Version20160819093841 extends AbstractMigration
             'notnull' => true
         ]);
 
-        $table->addColumn('deleted_at', 'datetime', [
-            'notnull' => false
-        ]);
-
         $table->setPrimaryKey(['id']);
+        
+        $table->addIndex(['user_id'], 'fk_user_idx');
         $table->addUniqueIndex(['email']);
+
+        $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
+            'onDelete' => 'NO ACTION', 
+            'onUpdate' => 'NO ACTION'
+        ], 'fk_users_user_id');
     }
 
     /**

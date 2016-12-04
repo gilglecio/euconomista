@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * @package CategoriesController
+ * @subpackage App\Controller
+ * @version v1.0
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ * 
+ * @uses Psr\Http\Message\ServerRequestInterface
+ * @uses Psr\Http\Message\ResponseInterface
+ * @uses Category
+ */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -27,6 +37,7 @@ final class CategoriesController extends Controller
     {
         $this->view->render($response, 'app/categories/index.twig', [
         	'title' => $this->title,
+            'error' => $this->flash->getMessages()['error'],
         	'rows' => Category::find('all')
         ]);
         
@@ -67,6 +78,24 @@ final class CategoriesController extends Controller
 
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/categories/form');
+        }
+
+        return $response->withRedirect('/app/categories');
+    }
+
+    /**
+	 * @param Request  $request
+	 * @param Response $response
+	 * @param array    $args
+	 * 
+	 * @return Response
+	 */
+    public function delete(Request $request, Response $response, array $args)
+    {
+        try {
+        	Category::remove($args['category_id']);
+        } catch (\Exception $e) {
+        	return $this->redirectWithError($response, $e->getMessage(), '/app/categories');
         }
 
         return $response->withRedirect('/app/categories');

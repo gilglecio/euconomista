@@ -1,0 +1,7 @@
+{% if error|length %}
+<div class="alert alert-danger">
+    {% for e in error %}
+    <p>{{ e }}</p>
+    {% endfor %}
+</div>
+{% endif %}

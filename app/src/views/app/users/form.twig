@@ -1,0 +1,43 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+    <h2>{{ title }}</h2>
+
+    <p><a href="/app/users">Lista de Usuários</a></p>
+
+    {% include 'macro.twig' with {error: error} %}
+
+    <div class="jumbotron no-margin-bottom">
+	    <form class="form-horizontal" method="post" action="/app/users">
+	    	<div class="form-group">
+	    		<label for="name" class="control-label col-xs-2">Nome</label>
+	    		<div class="col-xs-10">
+	    			<input type="text" minlength="3" maxlength="60" id="name" autofocus required name="name" class="form-control">
+	    		</div>
+	    	</div>
+
+	    	<div class="form-group">
+	    		<label for="email" class="control-label col-xs-2">E-mail</label>
+	    		<div class="col-xs-10">
+	    			<input type="email" minlength="3" maxlength="60" id="email" autofocus required name="email" class="form-control">
+	    		</div>
+	    	</div>
+
+	    	<div class="form-group">
+	    		<label for="password" class="control-label col-xs-2">Senha</label>
+	    		<div class="col-xs-10">
+	    			<input type="password" minlength="3" maxlength="10" id="password" autofocus required name="password" class="form-control">
+	    		</div>
+	    	</div>
+
+	    	<div class="form-group no-margin-bottom">
+	    		<div class="col-xs-10 col-xs-offset-2">
+	    			<button class="btn btn-primary" type="submit">Salvar</button>
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+
+{% endblock %}

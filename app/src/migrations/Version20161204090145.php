@@ -74,10 +74,6 @@ class Version20161204090145 extends AbstractMigration
             'notnull' => true
         ]);
 
-        $table->addColumn('deleted_at', 'datetime', [
-            'notnull' => false
-        ]);
-
         $table->addColumn('process', 'string', [
             'notnull' => true,
             'length' => 60

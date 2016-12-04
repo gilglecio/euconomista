@@ -3,5 +3,33 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <p>Usuários</p>
+    <h2>{{ title }}</h2>
+
+    <p><a href="/app/users/form">Adicionar Usuário</a></p>
+
+    {% include 'macro.twig' with {error:error} %}
+
+    <table class="table">
+    	<thead>
+    		<tr>
+    			<th>Nome</th>
+    			<th>Email</th>
+    		</tr>
+    	</thead>
+
+    	<tbody>
+    		{% for row in rows %}
+    		<tr>
+    			<td>{{ row.name }}</td>
+    			<td>{{ row.email }}</td>
+    		</tr>
+    		{% endfor %}
+
+            {% if not rows|length %}
+            <tr>
+                <td colspan="5">Sem registros.</td>
+            </tr>
+            {% endif %}
+    	</tbody>
+    </table>
 {% endblock %}

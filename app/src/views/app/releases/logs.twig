@@ -15,7 +15,12 @@
         {% if canDesfazer %}
         <li><a href="/app/releases/{{ release_id }}/desfazer">Desfazer</a></li>
         {% endif %}
+
+        <li><a style="color:red" href="/app/releases/{{ release_id }}/delete">Apagar este lançamento</a></li>
+        <li><a style="color:red" href="/app/releases/{{ release_id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
     </ul>
+
+    {% include 'macro.twig' with {error:error} %}
 
     <table class="table">
     	<thead>

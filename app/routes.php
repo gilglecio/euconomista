@@ -43,6 +43,12 @@ $app->group('/app', function () {
 	$this->group('/users', function () {
 		$this->get('', 'App\Controller\UsersController:index')
 			->setName('users');
+
+		$this->get('/form', 'App\Controller\UsersController:form')
+			->setName('users.form');
+		
+		$this->post('', 'App\Controller\UsersController:save')
+			->setName('users.save');
 	});
 
 	# CATEGORIES
@@ -55,6 +61,9 @@ $app->group('/app', function () {
 		
 		$this->post('', 'App\Controller\CategoriesController:save')
 			->setName('categories.save');
+
+		$this->get('/{category_id}/delete', 'App\Controller\CategoriesController:delete')
+			->setName('categories.delete');
 	});
 
 	# RELEASES
@@ -79,6 +88,12 @@ $app->group('/app', function () {
 
 		$this->get('/{release_id}/desfazer', 'App\Controller\ReleasesController:desfazer')
 			->setName('releases.desfazer');
+
+		$this->get('/{release_id}/delete', 'App\Controller\ReleasesController:delete')
+			->setName('releases.delete');
+
+		$this->get('/{release_id}/delete_all', 'App\Controller\ReleasesController:deleteAll')
+			->setName('releases.delete_all');
 	});
 });
 

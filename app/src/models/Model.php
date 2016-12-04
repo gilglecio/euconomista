@@ -2,11 +2,9 @@
 
 use App\Auth\AuthSession;
 
-class Model extends ActiveRecord\Model
+abstract class Model extends ActiveRecord\Model
 {
 	/**
-	 * Callback before create model
-	 *  
 	 * @var array
 	 */
 	public static $before_create = [
@@ -14,7 +12,8 @@ class Model extends ActiveRecord\Model
 	];
 
 	/**
-	 * Setter user_id and entity
+	 * Adiciona automaticamente a entity
+	 * e o usuário que está criando o registro.
 	 *
 	 * @return void
 	 */

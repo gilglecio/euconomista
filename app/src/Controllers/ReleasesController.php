@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * @package ReleasesController
+ * @subpackage App\Controller
+ * @version v1.0
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ * 
+ * @uses Psr\Http\Message\ServerRequestInterface
+ * @uses Psr\Http\Message\ResponseInterface
+ * @uses App\Util\Toolkit
+ * @uses Release
+ * @uses People
+ * @uses Category
+ */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -43,11 +56,6 @@ final class ReleasesController extends Controller
 
             $row['people'] = $r->people->name;
             $row['category'] = $r->category->name;
-            
-            if ($r->data_vencimento < (new \Datetime(date('Y-m-d')))) {
-                $row['status'] = 3;
-            }
-
             $row['natureza'] = $r->getNaturezaName();
             $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
             $row['value'] = number_format($row['value'], 2, ',', '.');
@@ -153,7 +161,7 @@ final class ReleasesController extends Controller
             'title' => 'Extrato de lançamento',
             'release_id' => $args['release_id'],
             'rows' => $rows,
-
+            'error' => $this->flash->getMessages()['error'],
             'canLiquidar' => $release->canLiquidar(),
             'canDesfazer' => $release->canDesfazer()
         ]);
@@ -236,5 +244,53 @@ final class ReleasesController extends Controller
         }
 
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
+    }
+
+    /**
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     * 
+     * @return Response
+     */
+    public function delete(Request $request, Response $response, array $args)
+    {
+        try {
+            
+            Release::remove($args['release_id']);
+
+        } catch (\Exception $e) {
+            return $this->redirectWithError(
+                $response, 
+                $e->getMessage(), 
+                '/app/releases/' . $args['release_id'] . '/logs'
+            );
+        }
+
+        return $response->withRedirect('/app/releases');
+    }
+
+    /**
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     * 
+     * @return Response
+     */
+    public function deleteAll(Request $request, Response $response, array $args)
+    {
+        try {
+            
+            Release::remove($args['release_id'], true);
+
+        } catch (\Exception $e) {
+            return $this->redirectWithError(
+                $response, 
+                $e->getMessage(),
+                '/app/releases/' . $args['release_id'] . '/logs'
+            );
+        }
+
+        return $response->withRedirect('/app/releases');
     }
 }

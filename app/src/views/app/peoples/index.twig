@@ -7,25 +7,19 @@
 
     <p><a href="/app/peoples/form">Adicionar Pessoa</a></p>
 
+    {% include 'macro.twig' with {error:error} %}
+    
     <table class="table">
     	<thead>
     		<tr>
-    			<th>#ID</th>
     			<th>Nome</th>
-    			<th>Criado</th>
-    			<th>Atualizado</th>
-    			<th>Apagado</th>
     		</tr>
     	</thead>
 
     	<tbody>
     		{% for row in rows %}
     		<tr>
-    			<td>{{ row.id }}</td>
     			<td>{{ row.name }}</td>
-    			<td>{{ row.created_at }}</td>
-    			<td>{{ row.updated_at }}</td>
-    			<td>{{ row.deleted_at }}</td>
     		</tr>
     		{% endfor %}
 

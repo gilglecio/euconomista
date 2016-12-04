@@ -45,10 +45,6 @@ class Version20161203233401 extends AbstractMigration
             'notnull' => true
         ]);
 
-        $table->addColumn('deleted_at', 'datetime', [
-            'notnull' => false
-        ]);
-
         $table->setPrimaryKey(['id']);
         
         $table->addIndex(['user_id'], 'fk_user_idx');

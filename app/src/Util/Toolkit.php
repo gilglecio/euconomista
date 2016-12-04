@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package Toolkit
+ * @subpackage App\Util
+ * @version v1.0
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 namespace App\Util;
 
 class Toolkit

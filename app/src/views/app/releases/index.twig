@@ -7,6 +7,8 @@
 
     <p><a href="/app/releases/form">Adicionar Lançamento</a></p>
 
+    {% include 'macro.twig' with {error:error} %}
+
     <table class="table">
     	<thead>
     		<tr>
@@ -24,7 +26,7 @@
     		<tr>
                 <td>{{ row.vencimento }}</td>
                 <td>
-                    <a href="/app/releases/{{ row.id }}/logs" style="color:#000; text-decoration:underline">{{ row.number }}</a>
+                    <a href="/app/releases/{{ row.id }}/logs" style="color:#000">{{ row.number }}</a>
                 </td>
                 <td>{{ row.category }}</td>
                 <td>{{ row.people }}</td>

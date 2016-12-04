@@ -31,6 +31,9 @@ $app->group('/app', function () {
 		
 		$this->post('', 'App\Controller\PeoplesController:save')
 			->setName('peoples.save');
+
+		$this->get('/{people_id}/delete', 'App\Controller\PeoplesController:delete')
+			->setName('peoples.delete');
 	});
 
 	# REPORTS

@@ -45,4 +45,34 @@ final class People extends Model
 
 		return $row;
 	}
+
+	/**
+	 * Apaga uma pessoa pelo ID.
+	 * 
+	 * @param integer $people_id
+	 * @throws \Exception A pessoa éstá sendo usada por lançamentos.
+	 * @throws \Exception Pessoa #{$people_id} não foi apagada.
+	 * @return boolean
+	 */
+	public static function remove($people_id)
+	{
+		$category = self::find($people_id);
+
+		$conditions = [
+			'conditions' => [
+				'people_id = ?', 
+				$people_id
+			]
+		];
+
+		if (Release::count($conditions)) {
+			throw new \Exception('A pessoa éstá sendo usada por lançamentos.');
+		}
+
+		if (! $category->delete()) {
+			throw new \Exception("Pessoa #{$people_id} não foi apagada.");
+		}
+
+		return true;
+	}
 }

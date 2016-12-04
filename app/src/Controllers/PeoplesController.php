@@ -37,6 +37,7 @@ final class PeoplesController extends Controller
     {
         $this->view->render($response, 'app/peoples/index.twig', [
         	'title' => $this->title,
+        	'error' => $this->flash->getMessages()['error'],
         	'rows' => People::find('all')
         ]);
         
@@ -77,6 +78,24 @@ final class PeoplesController extends Controller
 
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/peoples/form');
+        }
+
+        return $response->withRedirect('/app/peoples');
+    }
+
+    /**
+	 * @param Request  $request
+	 * @param Response $response
+	 * @param array    $args
+	 * 
+	 * @return Response
+	 */
+    public function delete(Request $request, Response $response, array $args)
+    {
+        try {
+        	People::remove($args['people_id']);
+        } catch (\Exception $e) {
+        	return $this->redirectWithError($response, $e->getMessage(), '/app/peoples');
         }
 
         return $response->withRedirect('/app/peoples');

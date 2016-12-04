@@ -12,7 +12,8 @@
     <table class="table">
     	<thead>
     		<tr>
-    			<th>Nome</th>
+                <th>Nome</th>
+    			<th width="25%"></th>
     		</tr>
     	</thead>
 
@@ -20,6 +21,9 @@
     		{% for row in rows %}
     		<tr>
     			<td>{{ row.name }}</td>
+                <td>
+                    <a href="/app/peoples/{{ row.id }}/delete" style="color:red">Apagar</a>
+                </td>
     		</tr>
     		{% endfor %}
 

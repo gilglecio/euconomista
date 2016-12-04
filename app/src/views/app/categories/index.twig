@@ -28,6 +28,12 @@
     			<td>{{ row.deleted_at }}</td>
     		</tr>
     		{% endfor %}
+
+            {% if not rows|length %}
+            <tr>
+                <td colspan="5">Sem registros.</td>
+            </tr>
+            {% endif %}
     	</tbody>
     </table>
 {% endblock %}

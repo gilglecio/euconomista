@@ -13,7 +13,8 @@
             "App\\Controller\\": "app/src/Controllers",
             "App\\Mail\\": "app/src/Mail",
             "App\\Auth\\": "app/src/Auth",
-            "App\\Interfaces\\": "app/src/Interfaces"
+            "App\\Interfaces\\": "app/src/Interfaces",
+            "App\\Util\\": "app/src/Util"
         }
     },
     "require": {

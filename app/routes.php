@@ -48,6 +48,8 @@ $app->group('/app', function () {
 	# RELEASES
 	$this->group('/releases', function () {
 		$this->get('', 'App\Controller\ReleasesController:index')->setName('releases');
+		$this->get('/form', 'App\Controller\ReleasesController:form')->setName('releases.form');
+		$this->post('', 'App\Controller\ReleasesController:save')->setName('releases.save');
 	});
 });
 

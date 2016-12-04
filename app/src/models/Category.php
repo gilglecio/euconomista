@@ -2,16 +2,15 @@
 
 class Category extends Model
 {
-	static $validates_presence_of = [
-		['name'],
-		['entity']
+	public static $validates_presence_of = [
+		['name']
 	];
 
-	static $validates_uniqueness_of = [
+	public static $validates_uniqueness_of = [
 		['name', 'entity']
 	];
 
-	static $validates_length_of = [
+	public static $validates_length_of = [
 		['name', 'within' => [3, 25]]
 	];
 
@@ -21,11 +20,14 @@ class Category extends Model
 	 * @param array $fields
 	 * @return People
 	 */
-	static function generate($fields)
+	public static function generate($fields)
 	{
-		$row = self::getModelToSave($fields);
-		$row->name = $fields['name'];
-		$row->save();
+		/**
+		 * @var Category
+		 */
+		$row = Category::create([
+			'name' => $fields['name']
+		]);
 
 		if ($row->is_invalid()) {
 			throw new \Exception($row->errors->full_messages()[0]);

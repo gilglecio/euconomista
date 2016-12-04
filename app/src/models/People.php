@@ -3,8 +3,7 @@
 class People extends Model
 {
 	static $validates_presence_of = [
-		['name'],
-		['entity']
+		['name']
 	];
 
 	static $validates_uniqueness_of = [
@@ -23,9 +22,12 @@ class People extends Model
 	 */
 	static function generate($fields)
 	{
-		$row = self::getModelToSave($fields);
-		$row->name = $fields['name'];
-		$row->save();
+		/**
+		 * @var People
+		 */
+		$row = People::create([
+			'name' => $fields['name']
+		]);
 
 		if ($row->is_invalid()) {
 			throw new \Exception($row->errors->full_messages()[0]);

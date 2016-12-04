@@ -23,11 +23,17 @@
     		{% for row in rows %}
     		<tr>
                 <td>{{ row.vencimento }}</td>
-                <td>{{ row.number }}</td>
+                <td>
+                    <a href="/app/releases/{{ row.id }}/logs" style="color:#000; text-decoration:underline">{{ row.number }}</a>
+                </td>
                 <td>{{ row.category }}</td>
                 <td>{{ row.people }}</td>
-                <td style="{% if row.status == 'Vencido' %}font-weight:bold{% endif %}">{{ row.status }}</td>
-    			<td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
+                
+                <td style="{% if row.status == 'Vencido' %}font-weight:bold{% endif %}">
+                    {{ row.status }}
+                </td>
+    			
+                <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
     		</tr>
     		{% endfor %}
 

@@ -48,6 +48,7 @@ class Version20161204090145 extends AbstractMigration
         ]);
 
         $table->addColumn('value', 'decimal', [
+            'notnull' => true,
             'scale' => 2,
             'precision' => 10
         ]);
@@ -81,10 +82,14 @@ class Version20161204090145 extends AbstractMigration
             'notnull' => true,
             'length' => 60
         ]);
+        
+        $table->setPrimaryKey(['id']);
 
         $table->addIndex(['user_id'], 'fk_user_idx');
         $table->addIndex(['category_id'], 'fk_category_idx');
         $table->addIndex(['people_id'], 'fk_people_idx');
+        
+        $table->addUniqueIndex(['entity', 'number', 'people_id', 'data_vencimento']);
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
             'onDelete' => 'NO ACTION', 
@@ -101,8 +106,6 @@ class Version20161204090145 extends AbstractMigration
             'onUpdate' => 'NO ACTION'
         ], 'fk_releases_people_id');
 
-        $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['entity', 'number', 'people_id', 'data_vencimento']);
     }
 
     /**

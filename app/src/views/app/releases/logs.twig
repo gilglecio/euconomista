@@ -1,0 +1,47 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+    <h2>{{ title }}</h2>
+
+    <ul>
+        <li><a href="/app/releases">Lista de Lançamentos</a></li>
+        
+        {% if canLiquidar %}
+        <li><a href="/app/releases/{{ release_id }}/liquidar">Liquidar</a></li>
+        {% endif %}
+
+        {% if canDesfazer %}
+        <li><a href="/app/releases/{{ release_id }}/desfazer">Desfazer</a></li>
+        {% endif %}
+    </ul>
+
+    <table class="table">
+    	<thead>
+    		<tr>
+                <th>Ação</th>
+                <th>Data</th>
+                <th class="text-right">Valor</th>
+    			<th>Usuário</th>
+    		</tr>
+    	</thead>
+
+    	<tbody>
+    		{% for row in rows %}
+    		<tr>
+                <td>{{ row.action }}</td>
+                <td>{{ row.data }}</td>
+                <td class="text-right">{{ row.value }}</td>
+                <td>{{ row.user }}</td>
+    		</tr>
+    		{% endfor %}
+
+    		{% if not rows|length %}
+            <tr>
+                <td colspan="5">Sem registros.</td>
+            </tr>
+            {% endif %}
+    	</tbody>
+    </table>
+{% endblock %}

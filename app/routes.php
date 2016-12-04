@@ -23,33 +23,62 @@ $app->group('/app', function () {
 
 	# PEOPLES
 	$this->group('/peoples', function () {
-		$this->get('', 'App\Controller\PeoplesController:index')->setName('peoples');
-		$this->get('/form', 'App\Controller\PeoplesController:form')->setName('peoples.form');
-		$this->post('', 'App\Controller\PeoplesController:save')->setName('peoples.save');
+		$this->get('', 'App\Controller\PeoplesController:index')
+			->setName('peoples');
+		
+		$this->get('/form', 'App\Controller\PeoplesController:form')
+			->setName('peoples.form');
+		
+		$this->post('', 'App\Controller\PeoplesController:save')
+			->setName('peoples.save');
 	});
 
 	# REPORTS
 	$this->group('/reports', function () {
-		$this->get('', 'App\Controller\ReportsController:index')->setName('reports');
+		$this->get('', 'App\Controller\ReportsController:index')
+			->setName('reports');
 	});
 
 	# USERS
 	$this->group('/users', function () {
-		$this->get('', 'App\Controller\UsersController:index')->setName('users');
+		$this->get('', 'App\Controller\UsersController:index')
+			->setName('users');
 	});
 
 	# CATEGORIES
 	$this->group('/categories', function () {
-		$this->get('', 'App\Controller\CategoriesController:index')->setName('categories');
-		$this->get('/form', 'App\Controller\CategoriesController:form')->setName('categories.form');
-		$this->post('', 'App\Controller\CategoriesController:save')->setName('categories.save');
+		$this->get('', 'App\Controller\CategoriesController:index')
+			->setName('categories');
+		
+		$this->get('/form', 'App\Controller\CategoriesController:form')
+			->setName('categories.form');
+		
+		$this->post('', 'App\Controller\CategoriesController:save')
+			->setName('categories.save');
 	});
 
 	# RELEASES
 	$this->group('/releases', function () {
-		$this->get('', 'App\Controller\ReleasesController:index')->setName('releases');
-		$this->get('/form', 'App\Controller\ReleasesController:form')->setName('releases.form');
-		$this->post('', 'App\Controller\ReleasesController:save')->setName('releases.save');
+		$this->get('', 'App\Controller\ReleasesController:index')
+			->setName('releases');
+		
+		$this->get('/form', 'App\Controller\ReleasesController:form')
+			->setName('releases.form');
+		
+		$this->post('', 'App\Controller\ReleasesController:save')
+			->setName('releases.save');
+		
+		$this->get('/{release_id}/logs', 'App\Controller\ReleasesController:logs')
+			->setName('releases.logs');
+		
+		$this->get('/{release_id}/liquidar', 'App\Controller\ReleasesController:liquidarForm')
+			->setName('releases.liquidar.form');
+		
+		$this->post('/{release_id}/liquidar', 'App\Controller\ReleasesController:liquidar')
+			->setName('releases.liquidar');
+
+		$this->get('/{release_id}/desfazer', 'App\Controller\ReleasesController:desfazer')
+			->setName('releases.desfazer');
 	});
 });
 

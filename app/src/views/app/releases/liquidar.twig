@@ -1,0 +1,43 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+    <h2>{{ title }}</h2>
+
+    <p><a href="/app/releases">Lista de Lançamentos</a> | <a href="/app/releases">Lista de Ações da Parcela</a></p>
+
+    {% if error|length %}
+    <div class="alert alert-danger">
+        {% for e in error %}
+        <p>{{ e }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="jumbotron no-margin-bottom">
+	    <form class="form-horizontal" method="post" action="/app/releases/{{ release_id }}/liquidar">
+
+	    	<div class="form-group">
+	    		<label for="created_at" class="control-label col-xs-2">Data</label>
+	    		<div class="col-xs-5">
+	    			<input type="date" id="created_at" value="{{ date }}" autofocus required name="created_at" class="form-control">
+	    		</div>
+	    	</div>
+
+	    	<div class="form-group">
+	    		<label for="value" class="control-label col-xs-2">Valor</label>
+	    		<div class="col-xs-5">
+	    			<input type="number" step="0.01" min="1" value="{{ value }}" max="99999999" id="value" required name="value" class="form-control">
+	    		</div>
+	    	</div>
+
+	    	<div class="form-group no-margin-bottom">
+	    		<div class="col-xs-10 col-xs-offset-2">
+	    			<button class="btn btn-primary" type="submit">Salvar</button>
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+
+{% endblock %}

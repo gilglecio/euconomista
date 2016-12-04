@@ -49,15 +49,16 @@ class Version20161204084440 extends AbstractMigration
             'notnull' => false
         ]);
 
+        $table->setPrimaryKey(['id']);
+        
         $table->addIndex(['user_id'], 'fk_user_idx');
+        $table->addUniqueIndex(['entity', 'name']);
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
             'onDelete' => 'NO ACTION', 
             'onUpdate' => 'NO ACTION'
         ], 'fk_categories_user_id');
 
-        $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['entity', 'name']);
     }
 
     /**

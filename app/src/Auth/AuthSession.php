@@ -6,6 +6,9 @@ use App\Interfaces\UserAuthInterface;
 
 class AuthSession
 {
+	/**
+	 * User session name
+	 */
 	const AUTH_SESSION_NAME = 'user';
 
 	/**
@@ -20,7 +23,7 @@ class AuthSession
 	 */
 	static function attemp(UserAuthInterface $user, $email, $password)
 	{
-		if (! $user = $user->getIdPasswordAndNameByEmail($email)) {
+		if (! $user = $user->getIdEntityPasswordAndNameByEmail($email)) {
 			throw new \Exception('User email not found.');
 		}
 
@@ -36,6 +39,26 @@ class AuthSession
 		];
 
 		return true;
+	}
+
+	/**
+	 * Retorna o ID do usuário logado.
+	 * 
+	 * @return integer
+	 */
+	static function getUserId()
+	{
+		return $_SESSION[self::AUTH_SESSION_NAME]['id'];
+	}
+
+	/**
+	 * Retorna o numero da entidade do usuário logado.
+	 * 
+	 * @return integer
+	 */
+	static function getEntity()
+	{
+		return $_SESSION[self::AUTH_SESSION_NAME]['entity'];
 	}
 
 	static function clear()

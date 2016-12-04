@@ -3,5 +3,31 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <p>{{ title }}</p>
+    <h2>{{ title }}</h2>
+
+    <p><a href="/app/peoples/form">Adicionar Pessoa</a></p>
+
+    <table class="table">
+    	<thead>
+    		<tr>
+    			<th>#ID</th>
+    			<th>Nome</th>
+    			<th>Criado</th>
+    			<th>Atualizado</th>
+    			<th>Apagado</th>
+    		</tr>
+    	</thead>
+
+    	<tbody>
+    		{% for row in rows %}
+    		<tr>
+    			<td>{{ row.id }}</td>
+    			<td>{{ row.name }}</td>
+    			<td>{{ row.created_at }}</td>
+    			<td>{{ row.updated_at }}</td>
+    			<td>{{ row.deleted_at }}</td>
+    		</tr>
+    		{% endfor %}
+    	</tbody>
+    </table>
 {% endblock %}

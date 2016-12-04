@@ -6,20 +6,25 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Create table `users`
+ * Create peoples table
  */
-class Version20160819093841 extends AbstractMigration
+class Version20161203233401 extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $table = $schema->createTable('users');
-        
+        $table = $schema->createTable('peoples');
+
         $table->addColumn('id', 'integer', [
             'unsigned' => true,
             'autoincrement' => true,
+            'notnull' => true
+        ]);
+
+        $table->addColumn('user_id', 'integer', [
+            'unsigned' => true,
             'notnull' => true
         ]);
 
@@ -29,18 +34,7 @@ class Version20160819093841 extends AbstractMigration
         ]);
 
         $table->addColumn('name', 'string', [
-            'length' => 45,
-            'notnull' => true
-        ]);
-
-        $table->addColumn('email', 'string', [
-            'length' => 60,
-            'notnull' => true
-        ]);
-
-        $table->addColumn('password', 'string', [
-            'length' => 60,
-            'notnull' => true
+            'length' => 60
         ]);
 
         $table->addColumn('created_at', 'datetime', [
@@ -55,8 +49,15 @@ class Version20160819093841 extends AbstractMigration
             'notnull' => false
         ]);
 
+        $table->addIndex(['user_id'], 'fk_user_idx');
+
+        $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
+            'onDelete' => 'NO ACTION', 
+            'onUpdate' => 'NO ACTION'
+        ], 'fk_peoples_user_id');
+
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['email']);
+        $table->addUniqueIndex(['entity', 'name']);
     }
 
     /**
@@ -64,8 +65,7 @@ class Version20160819093841 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if ($schema->hasTable('users')) {
-            $schema->dropTable('users');
-        }
+        // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

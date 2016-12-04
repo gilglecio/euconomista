@@ -38,4 +38,11 @@ class Controller
         $this->logger = $c->get('logger');
         $this->flash = $c->get('flash');
     }
+
+    public function redirectWithError($response, $message, $url, $status = 406)
+    {
+        $this->logger->info(get_called_class() . ': ' . $message);
+        $this->flash->addMessage('error', $message);
+        return $response->withRedirect($url, $status);
+    }
 }

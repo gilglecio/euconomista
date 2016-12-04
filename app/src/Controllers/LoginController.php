@@ -51,9 +51,7 @@ final class LoginController extends Controller
 				$request->getParsedBodyParam('password')
 			);
 		} catch (\Exception $e) {
-			$this->logger->info('User auth error: ' . $e->getMessage());
-			$this->flash->addMessage('error', $e->getMessage());
-			return $response->withRedirect('/login', 406);
+			return $this->redirectWithError($response, $e->getMessage(), '/login');
 		}
 
 		return $response->withRedirect('/app');

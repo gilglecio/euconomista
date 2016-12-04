@@ -4,28 +4,9 @@ use App\Interfaces\UserAuthInterface;
 
 class User extends Model implements UserAuthInterface
 {
-	/**
-	 * @var integer
-	 */
-	protected $id;
-
-	/**
-	 * @var string
-	 */
-	protected $name;
-
-	/**
-	 * @var string
-	 */
-	protected $email;
-
-	/**
-	 * @var string
-	 */
-	protected $password;
-
 	static $validates_presence_of = [
 		['name'],
+		['entity'],
 		['email'],
 		['password'],
 	];
@@ -48,7 +29,7 @@ class User extends Model implements UserAuthInterface
 	 * @param string $email
 	 * @return \stdClass|null
 	 */
-	public function getIdPasswordAndNameByEmail($email)
+	public function getIdEntityPasswordAndNameByEmail($email)
 	{
 		if (! $user = self::find('first', ['conditions' => ['email = ?', $email]])) {
 			return null;
@@ -59,6 +40,7 @@ class User extends Model implements UserAuthInterface
 		return (object) [
 			'id' => $user->id,
 			'email' => $user->email,
+			'entity' => $user->entity,
 			'name' => $user->name,
 			'password' => $user->password
 		];

@@ -41,6 +41,8 @@ $app->group('/app', function () {
 	# CATEGORIES
 	$this->group('/categories', function () {
 		$this->get('', 'App\Controller\CategoriesController:index')->setName('categories');
+		$this->get('/form', 'App\Controller\CategoriesController:form')->setName('categories.form');
+		$this->post('', 'App\Controller\CategoriesController:save')->setName('categories.save');
 	});
 
 	# RELEASES

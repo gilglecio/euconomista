@@ -31,7 +31,6 @@ class Version20161119210439 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
+        $this->addSql('delete from users where id = 1');
     }
 }

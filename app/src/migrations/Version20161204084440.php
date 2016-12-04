@@ -6,16 +6,16 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Create `peoples` table
+ * Create `categories` table
  */
-class Version20161203233401 extends AbstractMigration
+class Version20161204084440 extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $table = $schema->createTable('peoples');
+        $table = $schema->createTable('categories');
 
         $table->addColumn('id', 'integer', [
             'unsigned' => true,
@@ -34,7 +34,7 @@ class Version20161203233401 extends AbstractMigration
         ]);
 
         $table->addColumn('name', 'string', [
-            'length' => 60
+            'length' => 25
         ]);
 
         $table->addColumn('created_at', 'datetime', [
@@ -54,7 +54,7 @@ class Version20161203233401 extends AbstractMigration
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
             'onDelete' => 'NO ACTION', 
             'onUpdate' => 'NO ACTION'
-        ], 'fk_peoples_user_id');
+        ], 'fk_categories_user_id');
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['entity', 'name']);
@@ -65,8 +65,8 @@ class Version20161203233401 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if ($schema->hasTable('peoples')) {
-            $schema->dropTable('peoples');
+        if ($schema->hasTable('categories')) {
+            $schema->dropTable('categories');
         }
     }
 }

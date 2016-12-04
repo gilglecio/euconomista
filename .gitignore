@@ -1,0 +1,8 @@
+vendor/
+log/*
+cache/*
+*.local
+*.bak
+/scripts
+/public/behat.html
+/public/assets

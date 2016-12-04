@@ -1,0 +1,45 @@
+{% extends 'layouts/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                
+                <h2>Login</h2>
+                <hr>
+
+                {% if error|length %}
+                <div class="alert alert-danger">
+                    {% for e in error %}
+                    <p>{{ e }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form class="form-horizontal" method="post" action="/login">
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input placeholder="E-Mail" type="text" name="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input placeholder="Senha" type="password" name="password" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary pull-right btn-block">Entrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>    
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+default:
+    context:
+        class: FeatureContext
+        parameters:
+            base_url: http://localhost:3000
+    paths:
+        features: tests/features
+        bootstrap: %behat.paths.features%/contexts
+    extensions:
+        Behat\MinkExtension\Extension:
+            goutte: ~
+            selenium2: ~
+            browser_name: 'chrome'
+            selenium2:
+                capabilities: { "browser": "chrome" }

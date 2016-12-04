@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gnome-terminal --tab -e 'bash -c "./server; exec bash"' --tab -e 'bash -c "./selenium; exec bash"' --tab -e 'bash -c "cd ./; exec bash"'

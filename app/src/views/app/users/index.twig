@@ -5,7 +5,9 @@
 {% block app %}
     <h2>{{ title }}</h2>
 
-    <p><a href="/app/users/form">Adicionar Usuário</a></p>
+    <ul>
+        <li><a href="/app/users/form">Adicionar Usuário</a></li>
+    </ul>
 
     {% include 'macro.twig' with {error:error} %}
 
@@ -13,7 +15,8 @@
     	<thead>
     		<tr>
     			<th>Nome</th>
-    			<th>Email</th>
+                <th>Email</th>
+    			<th width="25%"></th>
     		</tr>
     	</thead>
 
@@ -22,6 +25,9 @@
     		<tr>
     			<td>{{ row.name }}</td>
     			<td>{{ row.email }}</td>
+                <td>
+                    <a href="/app/users/{{ row.id }}/delete" style="color:red">Apagar</a>
+                </td>
     		</tr>
     		{% endfor %}
 

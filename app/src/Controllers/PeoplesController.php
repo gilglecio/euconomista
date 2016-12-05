@@ -37,8 +37,8 @@ final class PeoplesController extends Controller
     {
         $this->view->render($response, 'app/peoples/index.twig', [
         	'title' => $this->title,
-        	'error' => $this->flash->getMessages()['error'],
-        	'rows' => People::find('all')
+        	'error' => $this->getErrorMessages(),
+        	'rows' => People::find('all', ['order' => 'name asc'])
         ]);
         
         return $response;
@@ -54,6 +54,11 @@ final class PeoplesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
     	$data = $this->flash->getMessages();
+
+        if (isset($args['people_id'])) {
+            $data['data'] = People::find($args['people_id'])->to_array();
+        }
+
     	$data['title'] = 'Adicionar ' . $this->title;
 
         $this->view->render($response, 'app/peoples/form.twig', $data);
@@ -73,6 +78,7 @@ final class PeoplesController extends Controller
         try {
         	
         	People::generate([
+                'id' => $request->getParsedBodyParam('id'),
 	        	'name' => $request->getParsedBodyParam('name'),
 	        ]);
 

@@ -16,6 +16,10 @@
         <li><a href="/app/releases/{{ release_id }}/desfazer">Desfazer</a></li>
         {% endif %}
 
+        {% if not canDesfazer %}
+        <li><a href="/app/releases/{{ release_id }}/form">Editar</a></li>
+        {% endif %}
+
         <li><a style="color:red" href="/app/releases/{{ release_id }}/delete">Apagar este lançamento</a></li>
         <li><a style="color:red" href="/app/releases/{{ release_id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
     </ul>
@@ -36,7 +40,7 @@
     		{% for row in rows %}
     		<tr>
                 <td>{{ row.action }}</td>
-                <td>{{ row.data }}</td>
+                <td>{{ row.date }}</td>
                 <td class="text-right">{{ row.value }}</td>
                 <td>{{ row.user }}</td>
     		</tr>

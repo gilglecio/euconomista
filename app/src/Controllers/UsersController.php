@@ -37,6 +37,7 @@ final class UsersController extends Controller
     {
         $this->view->render($response, 'app/users/index.twig', [
         	'title' => $this->title,
+            'error' => $this->getErrorMessages(),
         	'rows' => User::find('all')
         ]);
         
@@ -79,6 +80,24 @@ final class UsersController extends Controller
 
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/users/form');
+        }
+
+        return $response->withRedirect('/app/users');
+    }
+
+    /**
+	 * @param Request  $request
+	 * @param Response $response
+	 * @param array    $args
+	 * 
+	 * @return Response
+	 */
+    public function delete(Request $request, Response $response, array $args)
+    {
+        try {
+        	User::remove($args['user_id']);
+        } catch (\Exception $e) {
+        	return $this->redirectWithError($response, $e->getMessage(), '/app/users');
         }
 
         return $response->withRedirect('/app/users');

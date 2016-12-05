@@ -14,6 +14,13 @@ $app->post('/login', 'App\Controller\LoginController:post')
 $app->get('/logout', 'App\Controller\LoginController:logout')
 	->setName('login.logout');
 
+# REGISTER
+$app->get('/register', 'App\Controller\RegisterController:index')
+	->setName('register.form');
+
+$app->post('/register', 'App\Controller\RegisterController:post')
+	->setName('register.post');
+
 # PRIVATE ROUTES
 $app->group('/app', function () {
 
@@ -34,6 +41,9 @@ $app->group('/app', function () {
 
 		$this->get('/{people_id}/delete', 'App\Controller\PeoplesController:delete')
 			->setName('peoples.delete');
+
+		$this->get('/{people_id}/edit', 'App\Controller\PeoplesController:form')
+			->setName('peoples.edit');
 	});
 
 	# REPORTS
@@ -52,6 +62,9 @@ $app->group('/app', function () {
 		
 		$this->post('', 'App\Controller\UsersController:save')
 			->setName('users.save');
+
+		$this->get('/{user_id}/delete', 'App\Controller\UsersController:delete')
+			->setName('users.delete');
 	});
 
 	# CATEGORIES
@@ -76,6 +89,9 @@ $app->group('/app', function () {
 		
 		$this->get('/form', 'App\Controller\ReleasesController:form')
 			->setName('releases.form');
+
+		$this->get('/{release_id}/form', 'App\Controller\ReleasesController:form')
+			->setName('releases.edit');
 		
 		$this->post('', 'App\Controller\ReleasesController:save')
 			->setName('releases.save');

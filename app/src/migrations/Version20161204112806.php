@@ -57,6 +57,10 @@ class Version20161204112806 extends AbstractMigration
             'notnull' => true
         ]);
 
+        $table->addColumn('date', 'date', [
+            'notnull' => true
+        ]);
+
         $table->setPrimaryKey(['id']);
 
         $table->addIndex(['user_id'], 'fk_user_idx');

@@ -62,4 +62,18 @@ abstract class Controller
 
         return $response->withRedirect($url, $status);
     }
+
+    public function getErrorMessages()
+    {
+        /**
+         * @var array
+         */
+        $messages = $this->flash->getMessages();
+
+        if (isset($messages['error'])) {
+            return $messages['error'];
+        }
+
+        return null;
+    }
 }

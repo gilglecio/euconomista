@@ -84,6 +84,20 @@ final class ReleasesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
     	$data = $this->flash->getMessages();
+
+        if (isset($args['release_id'])) {
+            $release = Release::find($args['release_id']);
+
+            if (! $release->canEditar()) {
+                return $this->redirectWithError($response, 'Lançamento movimentado não pode ser editado.', "/app/releases/{$release->id}/logs");
+            }
+
+            $data['data'] = $release->to_array();
+            $data['data']['data_vencimento'] = (new \Datetime($data['data']['data_vencimento']))->format('Y-m-d');
+
+
+        }
+
     	$data['title'] = 'Adicionar ' . $this->title;
 
     	$data['categories'] = Category::find('all');
@@ -106,6 +120,7 @@ final class ReleasesController extends Controller
         try {
             
             Release::generate([
+                'id' => $request->getParsedBodyParam('id'),
                 'number' => $request->getParsedBodyParam('number'),
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),
                 'people_id' => (int) $request->getParsedBodyParam('people_id'),
@@ -148,7 +163,7 @@ final class ReleasesController extends Controller
 
             $row = $r->to_array();
 
-            $row['data'] = $r->created_at->format('d/m/Y');
+            $row['date'] = $r->date->format('d/m/Y');
             $row['action'] = $r->getActionName();
             $row['user'] = $r->user->name;
             $row['value'] = Toolkit::showMoney($r->value);
@@ -161,9 +176,10 @@ final class ReleasesController extends Controller
             'title' => 'Extrato de lançamento',
             'release_id' => $args['release_id'],
             'rows' => $rows,
-            'error' => $this->flash->getMessages()['error'],
+            'error' => $this->getErrorMessages(),
             'canLiquidar' => $release->canLiquidar(),
-            'canDesfazer' => $release->canDesfazer()
+            'canDesfazer' => $release->canDesfazer(),
+            'canEditar' => $release->canEditar()
         ]);
     }
 
@@ -207,7 +223,7 @@ final class ReleasesController extends Controller
             
             Release::liquidar([
                 'value' => $request->getParsedBodyParam('value'),
-                'created_at' => $request->getParsedBodyParam('created_at'),
+                'date' => $request->getParsedBodyParam('date'),
                 'release_id' => $args['release_id']
             ]);
 

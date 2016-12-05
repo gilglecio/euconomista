@@ -5,7 +5,9 @@
 {% block app %}
     <h2>{{ title }}</h2>
 
-    <p><a href="/app/releases/form">Adicionar Lançamento</a></p>
+    <ul>
+        <li><a href="/app/releases/form">Adicionar Lançamento</a></li>
+    </ul>
 
     {% include 'macro.twig' with {error:error} %}
 
@@ -26,7 +28,7 @@
     		<tr>
                 <td>{{ row.vencimento }}</td>
                 <td>
-                    <a href="/app/releases/{{ row.id }}/logs" style="color:#000">{{ row.number }}</a>
+                    <a href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
                 </td>
                 <td>{{ row.category }}</td>
                 <td>{{ row.people }}</td>

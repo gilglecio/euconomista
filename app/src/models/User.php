@@ -1,13 +1,19 @@
 <?php
 
 use App\Interfaces\UserAuthInterface;
+use App\Auth\AuthSession;
 
-final class User extends Model implements UserAuthInterface
+class User extends Model implements UserAuthInterface
 {
+	/**
+	 * @var string
+	 */
+	static $table_name = 'users';
+
 	/**
 	 * @var array
 	 */
-	static $validates_presence_of = [
+	public static $validates_presence_of = [
 		['name'],
 		['email'],
 		['password'],
@@ -16,21 +22,21 @@ final class User extends Model implements UserAuthInterface
 	/**
 	 * @var array
 	 */
-	static $validates_format_of = [
+	public static $validates_format_of = [
 		['email', 'with' => '/^.*?@.*$/']
 	];
 
 	/**
 	 * @var array
 	 */
-	static $validates_uniqueness_of = [
+	public static $validates_uniqueness_of = [
 		['email']
 	];
 
 	/**
 	 * @var array
 	 */
-	static $validates_length_of = [
+	public static $validates_length_of = [
 		['name', 'within' => [3, 45]],
 		['email', 'within' => [5, 60]]
 	];
@@ -38,7 +44,17 @@ final class User extends Model implements UserAuthInterface
 	/**
 	 * @var array
 	 */
-	static $before_create = [
+	public static $has_many = [
+		['categories'],
+		['peoples'],
+		['users'],
+		['releases']
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $before_create = [
 		'setUserAndEntity',
 		'encryptPassword'
 	];
@@ -84,12 +100,13 @@ final class User extends Model implements UserAuthInterface
 	 * @throws \Exception Mensagem de erro do model.
 	 * @return User
 	 */
-	static function generate($fields)
+	public static function generate($fields)
 	{
 		/**
 		 * @var User
 		 */
 		$row = self::create([
+			'entity' => isset($fields['entity']) ? $fields['entity'] : null,
 			'name' => $fields['name'],
 			'email' => $fields['email'],
 			'password' => $fields['password']
@@ -100,5 +117,41 @@ final class User extends Model implements UserAuthInterface
 		}
 
 		return $row;
+	}
+
+	/**
+	 * Apaga uma usuário pelo ID.
+	 * Verifica o usuário pode ser apagado.
+	 * 
+	 * @param integer $user_id
+	 * @throws \Exception User está sendo usada por '{$relation}'.
+	 * @throws \Exception Você não pode apagar a si mesmo.
+	 * @throws \Exception Usuário <user_id> não foi apagada.
+	 * @return boolean
+	 */
+	public static function remove($user_id)
+	{
+		/**
+		 * @var User
+		 */
+		if (! $user = self::find($user_id)) {
+			throw new \Exception('Usuário não localizado.');
+		}
+
+		try {
+			$user->inUsed();
+		} catch (\Exception $e) {
+			throw $e;
+		}
+
+		if ($user->id == AuthSession::getUserId()) {
+			throw new \Exception('Você não pode apagar a si mesmo.');
+		}
+
+		if (! $user->delete()) {
+			throw new \Exception("Usuário #{$user_id} não foi apagada.");
+		}
+
+		return true;
 	}
 }

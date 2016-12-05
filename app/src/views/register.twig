@@ -8,12 +8,19 @@
         <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
                 
-                <h2>Login</h2>
+                <h2>Cadastro</h2>
                 <hr>
 
                 {% include 'macro.twig' with {error:error} %}
 
-                <form class="form-horizontal" method="post" action="/login">
+                <form class="form-horizontal" method="post" action="/register">
+
+			    	<div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input autofocus placeholder="Nome" type="text" name="name" class="form-control">
+                        </div>
+                    </div>
+
                     <div class="row" style="margin-bottom:15px">
                         <div class="col-xs-12">
                             <input placeholder="E-Mail" type="text" name="email" class="form-control">
@@ -26,18 +33,24 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row" style="margin-bottom:15px">
                         <div class="col-xs-12">
-                            <button type="submit" class="btn btn-primary pull-right btn-block">Entrar</button>
+                            <input placeholder="Confirmar Senha" type="password" name="confirm_password" class="form-control">
+                        </div>
+                    </div>
+
+			    	<div class="form-group">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary pull-right btn-block">Cadastrar</button>
                         </div>
                     </div>
 
                     <div class="form-group no-margin-bottom">
                         <div class="col-xs-12">
-                            <a href="/register" class="btn btn-default pull-right btn-block">Cadastre-se</a>
+                            <a href="/login" class="btn btn-default pull-right btn-block">Login</a>
                         </div>
                     </div>
-                </form>
+			    </form>
             </div>
         </div>    
     </div>

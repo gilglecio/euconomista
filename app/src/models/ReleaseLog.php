@@ -19,6 +19,7 @@ final class ReleaseLog extends Model
 	public static $validates_presence_of = [
 		['action'],
 		['value'],
+		['date'],
 		['release_id']
 	];
 

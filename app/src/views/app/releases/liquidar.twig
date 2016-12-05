@@ -5,7 +5,9 @@
 {% block app %}
     <h2>{{ title }}</h2>
 
-    <p><a href="/app/releases">Lista de Lançamentos</a> | <a href="/app/releases">Lista de Ações da Parcela</a></p>
+    <ul>
+    	<li><a href="/app/releases">Lista de Lançamentos</a> | <a href="/app/releases">Lista de Ações da Parcela</a></li>
+    </ul>
 
     {% include 'macro.twig' with {error:error} %}
 
@@ -13,9 +15,9 @@
 	    <form class="form-horizontal" method="post" action="/app/releases/{{ release_id }}/liquidar">
 
 	    	<div class="form-group">
-	    		<label for="created_at" class="control-label col-xs-2">Data</label>
+	    		<label for="date" class="control-label col-xs-2">Data</label>
 	    		<div class="col-xs-5">
-	    			<input type="date" id="created_at" value="{{ date }}" autofocus required name="created_at" class="form-control">
+	    			<input type="date" id="date" value="{{ date }}" autofocus required name="date" class="form-control">
 	    		</div>
 	    	</div>
 

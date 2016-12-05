@@ -5,19 +5,23 @@
 {% block app %}
     <h2>{{ title }}</h2>
 
-    <p><a href="/app/releases">Lista de Lançamentos</a></p>
+    <ul>
+    	<li><a href="/app/releases">Lista de Lançamentos</a></li>
+    </ul>
 
     {% include 'macro.twig' with {error:error} %}
 
     <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/releases">
 
+	    	<input type="hidden" name="id" value="{{ data.id }}">
+
 	    	<div class="form-group">
 	    		<label for="natureza" class="control-label col-xs-2">Natureza</label>
 	    		<div class="col-xs-5">
 	    			<select autofocus class="form-control" id="natureza" name="natureza" required>
-	    				<option selected value="1">Receita</option>
-	    				<option value="2">Despesa</option>
+	    				<option {% if data.natureza == 1 %}selected{% endif %} value="1">Receita</option>
+	    				<option {% if data.natureza == 2 %}selected{% endif %} value="2">Despesa</option>
 	    			</select>
 	    		</div>
 	    	</div>
@@ -28,7 +32,7 @@
 	    			<select class="form-control" id="people_id" name="people_id" required>
 	    				<option></option>
 	    				{% for r in peoples %}
-	    				<option value="{{ r.id }}">{{ r.name }}</option>
+	    				<option {% if r.id == data.people_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
 	    				{% endfor %}
 	    			</select>
 	    		</div>
@@ -40,7 +44,7 @@
 	    			<select class="form-control" id="category_id" name="category_id" required>
 	    				<option></option>
 	    				{% for r in categories %}
-	    				<option value="{{ r.id }}">{{ r.name }}</option>
+	    				<option {% if r.id == data.category_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
 	    				{% endfor %}
 	    			</select>
 	    		</div>
@@ -56,21 +60,21 @@
 	    	<div class="form-group">
 	    		<label for="value" class="control-label col-xs-2">Valor</label>
 	    		<div class="col-xs-5">
-	    			<input step="0.01" type="number" min="1" max="99999999" id="value" required name="value" class="form-control">
+	    			<input step="0.01" type="number" min="1" value="{{ data.value }}" max="99999999" id="value" required name="value" class="form-control">
 	    		</div>
 	    	</div>
 
 	    	<div class="form-group">
 	    		<label for="data_vencimento" class="control-label col-xs-2">Vencimento</label>
 	    		<div class="col-xs-5">
-	    			<input type="date" min="1" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
+	    			<input type="date" min="1" value="{{ data.data_vencimento }}" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
 	    		</div>
 	    	</div>
 
 	    	<div class="form-group">
 	    		<label for="number" class="control-label col-xs-2">Número</label>
 	    		<div class="col-xs-5">
-	    			<input type="text" minlength="1" maxlength="15" id="number" required name="number" class="form-control">
+	    			<input type="text" minlength="1" value="{{ data.number }}" maxlength="15" id="number" required name="number" class="form-control">
 	    		</div>
 	    	</div>
 

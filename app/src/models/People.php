@@ -5,22 +5,29 @@ final class People extends Model
 	/**
 	 * @var array
 	 */
-	static $validates_presence_of = [
+	public static $validates_presence_of = [
 		['name']
 	];
 
 	/**
 	 * @var array
 	 */
-	static $validates_uniqueness_of = [
+	public static $validates_uniqueness_of = [
 		['name', 'entity']
 	];
 
 	/**
 	 * @var array
 	 */
-	static $validates_length_of = [
+	public static $validates_length_of = [
 		['name', 'within' => [3, 60]]
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $has_many = [
+		['releases']
 	];
 
 	/**
@@ -30,14 +37,26 @@ final class People extends Model
 	 * @throws \Exception Mensagem de erro do model
 	 * @return People
 	 */
-	static function generate($fields)
+	public static function generate($fields)
 	{
-		/**
-		 * @var People
-		 */
-		$row = self::create([
-			'name' => $fields['name']
-		]);
+		if (isset($fields['id']) && is_numeric($fields['id'])) {
+			
+			/**
+			 * @var People
+			 */
+			$row = People::find($fields['id']);
+			$row->name = $fields['name'];
+			$row->save();
+
+		} else {
+
+			/**
+			 * @var People
+			 */
+			$row = self::create([
+				'name' => $fields['name']
+			]);
+		}
 
 		if ($row->is_invalid()) {
 			throw new \Exception($row->errors->full_messages()[0]);
@@ -52,24 +71,25 @@ final class People extends Model
 	 * @param integer $people_id
 	 * @throws \Exception A pessoa éstá sendo usada por lançamentos.
 	 * @throws \Exception Pessoa #{$people_id} não foi apagada.
+	 * @throws \Exception Pessoa não localizada.
 	 * @return boolean
 	 */
 	public static function remove($people_id)
 	{
-		$category = self::find($people_id);
-
-		$conditions = [
-			'conditions' => [
-				'people_id = ?', 
-				$people_id
-			]
-		];
-
-		if (Release::count($conditions)) {
-			throw new \Exception('A pessoa éstá sendo usada por lançamentos.');
+		/**
+		 * @var People
+		 */
+		if (! $people = self::find($people_id)) {
+			throw new \Exception('Pessoa não localizada.');
 		}
 
-		if (! $category->delete()) {
+		try {
+			$people->inUsed();
+		} catch (\Exception $e) {
+			throw $e;
+		}
+
+		if (! $people->delete()) {
 			throw new \Exception("Pessoa #{$people_id} não foi apagada.");
 		}
 

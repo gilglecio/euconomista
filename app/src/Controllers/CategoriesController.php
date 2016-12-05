@@ -37,7 +37,7 @@ final class CategoriesController extends Controller
     {
         $this->view->render($response, 'app/categories/index.twig', [
         	'title' => $this->title,
-            'error' => $this->flash->getMessages()['error'],
+            'error' => $this->getErrorMessages(),
         	'rows' => Category::find('all')
         ]);
         

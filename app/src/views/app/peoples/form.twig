@@ -5,16 +5,21 @@
 {% block app %}
     <h2>{{ title }}</h2>
 
-    <p><a href="/app/peoples">Lista de Pessoas</a></p>
+    <ul>
+    	<li><a href="/app/peoples">Lista de Pessoas</a></li>
+    </ul>
 
     {% include 'macro.twig' with {error:error} %}
 
     <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/peoples">
+
+	    	<input type="hidden" name="id" value="{{ data.id }}">
+
 	    	<div class="form-group">
 	    		<label for="name" class="control-label col-xs-2">Nome</label>
 	    		<div class="col-xs-10">
-	    			<input type="text" minlength="3" maxlength="60" id="name" autofocus required name="name" class="form-control">
+	    			<input value="{{ data.name }}" type="text" minlength="3" maxlength="60" id="name" autofocus required name="name" class="form-control">
 	    		</div>
 	    	</div>
 

@@ -59,16 +59,21 @@ final class Release extends Model
 	/**
 	 * Apaga todos os logs do lançamento.
 	 * 
-	 * @throws \Exception Falha ao apagar os logs do lançamento.
-	 * @return boolean
+	 * @return integer Número de registros apagados
 	 */
 	public function deleteAllLogs()
 	{
-		if (! ReleaseLog::delete_all(['release_id' => $this->id])) {
-			throw new \Exception('Falha ao apagar os logs do lançamento.');
-		}
-
-		return true;
+		/**
+		 * Número de linhas afetadas.
+		 * 
+		 * @var integer
+		 */
+		return ReleaseLog::delete_all([
+			'conditions' => [
+				'release_id = ?', 
+				$this->id
+			]
+		]);
 	}
 
 	/**
@@ -76,7 +81,8 @@ final class Release extends Model
 	 * 
 	 * @param array $fields
 	 * @throws \Exception A soma dos lançamentos não confere com o total do documento.
-	 * @throws \Exception Mensagem de erro do model
+	 * @throws \Exception Mensagem de erro do model.
+	 * @throws \Exception Lançamento não localizado.
 	 * @return array Lançamentos gerados
 	 */
 	public static function generate($fields)
@@ -135,6 +141,35 @@ final class Release extends Model
 		try {
 			$connection = static::connection();
 			$connection->transaction();
+
+			/**
+			 * Se o ID foi passado, é porque se trata de uma edição.
+			 */
+			if (isset($fields['id']) && is_numeric($fields['id'])) {
+				
+				/**
+				 * @var Release
+				 */
+				if (! $release = self::find($fields['id'])) {
+					throw new \Exception('Lançamento não localizado.');
+				}
+
+				/**
+				 * Se o usuário não alterou a quantidade de parcelas
+				 * o lançamento vai contnuar com o mesmo numero de processo.
+				 */
+				if ($quantity == 1) {
+					$process = $release->process;
+				}
+
+				/**
+				 * O lançamento e completamente apagado
+				 * para dar lugar ao novo lançamento.
+				 */
+				if (! $release->delete()) {
+					throw new \Exception('Falha ao apagar o lançamento.');
+				}
+			}
 
 			for ($i=0; $i < $quantity; $i++) {
 
@@ -198,7 +233,8 @@ final class Release extends Model
 	 * neste caso entende-se que seja encargos.
 	 * 
 	 * @param array $fields 
-	 * @throws \Exception Mensagem de erro do model
+	 * @throws \Exception Mensagem de erro do model.
+	 * @throws \Exception Lançamento não localizado.
 	 * @return boolean
 	 */
 	static function liquidar($fields)
@@ -211,7 +247,9 @@ final class Release extends Model
 			/**
 			 * @var Release
 			 */
-			$release = self::find($fields['release_id']);
+			if (! $release = self::find($fields['release_id'])) {
+				throw new \Exception('Lançamento não localizado.');
+			}
 
 			/**
 			 * Todo o registro do lançamento em formato JSON.
@@ -256,7 +294,7 @@ final class Release extends Model
 			$log = ReleaseLog::create([
 				'action' => ReleaseLog::ACTION_LIQUIDACAO,
 				'release_id' => $release->id,
-				'created_at' => $fields['created_at'],
+				'date' => $fields['date'],
 				'value' => $fields['value'],
 				'backup' => $backup,
 			]);
@@ -279,11 +317,14 @@ final class Release extends Model
 	 * 
 	 * @param integer $release_id
 	 * @throws \Exception Não foi possível cancelar o ultimo log do lançamento.
+	 * @throws \Exception Lançamento não localizado.
 	 * @return boolean
 	 */
 	static function rollback($release_id)
 	{
-		$release = self::find($release_id);
+		if (! $release = self::find($release_id)) {
+			throw new \Exception('Lançamento não localizado.');
+		}
 
 		if (! $release->canDesfazer()) {
 			throw new \Exception('Não foi possível cancelar o ultimo log do lançamento.');
@@ -302,6 +343,7 @@ final class Release extends Model
 	 * @param boolean $delete_all_by_process_key Se TRUE, apaga todos os lançamentos que possui o mesmo numero de processo que o lançamento passado pelo $release_id.
 	 * @throws \Exception O lançamento '{$release->number}' foi movimentado.
 	 * @throws \Exception Falha ao apagar o lançamento '{$relase->number}'.
+	 * @throws \Exception Lançamento não localizado.
 	 * @return void
 	 */
 	static function remove($release_id, $delete_all_by_process_key = false)
@@ -309,7 +351,9 @@ final class Release extends Model
 		/**
 		 * @var Release
 		 */
-		$release = self::find($release_id);
+		if (! $release = self::find($release_id)) {
+			throw new \Exception('Lançamento não localizado.');
+		}
 
 		if ($delete_all_by_process_key) {
 			try {
@@ -459,6 +503,23 @@ final class Release extends Model
 	public function canDesfazer()
 	{
 		return $this->getLastLog()->action == ReleaseLog::ACTION_LIQUIDACAO;
+	}
+
+	/**
+	 * Só é possivel ediar lançamentos sem movimentação.
+	 * 
+	 * @return boolean
+	 */
+	public function canEditar()
+	{
+		$count = ReleaseLog::count([
+			'conditions' => [
+				'release_id = ?', 
+				$this->id
+			]
+		]);
+
+		return $count == 1;
 	}
 
 	/**

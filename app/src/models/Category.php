@@ -59,21 +59,22 @@ final class Category extends Model
 	 * @param integer $category_id
 	 * @throws \Exception A categoria éstá sendo usada por lançamentos.
 	 * @throws \Exception Categoria #{$category_id} não foi apagada.
+	 * @throws \Exception Categoria não localizada.
 	 * @return boolean
 	 */
 	public static function remove($category_id)
 	{
-		$category = self::find($category_id);
+		/**
+		 * @var Category
+		 */
+		if (! $category = self::find($category_id)) {
+			throw new \Exception('Categoria não localizada.');
+		}
 
-		$conditions = [
-			'conditions' => [
-				'category_id = ?', 
-				$category_id
-			]
-		];
-
-		if (Release::count($conditions)) {
-			throw new \Exception('A categoria éstá sendo usada por lançamentos.');
+		try {
+			$category->inUsed();
+		} catch (\Exception $e) {
+			throw $e;
 		}
 
 		if (! $category->delete()) {

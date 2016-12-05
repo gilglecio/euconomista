@@ -51,6 +51,11 @@ class AuthSession
 		return true;
 	}
 
+	static function isAuthenticated()
+	{
+		return isset($_SESSION[self::AUTH_SESSION_NAME]);
+	}
+
 	/**
 	 * Retorna o ID do usuário logado.
 	 * 

@@ -8,11 +8,16 @@
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
+ * @uses App\Auth\AuthSession
+ * @uses User
  */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+
+use App\Auth\AuthSession;
+use User;
 
 final class HomeController extends Controller
 {
@@ -33,7 +38,8 @@ final class HomeController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $this->view->render($response, 'app/home.twig', [
-        	'title' => $this->title
+        	'title' => $this->title,
+            'user' => User::find(AuthSession::getUserId())
         ]);
         
         return $response;

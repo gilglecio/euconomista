@@ -471,6 +471,38 @@ final class Release extends Model
 	    ][$status];
 	}
 
+	public static function extract()
+	{
+		$rows = ReleaseLog::find('all', [
+			'order' => 'date asc',
+			'conditions' => [
+				'action <> ?', 
+				ReleaseLog::ACTION_EMISSAO
+			]
+		]);
+
+		$saldo = 0;
+
+		return array_map(function ($r) use (&$saldo) {
+
+			$value = $r->value;
+
+			if ($r->release->natureza == 2) {
+				$value *= -1;
+			}
+
+			$saldo += $value;
+
+			return [
+				'action' => $r->getActionName(),
+				'date' => $r->date->format('d/m/Y'),
+				'saldo' => $saldo,
+				'value' => $value,
+				'color' => $value < 0 ? 'red' : 'blue'
+			];
+		}, $rows);
+	}
+
 	/**
 	 * Retorna uma cor de identifcação 
 	 * com base na natureza do lanamento.

@@ -52,6 +52,12 @@ $app->group('/app', function () {
 			->setName('reports');
 	});
 
+	# REPORTS
+	$this->group('/extract', function () {
+		$this->get('', 'App\Controller\ExtractController:index')
+			->setName('extract');
+	});
+
 	# USERS
 	$this->group('/users', function () {
 		$this->get('', 'App\Controller\UsersController:index')

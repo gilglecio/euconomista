@@ -1,0 +1,41 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+    <h3>{{ title }}</h3>
+
+    <table class="table">
+    	<thead>
+    		<tr>
+                <th>Data</th>
+                <th>Ação</th>
+                <th class="text-right">Valor R$</th>
+                <th class="text-right">Saldo R$</th>
+    		</tr>
+    	</thead>
+
+    	<tbody>
+    		{% for key, row in rows %}
+    		<tr>
+                <td>{{ row.date }}</td>
+                <td>{{ row.action }}</td>
+                <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
+                <td class="text-right">
+                    {% if key + 1 == rows|length %}
+                    <strong style="color:{{ row.color }}">{{ row.saldo }}</strong>
+                    {% else %}
+                    {{ row.saldo }}
+                    {% endif %}
+                </td>
+    		</tr>
+    		{% endfor %}
+
+            {% if not rows|length %}
+            <tr>
+                <td colspan="5">Sem registros.</td>
+            </tr>
+            {% endif %}
+    	</tbody>
+    </table>
+{% endblock %}

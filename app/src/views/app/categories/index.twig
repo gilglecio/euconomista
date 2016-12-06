@@ -22,7 +22,9 @@
     	<tbody>
     		{% for row in rows %}
     		<tr>
-                <td>{{ row.name }}</td>
+                <td>
+                    <a href="/app/categories/{{ row.id }}/edit">{{ row.name }}</a>
+                </td>
     			<td>
                     <a onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red">Apagar</a>
                 </td>

@@ -78,7 +78,7 @@ final class ReleasesController extends Controller
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
-	 * 
+     * @throws \Exception Lançamento não localizado.
 	 * @return Response
 	 */
     public function form(Request $request, Response $response, array $args)
@@ -86,7 +86,13 @@ final class ReleasesController extends Controller
     	$data = $this->flash->getMessages();
 
         if (isset($args['release_id'])) {
-            $release = Release::find($args['release_id']);
+            
+            /**
+             * @var Release
+             */
+            if (! $release = Release::find($args['release_id'])) {
+                throw new \Exception('Lançamento não localizado.');
+            }
 
             if (! $release->canEditar()) {
                 return $this->redirectWithError($response, 'Lançamento movimentado não pode ser editado.', "/app/releases/{$release->id}/logs");
@@ -94,8 +100,6 @@ final class ReleasesController extends Controller
 
             $data['data'] = $release->to_array();
             $data['data']['data_vencimento'] = (new \Datetime($data['data']['data_vencimento']))->format('Y-m-d');
-
-
         }
 
     	$data['title'] = $this->title;
@@ -141,7 +145,7 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     * @throws \Exception Lançamento não localizado.
      * @return Response
      */
     public function logs(Request $request, Response $response, array $args)
@@ -149,7 +153,9 @@ final class ReleasesController extends Controller
         /**
          * @var Release
          */
-        $release = Release::find($args['release_id']);
+        if (! $release = Release::find($args['release_id'])) {
+            throw new \Exception('Lançamento não localizado.');
+        }
 
         /**
          * @var array
@@ -187,12 +193,14 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     * @throws \Exception Lançamento não localizado.
      * @return Response
      */
     public function liquidarForm(Request $request, Response $response, array $args)
     {
-        $release = Release::find($args['release_id']);
+        if (! $release = Release::find($args['release_id'])) {
+            throw new \Exception('Lançamento não localizado.');
+        }
 
         if ($release->isLiquidado()) {
             return $response->withRedirect('/app/releases/' . $release->id . '/logs');
@@ -201,8 +209,8 @@ final class ReleasesController extends Controller
         $data = $this->flash->getMessages();
         $data['title'] = 'Liquidação de Parcela';
 
-        $data['value'] = Release::find($args['release_id'])->value;
-        $data['release_id'] = $args['release_id'];
+        $data['value'] = $release->value;
+        $data['release_id'] = $release->id;
         $data['date'] = date('Y-m-d');
 
         $this->view->render($response, 'app/releases/liquidar.twig', $data);

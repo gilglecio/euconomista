@@ -34,17 +34,33 @@ final class Category extends Model
 	 * Salva uma categoria no banco de dados.
 	 * 
 	 * @param array $fields
-	 * @throws \Exception Mensagem de erro do model
+	 * @throws \Exception Mensagem de erro do model.
+	 * @throws \Exception Categoria não localizada.
 	 * @return People
 	 */
 	public static function generate($fields)
 	{
-		/**
-		 * @var Category
-		 */
-		$row = self::create([
-			'name' => $fields['name']
-		]);
+		if (isset($fields['id']) && is_numeric($fields['id'])) {
+			
+			/**
+			 * @var Category
+			 */
+			if (! $row = self::find($fields['id'])) {
+				throw new \Exception('Categoria não localizada.');
+			}
+
+			$row->name = $fields['name'];
+			$row->save();
+
+		} else {
+
+			/**
+			 * @var Category
+			 */
+			$row = self::create([
+				'name' => $fields['name']
+			]);
+		}
 
 		if ($row->is_invalid()) {
 			throw new \Exception($row->errors->full_messages()[0]);

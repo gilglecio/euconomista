@@ -37,9 +37,16 @@ final class HomeController extends Controller
 	 */
     public function index(Request $request, Response $response, array $args)
     {
+        /**
+         * @var User
+         */
+        if (! $user = User::find(AuthSession::getUserId())) {
+            throw new \Exception('Usuário não localizado.');
+        }
+
         $this->view->render($response, 'app/home.twig', [
         	'title' => $this->title,
-            'user' => User::find(AuthSession::getUserId())
+            'user' => $user
         ]);
         
         return $response;

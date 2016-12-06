@@ -5,3 +5,11 @@
     {% endfor %}
 </div>
 {% endif %}
+
+{% if success|length %}
+<div class="alert alert-success">
+    {% for s in success %}
+    <p>{{ s }}</p>
+    {% endfor %}
+</div>
+{% endif %}

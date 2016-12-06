@@ -34,7 +34,8 @@ final class People extends Model
 	 * Salva um pessoa no banco de dados.
 	 * 
 	 * @param array $fields
-	 * @throws \Exception Mensagem de erro do model
+	 * @throws \Exception Mensagem de erro do model.
+	 * @throws \Exception Pessoa não localizada.
 	 * @return People
 	 */
 	public static function generate($fields)
@@ -44,7 +45,10 @@ final class People extends Model
 			/**
 			 * @var People
 			 */
-			$row = People::find($fields['id']);
+			if (! $row = self::find($fields['id'])) {
+				throw new \Exception('Pessoa não localizada.');
+			}
+
 			$row->name = $fields['name'];
 			$row->save();
 

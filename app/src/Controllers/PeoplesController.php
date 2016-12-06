@@ -56,7 +56,12 @@ final class PeoplesController extends Controller
     	$data = $this->flash->getMessages();
 
         if (isset($args['people_id'])) {
-            $data['data'] = People::find($args['people_id'])->to_array();
+
+            if (! $people = People::find($args['people_id'])) {
+                return $this->redirectWithError($response, 'Pessoa não localizada.', '/app/peoples');
+            }
+
+            $data['data'] = $people->to_array();
         }
 
     	$data['title'] = $this->title;

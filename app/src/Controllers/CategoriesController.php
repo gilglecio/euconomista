@@ -54,6 +54,16 @@ final class CategoriesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
     	$data = $this->flash->getMessages();
+
+        if (isset($args['category_id'])) {
+
+            if (! $category = Category::find($args['category_id'])) {
+                return $this->redirectWithError($response, 'Categoria não localizada.', '/app/categories');
+            }
+
+            $data['data'] = $category->to_array();
+        }
+
     	$data['title'] = $this->title;
 
         $this->view->render($response, 'app/categories/form.twig', $data);
@@ -73,6 +83,7 @@ final class CategoriesController extends Controller
         try {
         	
         	Category::generate([
+                'id' => $request->getParsedBodyParam('id'),
 	        	'name' => $request->getParsedBodyParam('name'),
 	        ]);
 

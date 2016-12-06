@@ -43,6 +43,7 @@ final class ReleaseLog extends Model
 	 *
 	 * @throws \Exception Falha ao apagar o log #{$this->id}.
 	 * @throws \Exception Mensagem de erro do model.
+	 * @throws \Exception Lançamento não localizado.
 	 * @return boolean
 	 */
 	public function rollback()
@@ -62,7 +63,9 @@ final class ReleaseLog extends Model
 			/**
 			 * @var Release
 			 */
-			$release = Release::find($backup['id']);
+			if (! $release = Release::find($backup['id'])) {
+				throw new \Exception('Lançamento não localizado.');
+			}
 
 			foreach ($backup as $key => $value) {
 				$release->$key = $value;

@@ -80,6 +80,9 @@ $app->group('/app', function () {
 
 		$this->get('/{category_id}/delete', 'App\Controller\CategoriesController:delete')
 			->setName('categories.delete');
+
+		$this->get('/{category_id}/edit', 'App\Controller\CategoriesController:form')
+			->setName('categories.edit');
 	});
 
 	# RELEASES

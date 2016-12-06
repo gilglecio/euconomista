@@ -59,7 +59,7 @@ final class PeoplesController extends Controller
             $data['data'] = People::find($args['people_id'])->to_array();
         }
 
-    	$data['title'] = 'Adicionar ' . $this->title;
+    	$data['title'] = $this->title;
 
         $this->view->render($response, 'app/peoples/form.twig', $data);
         

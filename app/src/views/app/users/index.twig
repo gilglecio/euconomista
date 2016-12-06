@@ -3,7 +3,7 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
 
     <ul>
         <li><a href="/app/users/form">Adicionar Usuário</a></li>
@@ -26,7 +26,7 @@
     			<td>{{ row.name }}</td>
     			<td>{{ row.email }}</td>
                 <td>
-                    <a href="/app/users/{{ row.id }}/delete" style="color:red">Apagar</a>
+                    <a onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/users/{{ row.id }}/delete" style="color:red">Apagar</a>
                 </td>
     		</tr>
     		{% endfor %}

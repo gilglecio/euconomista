@@ -54,7 +54,7 @@ final class CategoriesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
     	$data = $this->flash->getMessages();
-    	$data['title'] = 'Adicionar ' . $this->title;
+    	$data['title'] = $this->title;
 
         $this->view->render($response, 'app/categories/form.twig', $data);
         

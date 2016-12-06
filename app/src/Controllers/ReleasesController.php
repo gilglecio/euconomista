@@ -98,7 +98,7 @@ final class ReleasesController extends Controller
 
         }
 
-    	$data['title'] = 'Adicionar ' . $this->title;
+    	$data['title'] = $this->title;
 
     	$data['categories'] = Category::find('all');
     	$data['peoples'] = People::find('all');
@@ -174,7 +174,7 @@ final class ReleasesController extends Controller
 
         $this->view->render($response, 'app/releases/logs.twig', [
             'title' => 'Extrato de lançamento',
-            'release_id' => $args['release_id'],
+            'release' => $release,
             'rows' => $rows,
             'error' => $this->getErrorMessages(),
             'canLiquidar' => $release->canLiquidar(),

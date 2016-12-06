@@ -110,17 +110,20 @@ abstract class Model extends ActiveRecord\Model
 		if (AuthSession::isAuthenticated()) {
 			$entity = AuthSession::getEntity();
 
-			if (! isset($options['conditions'])) {
+			if ($num_args > 0 && !isset($options['conditions'])) {
+				$options = [
+					'conditions' => [
+						'id = ? and entity = ?', 
+						$args, 
+						$entity
+					]
+				];
+			} else if (! isset($options['conditions'])) {
 				$options['conditions'] = ['entity = ?', $entity];
 			} else {
 				$options['conditions'][0] .= ' and entity = ?';
 				$options['conditions'][] = $entity;
 			}
-		}
-
-		// anything left in $args is a find by pk
-		if ($num_args > 0 && !isset($options['conditions'])) {
-			return static::find_by_pk($args, $options);
 		}
 
 		$options['mapped_names'] = static::$alias_attribute;

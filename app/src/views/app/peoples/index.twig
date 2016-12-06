@@ -3,7 +3,7 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
 
     <ul>
         <li><a href="/app/peoples/form">Adicionar Pessoa</a></li>
@@ -26,7 +26,7 @@
                     <a href="/app/peoples/{{ row.id }}/edit">{{ row.name }}</a>
                 </td>
                 <td>
-                    <a href="/app/peoples/{{ row.id }}/delete" style="color:red">Apagar</a>
+                    <a onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/peoples/{{ row.id }}/delete" style="color:red">Apagar</a>
                 </td>
     		</tr>
     		{% endfor %}

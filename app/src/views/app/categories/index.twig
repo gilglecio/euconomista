@@ -3,15 +3,17 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h3>{{ title }}</h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <a class="btn btn-primary" href="/app/categories/form">Adicionar</a>
+        </div>
+    </div>
 
-    <ul>
-        <li><a href="/app/categories/form">Adicionar Categoria</a></li>
-    </ul>
+    <hr>
 
     {% include 'macro.twig' with {error:error} %}
 
-    <table class="table">
+    <table class="table table-striped">
     	<thead>
     		<tr>
                 <th>Nome</th>

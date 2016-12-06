@@ -1,28 +1,24 @@
 {% extends 'layouts/base.twig' %}
 
+{% block navbar %}
+    <li><a href="/app/releases">Lançamentos</a></li>
+    <li><a href="/app/peoples">Pessoas</a></li>
+    <li><a href="/app/categories">Categorias</a></li>
+    <li><a href="/app/users">Usuários</a></li>
+    <li><a href="/app/extract">Extrato</a></li>
+    <li><a href="/app/reports">Relatórios</a></li>
+
+    {% if user %}
+    <li><a style="color:red" href="/logout">{{ user.name }} (Sair)</a></li>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 <div class="content-wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                
-                <ul>
-                	<li><a href="/app/releases">Lançamentos</a></li>
-                	<li><a href="/app/peoples">Pessoas</a></li>
-                    <li><a href="/app/categories">Categorias</a></li>
-                	<li><a href="/app/users">Usuários</a></li>
-                    <li><a href="/app/extract">Extrato</a></li>
-                	<li><a href="/app/reports">Relatórios</a></li>
-                	{% if user %}
-                    <li>{{ user.name }} | <a style="color:red" href="/logout">Sair</a></li>
-                    {% endif %}
-                </ul>
-
-                <hr>
-
-                {% block app %}
-
-                {% endblock %}
+                {% block app %}{% endblock %}
             </div>
         </div>    
     </div>

@@ -3,11 +3,12 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h3>{{ title }}</h3>
-
-    <ul>
-    	<li><a href="/app/releases">Lista de Lançamentos</a></li>
-    </ul>
+    
+    {% if data.id %}
+    <ol class="breadcrumb">
+        <li>Editando o lançamento nº <strong>{{ data.number }}</strong></li>
+    </ol>
+    {% endif %}
 
     {% include 'macro.twig' with {error:error} %}
 
@@ -17,7 +18,7 @@
 	    	<input type="hidden" name="id" value="{{ data.id }}">
 
 	    	<div class="form-group">
-	    		<label for="natureza" class="control-label col-xs-2">Natureza</label>
+	    		<label for="natureza" class="control-label no-padding-right col-xs-2">Natureza</label>
 	    		<div class="col-xs-5">
 	    			<select autofocus class="form-control" id="natureza" name="natureza" required>
 	    				<option {% if data.natureza == 1 %}selected{% endif %} value="1">Receita</option>
@@ -27,7 +28,7 @@
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="people_id" class="control-label col-xs-2">Pessoa</label>
+	    		<label for="people_id" class="control-label no-padding-right col-xs-2">Pessoa</label>
 	    		<div class="col-xs-10">
 	    			<select class="form-control" id="people_id" name="people_id" required>
 	    				<option></option>
@@ -39,7 +40,7 @@
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="category_id" class="control-label col-xs-2">Categoria</label>
+	    		<label for="category_id" class="control-label no-padding-right col-xs-2">Categoria</label>
 	    		<div class="col-xs-10">
 	    			<select class="form-control" id="category_id" name="category_id" required>
 	    				<option></option>
@@ -51,28 +52,28 @@
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="quantity" class="control-label col-xs-2">Qtd. Parcelas</label>
+	    		<label for="quantity" class="control-label no-padding-right col-xs-2">Qtd. Parcelas</label>
 	    		<div class="col-xs-5">
 	    			<input type="number" min="1" max="99" id="quantity" required name="quantity" value="1" class="form-control">
 	    		</div>
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="value" class="control-label col-xs-2">Valor</label>
+	    		<label for="value" class="control-label no-padding-right col-xs-2">Valor</label>
 	    		<div class="col-xs-5">
 	    			<input step="0.01" type="number" min="1" value="{{ data.value }}" max="99999999" id="value" required name="value" class="form-control">
 	    		</div>
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="data_vencimento" class="control-label col-xs-2">Vencimento</label>
+	    		<label for="data_vencimento" class="control-label no-padding-right col-xs-2">Vencimento</label>
 	    		<div class="col-xs-5">
 	    			<input type="date" min="1" value="{{ data.data_vencimento }}" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
 	    		</div>
 	    	</div>
 
 	    	<div class="form-group">
-	    		<label for="number" class="control-label col-xs-2">Número</label>
+	    		<label for="number" class="control-label no-padding-right col-xs-2">Número</label>
 	    		<div class="col-xs-5">
 	    			<input type="text" minlength="1" value="{{ data.number }}" maxlength="15" id="number" required name="number" class="form-control">
 	    		</div>

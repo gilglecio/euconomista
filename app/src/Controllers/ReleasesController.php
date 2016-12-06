@@ -5,7 +5,7 @@
  * @subpackage App\Controller
  * @version v1.0
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- * 
+ *
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
  * @uses App\Util\Toolkit
@@ -26,20 +26,20 @@ use Category;
 
 final class ReleasesController extends Controller
 {
-	/**
-	 * Título da página
-	 * 
-	 * @var string
-	 */
-	protected $title = 'Lançamentos';
+    /**
+     * Título da página
+     *
+     * @var string
+     */
+    protected $title = 'Lançamentos';
 
-	/**
-	 * @param Request  $request
-	 * @param Response $response
-	 * @param array    $args
-	 * 
-	 * @return Response
-	 */
+    /**
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
     public function index(Request $request, Response $response, array $args)
     {
         /**
@@ -51,7 +51,6 @@ final class ReleasesController extends Controller
          * @var array
          */
         $rows = array_map(function ($r) {
-
             $row = $r->to_array();
 
             $row['people'] = $r->people->name;
@@ -63,27 +62,26 @@ final class ReleasesController extends Controller
             $row['color'] = $r->getColor();
 
             return $row;
-
         }, $rows);
 
         $this->view->render($response, 'app/releases/index.twig', [
-        	'title' => $this->title,
-        	'rows' => $rows
+            'title' => $this->title,
+            'rows' => $rows
         ]);
         
         return $response;
     }
 
     /**
-	 * @param Request  $request
-	 * @param Response $response
-	 * @param array    $args
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
      * @throws \Exception Lançamento não localizado.
-	 * @return Response
-	 */
+     * @return Response
+     */
     public function form(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+        $data = $this->flash->getMessages();
 
         if (isset($args['release_id'])) {
             
@@ -102,10 +100,10 @@ final class ReleasesController extends Controller
             $data['data']['data_vencimento'] = (new \Datetime($data['data']['data_vencimento']))->format('Y-m-d');
         }
 
-    	$data['title'] = $this->title;
+        $data['title'] = $this->title;
 
-    	$data['categories'] = Category::find('all');
-    	$data['peoples'] = People::find('all');
+        $data['categories'] = Category::find('all');
+        $data['peoples'] = People::find('all');
 
         $this->view->render($response, 'app/releases/form.twig', $data);
         
@@ -116,16 +114,14 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     *
      * @return Response
      */
     public function save(Request $request, Response $response, array $args)
     {
         try {
-            
             Release::generate([
                 'id' => $request->getParsedBodyParam('id'),
-                'number' => $request->getParsedBodyParam('number'),
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),
                 'people_id' => (int) $request->getParsedBodyParam('people_id'),
                 'quantity' => (int) $request->getParsedBodyParam('quantity'),
@@ -133,7 +129,6 @@ final class ReleasesController extends Controller
                 'value' => (float) $request->getParsedBodyParam('value'),
                 'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
             ]);
-
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');
         }
@@ -149,7 +144,7 @@ final class ReleasesController extends Controller
      * @return Response
      */
     public function logs(Request $request, Response $response, array $args)
-    {   
+    {
         /**
          * @var Release
          */
@@ -166,7 +161,6 @@ final class ReleasesController extends Controller
          * @var array
          */
         $rows = array_map(function ($r) {
-
             $row = $r->to_array();
 
             $row['date'] = $r->date->format('d/m/Y');
@@ -175,7 +169,6 @@ final class ReleasesController extends Controller
             $row['value'] = Toolkit::showMoney($r->value);
 
             return $row;
-
         }, $rows);
 
         $this->view->render($response, 'app/releases/logs.twig', [
@@ -222,23 +215,21 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     *
      * @return Response
      */
     public function liquidar(Request $request, Response $response, array $args)
     {
         try {
-            
             Release::liquidar([
                 'value' => $request->getParsedBodyParam('value'),
                 'date' => $request->getParsedBodyParam('date'),
                 'release_id' => $args['release_id']
             ]);
-
         } catch (\Exception $e) {
             return $this->redirectWithError(
-                $response, 
-                $e->getMessage(), 
+                $response,
+                $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/liquidar'
             );
         }
@@ -250,19 +241,17 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     *
      * @return Response
      */
     public function desfazer(Request $request, Response $response, array $args)
     {
         try {
-            
             Release::rollback($args['release_id']);
-
         } catch (\Exception $e) {
             return $this->redirectWithError(
-                $response, 
-                $e->getMessage(), 
+                $response,
+                $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/logs'
             );
         }
@@ -274,19 +263,17 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     *
      * @return Response
      */
     public function delete(Request $request, Response $response, array $args)
     {
         try {
-            
             Release::remove($args['release_id']);
-
         } catch (\Exception $e) {
             return $this->redirectWithError(
-                $response, 
-                $e->getMessage(), 
+                $response,
+                $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/logs'
             );
         }
@@ -298,18 +285,16 @@ final class ReleasesController extends Controller
      * @param Request  $request
      * @param Response $response
      * @param array    $args
-     * 
+     *
      * @return Response
      */
     public function deleteAll(Request $request, Response $response, array $args)
     {
         try {
-            
             Release::remove($args['release_id'], true);
-
         } catch (\Exception $e) {
             return $this->redirectWithError(
-                $response, 
+                $response,
                 $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/logs'
             );

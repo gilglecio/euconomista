@@ -4,12 +4,9 @@
 
 {% block content %}
 <div class="content-wrapper">
-    <div class="container">
+    <div class="container jumbotron">
         <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
-                
-                <h2>Login</h2>
-                <hr>
 
                 {% include 'macro.twig' with {error:error} %}
 
@@ -34,7 +31,7 @@
 
                     <div class="form-group no-margin-bottom">
                         <div class="col-xs-12">
-                            <a href="/register" class="btn btn-default pull-right btn-block">Cadastre-se</a>
+                            <a href="/register" class="btn btn-link pull-right btn-block">Cadastre-se</a>
                         </div>
                     </div>
                 </form>

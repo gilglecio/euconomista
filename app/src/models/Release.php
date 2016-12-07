@@ -27,7 +27,6 @@ final class Release extends Model
 	 * @var array
 	 */
 	public static $validates_presence_of = [
-		['number'],
 		['category_id'],
 		['people_id'],
 		['value'],
@@ -39,14 +38,7 @@ final class Release extends Model
 	 * @var array
 	 */
 	public static $validates_uniqueness_of = [
-		[['entity', 'number', 'data_vencimento', 'people_id']]
-	];
-
-	/**
-	 * @var array
-	 */
-	public static $validates_length_of = [
-		['number', 'within' => [1, 15]],
+		[['entity', 'data_vencimento', 'people_id']]
 	];
 
 	/**
@@ -181,7 +173,7 @@ final class Release extends Model
 				 * @var Release
 				 */
 				$row = self::create([
-					'number' => $fields['number'] . ($quantity > 1 ? '/' . ($i+1) : ''),
+					'number' => ($i+1) . '/' . $quantity,
 					'value' => $value,
 					'natureza' => $fields['natureza'],
 					'data_vencimento' => clone $vencimento,

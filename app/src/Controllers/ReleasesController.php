@@ -125,7 +125,6 @@ final class ReleasesController extends Controller
             
             Release::generate([
                 'id' => $request->getParsedBodyParam('id'),
-                'number' => $request->getParsedBodyParam('number'),
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),
                 'people_id' => (int) $request->getParsedBodyParam('people_id'),
                 'quantity' => (int) $request->getParsedBodyParam('quantity'),

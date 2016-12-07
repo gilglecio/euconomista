@@ -71,13 +71,6 @@
 	    		</div>
 	    	</div>
 
-	    	<div class="form-group">
-	    		<label for="number" class="control-label col-xs-2">Número</label>
-	    		<div class="col-xs-5">
-	    			<input type="text" minlength="1" value="{{ data.number }}" maxlength="15" id="number" required name="number" class="form-control">
-	    		</div>
-	    	</div>
-
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-10 col-xs-offset-2">
 	    			<button {% if data.id %} onclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn btn-primary" type="submit">Salvar</button>

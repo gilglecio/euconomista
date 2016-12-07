@@ -1,9 +1,9 @@
-Feature: Slim Hello World!
-
-	Background:
-		Then I should see "Slim"
+Feature: Página index
 	
 	@javascript
-	Scenario: Check Slim 
+	Scenario: Verificando se os links para acessar a página de login e cadastro estão presentes 
 		
-		Then I should see "a microframework for PHP"
+		Then I should see "HmGestor"
+		Then I should see "Login"
+		Then I should see "Register"
+		Then I should see "Todos os direitos reservados"

@@ -1,6 +1,7 @@
 <?php
 
 use App\Auth\AuthSession;
+use ActiveRecord\SQLBuilder;
 
 abstract class Model extends ActiveRecord\Model
 {

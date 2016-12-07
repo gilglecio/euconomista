@@ -84,24 +84,21 @@ class Version20161204090145 extends AbstractMigration
         $table->addIndex(['user_id'], 'fk_user_idx');
         $table->addIndex(['category_id'], 'fk_category_idx');
         $table->addIndex(['people_id'], 'fk_people_idx');
-        
-        $table->addUniqueIndex(['entity', 'number', 'people_id', 'data_vencimento']);
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_releases_user_id');
 
         $table->addForeignKeyConstraint($schema->getTable('categories'), ['category_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_releases_category_id');
 
         $table->addForeignKeyConstraint($schema->getTable('peoples'), ['people_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_releases_people_id');
-
     }
 
     /**

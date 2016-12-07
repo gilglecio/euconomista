@@ -3,10 +3,9 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h3>{{ title }} - {{ release.number }}</h3>
 
-    <ul>
-        <li><a href="/app/releases">Lista de Lançamentos</a></li>
+    <ol class="breadcrumb">
+        <li>Lançamento nº <strong>{{ release.number }}</strong></li>
         
         {% if canLiquidar %}
         <li><a href="/app/releases/{{ release.id }}/liquidar">Liquidar</a></li>
@@ -22,7 +21,7 @@
 
         <li><a onclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
         <li><a onclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
-    </ul>
+    </ol>
 
     {% include 'macro.twig' with {error:error} %}
 

@@ -3,11 +3,12 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h3>{{ title }}</h3>
 
-    <ul>
-    	<li><a href="/app/categories">Lista de Categorias</a></li>
-    </ul>
+	{% if data.id %}
+    <ol class="breadcrumb">
+        <li>Editando a categoria <strong>{{ data.name }}</strong></li>
+    </ol>
+    {% endif %}
 
     {% include 'macro.twig' with {error:error} %}
 

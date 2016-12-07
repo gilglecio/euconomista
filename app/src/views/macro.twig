@@ -1,7 +1,7 @@
 {% if error|length %}
 <div class="alert alert-danger">
     {% for e in error %}
-    <p>{{ e }}</p>
+    <span>{{ e }}</span>
     {% endfor %}
 </div>
 {% endif %}
@@ -9,7 +9,7 @@
 {% if success|length %}
 <div class="alert alert-success">
     {% for s in success %}
-    <p>{{ s }}</p>
+    <span>{{ s }}</span>
     {% endfor %}
 </div>
 {% endif %}

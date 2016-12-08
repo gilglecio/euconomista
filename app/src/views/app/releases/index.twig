@@ -7,6 +7,8 @@
     <div class="row">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/releases/form">Adicionar</a>
+            <a class="btn btn-link" href="/app/releases">Abertas</a>
+            <a class="btn btn-link" href="/app/releases/i/all">Todas</a>
         </div>
     </div>
 
@@ -22,7 +24,7 @@
                 <th>Categoria</th>
                 <th>Pessoa</th>
                 <th>Status</th>
-    			<th class="text-right">Valor</th>
+    			<th class="text-right">Valor R$</th>
     		</tr>
     	</thead>
 
@@ -40,7 +42,13 @@
                     {{ row.status }}
                 </td>
     			
-                <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
+                <td style="color:{{ row.color }}" class="text-right">
+                    {{ row.value }}
+                    {% if row.status != 'Pago' %}
+                    <a style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
+                    </i></a>
+                    {% endif %}
+                </td>
     		</tr>
     		{% endfor %}
 

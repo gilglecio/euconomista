@@ -94,7 +94,10 @@ $app->group('/app', function () {
 	# RELEASES
 	$this->group('/releases', function () {
 		$this->get('', 'App\Controller\ReleasesController:index')
-			->setName('releases');
+			->setName('releases.opens');
+
+		$this->get('/i/{target}', 'App\Controller\ReleasesController:index')
+			->setName('releases.all');
 		
 		$this->get('/form', 'App\Controller\ReleasesController:form')
 			->setName('releases.form');

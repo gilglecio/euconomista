@@ -42,10 +42,19 @@ final class ReleasesController extends Controller
      */
     public function index(Request $request, Response $response, array $args)
     {
+        $conditions[] = 'status = 1';
+
+        if (isset($args['target']) && $args['target'] == 'all') {
+            $conditions = null;
+        }
+
         /**
          * @var array
          */
-        $rows = Release::find('all', ['order' => 'data_vencimento asc']);
+        $rows = Release::find('all', [
+            'order' => 'data_vencimento asc',
+            'conditions' => $conditions
+        ]);
 
         /**
          * @var array

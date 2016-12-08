@@ -1,5 +1,37 @@
 {% extends 'app/base.twig' %}
 
 {% block app %}
-    <p>App Home</p>
+	<div class="chart">
+    {% for k, v in data %}
+	<div class="chart-mes" data-mes="{{ k }}">
+		<div title="{{ k }}" class="chart-mes-bar receita" style="height:{{ v.receita.percentual }}px" data-value="{{ v.receita.value }}" data-rows="{{ v.receita.rows }}"></div>
+		<div title="{{ k }}" class="chart-mes-bar despesa" style="height:{{ v.despesa.percentual }}px" data-value="{{ v.despesa.value }}" data-rows="{{ v.despesa.rows }}"></div>
+	</div>
+    {% endfor %}
+    </div>
+
+    <style>
+    .chart {
+    	width: 100%;
+    	height: 200px;
+    	background: #f4f4f4;
+    	overflow: hidden;
+    }
+    .chart .chart-mes {
+    	float: left;
+    	margin-right: 2px;
+    	width: 7.5%;
+    	height: 100%;
+    }
+    .chart .chart-mes .chart-mes-bar {
+    	float: left;
+    	width: 50%;
+    }
+    .chart-mes-bar.receita {
+    	background-color: blue;
+    }
+    .chart-mes-bar.despesa {
+    	background-color: red;
+    }
+    </style>
 {% endblock %}

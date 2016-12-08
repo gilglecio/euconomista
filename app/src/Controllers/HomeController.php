@@ -57,6 +57,7 @@ final class HomeController extends Controller
                 select value, natureza, date_format(data_vencimento, '%Y-%m') as date from releases
                 where data_vencimento >= '" . $start_date->format('Y-m-d') . "'
                 and data_vencimento <= '" . $end_date->format('Y-m-d') . "'
+                and entity = " . AuthSession::getEntity() . "
             ) as tmp group by date, natureza order by date asc"
         );
 

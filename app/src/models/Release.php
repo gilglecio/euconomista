@@ -480,10 +480,9 @@ final class Release extends Model
             $saldo += $value;
 
             return [
-                'action' => $r->getActionName(),
                 'date' => $r->date->format('d/m/Y'),
-                'saldo' => $saldo,
-                'value' => $value,
+                'saldo' => Toolkit::showMoney($saldo),
+                'value' => Toolkit::showMoney($value),
                 'color' => $value < 0 ? 'red' : 'blue'
             ];
         }, $rows);

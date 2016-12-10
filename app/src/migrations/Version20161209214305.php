@@ -43,6 +43,11 @@ class Version20161209214305 extends AbstractMigration
             'notnull' => true
         ]);
 
+        $table->addColumn('row_id', 'integer', [
+        	'unsigned' => true,
+            'notnull' => true
+        ]);
+
         $table->addColumn('description', 'string', [
             'length' => 255,
             'notnull' => true

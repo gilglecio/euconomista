@@ -13,6 +13,8 @@ class UserLog extends Model
 	 * Faz a restauração de um backup.
 	 * 
 	 * @param integer $user_log_id Identificador do log
+	 * @throws \Exception Backup empty.
+	 * @throws \Exception Os logs devem ser restaurados do último para o primeiro.
 	 * @return Model
 	 */
 	static function restore($user_log_id)
@@ -24,6 +26,10 @@ class UserLog extends Model
 
 		if (is_null($log->backup_json)) {
 			throw new \Exception('Backup empty.');
+		}
+
+		if (! $log->isLastLog()) {
+			throw new \Exception('Os logs devem ser restaurados do último para o primeiro.');
 		}
 
 		/**
@@ -130,6 +136,7 @@ class UserLog extends Model
 		$log = self::create([
 			'action' => $data['action'],
 			'class_name' => $class_name,
+			'row_id' => $data['model']->id,
 			'backup_json' => $backup_json,
 			'description' => $description,
 		]);
@@ -139,6 +146,19 @@ class UserLog extends Model
         }
 
         return $log;
+	}
+
+	public function isLastLog()
+	{
+		$find = self::find('last', [
+			'conditions' => [
+				'`row_id` = ? and `class_name` = ?',
+				$this->row_id,
+				$this->class_name
+			]
+		]);
+
+		return $find->id == $this->id;
 	}
 
 	/**

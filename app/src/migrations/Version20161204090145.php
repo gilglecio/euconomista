@@ -106,8 +106,6 @@ class Version20161204090145 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if ($schema->hasTable('releases')) {
-            $schema->dropTable('releases');
-        }
+        $schema->dropTable('releases');
     }
 }

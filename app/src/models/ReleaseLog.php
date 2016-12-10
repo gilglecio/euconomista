@@ -1,5 +1,7 @@
 <?php
 
+use App\Util\Toolkit;
+
 final class ReleaseLog extends Model
 {
 	const ACTION_EMISSAO = 1;
@@ -89,5 +91,30 @@ final class ReleaseLog extends Model
 		}
 
 		return true;
+	}
+
+	/**
+	 * Personaliza a descrição do log.
+	 * 
+	 * @param string $action
+	 * @return string Description
+	 */
+	public function getLogDescription($action) 
+	{
+		$natureza = strtolower($this->release->getNaturezaName());
+        $value = Toolkit::showMoney($this->value);
+
+        $name = $this->getActionName();
+
+        $destroy = "Apagou o lançamento nº {$this->release->number}, #{$this->id}.";
+
+        if ($this->action == self::ACTION_LIQUIDACAO) {
+        	$destroy = 'Cancelou o ' . strtolower($name) . ' de R$ ' . $value . ' do lançamento nº ' . $this->release->number . ', #' . $this->id;
+        }
+
+        return [
+            'create' => "{$name} {$natureza} nº {$this->release->number} '{$this->release->people->name}' R$ {$value}, #{$this->id}.",
+            'destroy' => $destroy,
+        ][$action];
 	}
 }

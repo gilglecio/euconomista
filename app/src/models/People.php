@@ -99,4 +99,13 @@ final class People extends Model
 
 		return true;
 	}
+
+	public function getLogDescription($action)
+	{
+		return [
+			'create' => "Adicionou '{$this->name}' em pessoas.",
+			'update' => "Alterou o nome de '{$this->backup_for_log->name}' para '{$this->name}'.",
+			'destroy' => "Apagou '{$this->name}' de pessoas.",
+		][$action];
+	}
 }

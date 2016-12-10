@@ -6,17 +6,17 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Create table `users`
+ * Create table `user_logs`
  */
-class Version20160819093841 extends AbstractMigration
+class Version20161209214305 extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $table = $schema->createTable('users');
-        
+        $table = $schema->createTable('user_logs');
+
         $table->addColumn('id', 'integer', [
             'unsigned' => true,
             'autoincrement' => true,
@@ -30,41 +30,44 @@ class Version20160819093841 extends AbstractMigration
 
         $table->addColumn('user_id', 'integer', [
             'unsigned' => true,
-            'notnull' => false
+            'notnull' => true
         ]);
 
-        $table->addColumn('name', 'string', [
+        $table->addColumn('action', 'string', [
             'length' => 45,
             'notnull' => true
         ]);
 
-        $table->addColumn('email', 'string', [
+        $table->addColumn('class_name', 'string', [
             'length' => 60,
             'notnull' => true
         ]);
 
-        $table->addColumn('password', 'string', [
-            'length' => 60,
+        $table->addColumn('description', 'string', [
+            'length' => 255,
             'notnull' => true
+        ]);
+
+        $table->addColumn('backup_json', 'text', [
+            'notnull' => false
         ]);
 
         $table->addColumn('created_at', 'datetime', [
             'notnull' => true
         ]);
 
-        $table->addColumn('updated_at', 'datetime', [
-            'notnull' => true
+        $table->addColumn('restored_at', 'datetime', [
+            'notnull' => false
         ]);
 
         $table->setPrimaryKey(['id']);
         
         $table->addIndex(['user_id'], 'fk_user_idx');
-        $table->addUniqueIndex(['email']);
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
             'onDelete' => 'NO ACTION', 
             'onUpdate' => 'NO ACTION'
-        ], 'fk_users_user_id');
+        ], 'fk_user_logs_user_id');
     }
 
     /**
@@ -72,6 +75,6 @@ class Version20160819093841 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $schema->dropTable('users');
+        $schema->dropTable('user_logs');
     }
 }

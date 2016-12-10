@@ -99,4 +99,13 @@ final class Category extends Model
 
 		return true;
 	}
+
+	public function getLogDescription($action)
+	{
+		return [
+			'create' => "Criou a categotia '{$this->name}'.",
+			'update' => "Alterou o nome da categoria '{$this->backup_for_log->name}' para '{$this->name}'.",
+			'destroy' => "Apagou a categoria '{$this->name}'.",
+		][$action];
+	}
 }

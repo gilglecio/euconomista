@@ -52,6 +52,17 @@ $app->group('/app', function () {
 			->setName('reports');
 	});
 
+	# USER LOGS
+	$this->group('/logs', function () {
+		$this->get('', 'App\Controller\LogsController:index')
+			->setName('logs');
+	});
+
+	$this->group('/logs/{user_log_id}/restore', function () {
+		$this->get('', 'App\Controller\LogsController:restore')
+			->setName('logs.restore');
+	});
+
 	# REPORTS
 	$this->group('/extract', function () {
 		$this->get('', 'App\Controller\ExtractController:index')

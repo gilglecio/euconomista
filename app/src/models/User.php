@@ -154,4 +154,13 @@ class User extends Model implements UserAuthInterface
 
 		return true;
 	}
+
+	public function getLogDescription($action)
+	{
+		return [
+			'create' => "Adicionou '{$this->name} <{$this->email}>' como usuário do sistema.",
+			'update' => "Editou o cadastro de '{$this->backup_for_log->name} <{$this->backup_for_log->email}>'.",
+			'destroy' => "Apagou '{$this->name} <{$this->email}>' dos usuários.",
+		][$action];
+	}
 }

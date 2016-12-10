@@ -62,8 +62,6 @@ class Version20161203233401 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        if ($schema->hasTable('peoples')) {
-            $schema->dropTable('peoples');
-        }
+        $schema->dropTable('peoples');
     }
 }

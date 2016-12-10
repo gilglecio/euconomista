@@ -3,13 +3,55 @@
 use App\Auth\AuthSession;
 use ActiveRecord\SQLBuilder;
 
+use UserLog;
+
 abstract class Model extends ActiveRecord\Model
 {
+	/**
+	 * @var ActiveRecord\Model
+	 */
+	public $backup_for_log;
+
+	/**
+	 * @var array
+	 */
+	public static $before_update = [
+		'saveBackup'
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $before_destroy = [
+		'saveBackup'
+	];
+
 	/**
 	 * @var array
 	 */
 	public static $before_create = [
 		'setUserAndEntity'
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $after_create = [
+		'userLogCreate'
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $after_update = [
+		'userLogUpdate'
+	];
+
+	/**
+	 * @var array
+	 */
+	public static $after_destroy = [
+		'userLogDestroy'
 	];
 
 	/**
@@ -21,6 +63,65 @@ abstract class Model extends ActiveRecord\Model
 	 * @var array
 	 */
 	public static $has_one = [];
+
+	public function saveBackup()
+	{
+		$this->backup_for_log = static::find($this->id);
+	}
+
+	/**
+	 * Este método é invocado após uma restauração de backup de registro.
+	 * 
+	 * @return void
+	 */
+	public function afterRestored()
+	{
+
+	}
+
+	/**
+	 * Generate user log after create.
+	 * 
+	 * @return void
+	 */
+	public function userLogCreate()
+	{
+		$this->userLog('create');
+	}
+
+	/**
+	 * Generate user log after update.
+	 * 
+	 * @return void
+	 */
+	public function userLogUpdate()
+	{
+		$this->userLog('update');
+	}
+
+	/**
+	 * Generate user log after destroy.
+	 * 
+	 * @return void
+	 */
+	public function userLogDestroy()
+	{
+		$this->userLog('destroy');
+	}
+
+	/**
+	 * Generate user log by action.
+	 * 
+	 * @param string $action
+	 * @return void
+	 */
+	public function userLog($action)
+	{
+		UserLog::register([
+			'model' => $this,
+			'action' => $action
+		]);
+	}
 
 	/**
 	 * Adiciona automaticamente a entity
@@ -131,5 +232,22 @@ abstract class Model extends ActiveRecord\Model
 		$list = static::table()->find($options);
 
 		return $single ? (!empty($list) ? $list[0] : null) : $list;
+	}
+
+	/**
+	 * Generic description for user log.
+	 * 
+	 * @param string $action
+	 * @return string Description
+	 */
+	public function getLogDescription($action)
+	{
+		$model = get_called_class();
+
+		return [
+			'create' => "Created new row in {$model} model.",
+			'update' => "Row #{$this->id} of {$model} updated.",
+			'destroy' => "Row #{$this->id} of {$model} deleted.",
+		][$action];
 	}
 }

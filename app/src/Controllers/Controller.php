@@ -76,4 +76,18 @@ abstract class Controller
 
         return null;
     }
+
+    public function getSuccessMessages()
+    {
+        /**
+         * @var array
+         */
+        $messages = $this->flash->getMessages();
+
+        if (isset($messages['success'])) {
+            return $messages['success'];
+        }
+
+        return null;
+    }
 }

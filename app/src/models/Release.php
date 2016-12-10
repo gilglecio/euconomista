@@ -45,7 +45,8 @@ final class Release extends Model
      * @var array
      */
     public static $before_destroy = [
-        'deleteAllLogs'
+        'deleteAllLogs',
+        'saveBackup'
     ];
 
     /**
@@ -361,7 +362,7 @@ final class Release extends Model
                 ]);
 
                 foreach ($releases as $release) {
-                    if ($release->isLiquidado()) {
+                    if (! $release->canDelete()) {
                         throw new \Exception("O lançamento '{$release->number}' foi movimentado.");
                     }
 
@@ -379,7 +380,7 @@ final class Release extends Model
             return;
         }
 
-        if ($release->isLiquidado()) {
+        if (! $release->canDelete()) {
             throw new \Exception("O lançamento '{$release->number}' foi movimentado.");
         }
 
@@ -388,6 +389,11 @@ final class Release extends Model
         }
 
         return true;
+    }
+
+    public function canDelete()
+    {
+        return is_null($this->getLastLog());
     }
 
     /**
@@ -439,6 +445,25 @@ final class Release extends Model
     }
 
     /**
+     * Recadastra o log de emissão do lançamento.
+     * 
+     * @return void
+     */
+    public function afterRestored()
+    {
+        $log = ReleaseLog::create([
+            'release_id' => $this->id,
+            'date' => $this->created_at,
+            'action' => ReleaseLog::ACTION_EMISSAO,
+            'value' => $this->value
+        ]);
+
+        if ($log->is_invalid()) {
+            throw new \Exception($log->errors->full_messages()[0]);
+        }
+    }
+
+    /**
      * Retorna o valor da coluna status por extenso.
      *
      * @return string
@@ -458,6 +483,11 @@ final class Release extends Model
         ][$status];
     }
 
+    /**
+     * Formata os logs de quitação para exibição o extrato.
+     * 
+     * @return array
+     */
     public static function extract()
     {
         $rows = ReleaseLog::find('all', [
@@ -547,5 +577,20 @@ final class Release extends Model
     public function isLiquidado()
     {
         return $this->status == self::STATUS_LIQUIDADO;
+    }
+
+    /**
+     * Personalizando a descrição do log de usuário.
+     * 
+     * @param string $action
+     * @return string Description
+     */
+    public function getLogDescription($action)
+    {
+        if ($action == 'destroy') {
+            return 'Apagou o lançamento nº ' . $this->number . ', #' . $this->id . '.';    
+        }
+
+        return null;
     }
 }

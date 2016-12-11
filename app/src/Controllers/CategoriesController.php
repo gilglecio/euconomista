@@ -62,7 +62,7 @@ final class CategoriesController extends Controller
 	 */
     public function form(Request $request, Response $response, array $args)
     {
-    	$data = $this->getMessages();
+    	$data = ['messages' => $this->getMessages()];
 
         if (isset($args['category_id'])) {
 

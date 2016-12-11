@@ -2,7 +2,10 @@
 
 /**
  * UserLog model
+ * @uses App\Auth\AuthSession
  */
+
+use App\Auth\AuthSession;
 
 /**
  * Esta classe faz referencia a tabela `user_logs` no banco de dados.
@@ -15,7 +18,7 @@ class UserLog extends Model
 	 * Define os relacionamentos 1:1.
 	 * @var array
 	 */
-	static $belongs_to = [
+	public static $belongs_to = [
 		['user']
 	];
 
@@ -27,7 +30,7 @@ class UserLog extends Model
 	 * @throws \Exception Os logs devem ser restaurados do último para o primeiro.
 	 * @return Model
 	 */
-	static function restore($user_log_id)
+	public static function restore($user_log_id)
 	{
 		/**
 		 * @var UserLog
@@ -101,12 +104,54 @@ class UserLog extends Model
 	}
 
 	/**
+	 * Cadastra um log do tipo `login`.
+	 * 
+	 * @return UserLog
+	 */
+	public static function logout()
+	{
+		$log = self::create([
+			'action' => 'logout',
+			'class_name' => AuthSession::class,
+			'row_id' => AuthSession::getUserId(),
+			'description' => 'Desconectou-se'
+		]);
+
+		if ($log->is_invalid()) {
+            throw new \Exception($log->errors->full_messages()[0]);
+        }
+
+        return $log;
+	}
+
+	/**
+	 * Cadastra um log do tipo `logout`.
+	 * 
+	 * @return UserLog
+	 */
+	public static function login()
+	{
+		$log = self::create([
+			'action' => 'login',
+			'class_name' => AuthSession::class,
+			'row_id' => AuthSession::getUserId(),
+			'description' => 'Conectou-se'
+		]);
+
+		if ($log->is_invalid()) {
+            throw new \Exception($log->errors->full_messages()[0]);
+        }
+
+        return $log;
+	}
+
+	/**
 	 * Registra um log no banco de dados.
 	 * 
 	 * @param array $data Informações do log.
 	 * @return UserLog
 	 */
-	static function register($data)
+	public static function register($data)
 	{
 		/**
 		 * Descrição personalizada para cada action.

@@ -44,7 +44,7 @@ final class UsersController extends Controller
     {
         $this->view->render($response, 'app/users/index.twig', [
         	'title' => $this->title,
-            'error' => $this->getErrorMessages(),
+            'messages' => $this->getMessages(),
         	'rows' => User::find('all')
         ]);
         
@@ -62,7 +62,7 @@ final class UsersController extends Controller
 	 */
     public function form(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+    	$data = ['messages' => $this->getMessages()];
     	$data['title'] = $this->title;
 
         $this->view->render($response, 'app/users/form.twig', $data);

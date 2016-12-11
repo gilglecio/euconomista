@@ -2,14 +2,29 @@
 
 {% block pageTitle title %}
 
+{% block navbar %}
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Cadastro</a></li>
+{% endblock %}
+
 {% block content %}
 <div class="content-wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <ul class="no-margin-bottom">
-                	<li><a href="/login">Login</a></li>
-                	<li><a href="/register">Register</a></li>
+
+                <h1>Principais Funcionalidades</h1>
+
+                <ul>
+                    <li>Lançamentos de Receitas</li>
+                    <li>Lançamentos de Despesas</li>
+                    <li>Cadastro de Pessoas</li>
+                    <li>Cadastro de Categorias</li>
+                    <li>Cadastro de Usuários</li>
+                    <li>Extrato financeiro de entradas e saídas</li>
+                    <li>Log das ações dos usuários, com restauração</li>
+                    <li>Backup dos dados</li>
+                    <li>Relatórios</li>
                 </ul>
             </div>
         </div>    

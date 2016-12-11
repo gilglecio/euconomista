@@ -10,6 +10,7 @@
  * @uses Psr\Http\Message\ResponseInterface
  * @uses App\Auth\AuthSession
  * @uses User
+ * @uses UserLog
  */
 namespace App\Controller;
 
@@ -18,6 +19,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use App\Auth\AuthSession;
 use User;
+use UserLog;
 
 /**
  * Controller responsável pelas rotas de login e logout.
@@ -44,7 +46,8 @@ final class LoginController extends Controller
 	 */
     public function index(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+    	$data = ['messages' => $this->getMessages()];
+        // dd($data);
     	$data['title'] = $this->title;
 
         $this->view->render($response, 'login.twig', $data);
@@ -70,9 +73,11 @@ final class LoginController extends Controller
 				$request->getParsedBodyParam('email'),
 				$request->getParsedBodyParam('password')
 			);
-		} catch (\Exception $e) {
-			return $this->redirectWithError($response, $e->getMessage(), '/login');
-		}
+        } catch (\Exception $e) {
+            return $this->redirectWithError($response, $e->getMessage(), '/login');
+        }
+
+        UserLog::login();
 
 		return $response->withRedirect('/app');
     }
@@ -87,7 +92,8 @@ final class LoginController extends Controller
      */
     public function logout(Request $request, Response $response, array $args)
     {
-    	AuthSession::clear();
+        UserLog::logout();
+        AuthSession::clear();
 
     	return $response->withRedirect('/login');
     }

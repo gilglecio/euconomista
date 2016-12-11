@@ -44,7 +44,7 @@ final class RegisterController extends Controller
 	 */
     public function index(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+    	$data = ['messages' => $this->getMessages()];
     	$data['title'] = $this->title;
 
         $this->view->render($response, 'register.twig', $data);

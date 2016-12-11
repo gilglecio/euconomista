@@ -44,7 +44,7 @@ final class LogsController extends Controller
     {
         $this->view->render($response, 'app/logs/index.twig', [
         	'title' => $this->title,
-            'error' => $this->getErrorMessages(),
+            'messages' => $this->getMessages(),
             'success' => $this->getSuccessMessages(),
         	'rows' => array_map(function ($r) {
         		return [

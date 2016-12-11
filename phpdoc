@@ -1,0 +1,3 @@
+#!/bin/bash
+
+../../weblote/vendor/bin/phpdoc -d app/src/Auth -d app/src/Controllers -d app/src/Interfaces -d app/src/Mail -d app/src/Util -d app/src/models -t public/phpdoc --template responsive-twig --title HmGestor

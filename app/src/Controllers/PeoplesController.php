@@ -44,7 +44,7 @@ final class PeoplesController extends Controller
     {
         $this->view->render($response, 'app/peoples/index.twig', [
         	'title' => $this->title,
-        	'error' => $this->getErrorMessages(),
+        	'messages' => $this->getMessages(),
         	'rows' => People::find('all', ['order' => 'name asc'])
         ]);
         
@@ -62,7 +62,7 @@ final class PeoplesController extends Controller
 	 */
     public function form(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+    	$data = ['messages' => $this->getMessages()];
 
         if (isset($args['people_id'])) {
 

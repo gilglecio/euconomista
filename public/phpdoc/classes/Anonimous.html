@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>    HmGestor &raquo; \Anonimous
+</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+            <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+            <!--[if lt IE 9]>
+        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+        <![endif]-->
+        <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+        <script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap.js" type="text/javascript"></script>
+        <script src="../js/template.js" type="text/javascript"></script>
+        <script src="../js/prettify/prettify.min.js" type="text/javascript"></script>
+    
+            <link rel="shortcut icon" href="../img/favicon.ico"/>
+        <link rel="apple-touch-icon" href="../img/apple-touch-icon.png"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png"/>
+    </head>
+<body>
+
+        <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> </a>
+                <a class="brand" href="../index.html">HmGestor</a>
+
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                API Documentation <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                                                    <li><a>Namespaces</a></li>
+                                                                        <li><a href="../namespaces/App.html">App</a></li>
+                                                                                                                                </ul>
+                        </li>
+                        <li class="dropdown" id="charts-menu">
+                            <a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                Charts <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../graph_class.html">
+                                        <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" id="reports-menu">
+                            <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                Reports <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../errors.html">
+                                        <i class="icon-list-alt"></i>&#160;Errors
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../markers.html">
+                                        <i class="icon-list-alt"></i>&#160;Markers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../deprecated.html">
+                                        <i class="icon-list-alt"></i>&#160;Deprecated
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="go_to_top">
+            <a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>
+        </div>
+    </div>
+    
+    <div id="___" class="container">
+        <noscript>
+            <div class="alert alert-warning">
+                Javascript is disabled; several features are only available if Javascript is enabled.
+            </div>
+        </noscript>
+
+        
+            <style>
+        .deprecated h2 {
+            text-decoration: line-through;
+        }
+    </style>
+    <div class="row">
+        <div class="span4">
+                    <div class="btn-group view pull-right" data-toggle="buttons-radio">
+        <button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button>
+        <button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+    </div>
+    <div class="btn-group visibility" data-toggle="buttons-checkbox">
+        <button class="btn public active" title="Show public elements">Public</button>
+        <button class="btn protected" title="Show protected elements">Protected</button>
+        <button class="btn private" title="Show private elements">Private</button>
+        <button class="btn inherited active" title="Show inherited elements">Inherited</button>
+    </div>
+
+        <ul class="side-nav nav nav-list">
+        <li class="nav-header">
+            <i class="icon-custom icon-method"></i> Methods
+            <ul>
+                                                                                                    <li class="method public inherited">
+        <a href="#method_afterRestored" title="afterRestored :: Este método é invocado após uma restauração de backup de registro.">
+            <span class="description">Este método é invocado após uma restauração de backup de registro.</span><pre>afterRestored</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_encryptPassword" title="encryptPassword :: Encripta a senha do usuário.">
+            <span class="description">Encripta a senha do usuário.</span><pre>encryptPassword</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_find" title="find :: Persnalizado para quando exista um usuário autenticado, as consultas ao banco de dados seja feita incluindo o id da `entity` do usuário logado.">
+            <span class="description">Persnalizado para quando exista um usuário autenticado, as consultas ao banco de dados seja feita incluindo o id da `entity` do usuário logado.</span><pre>find</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_generate" title="generate :: Salva um usuário no banco de dados.">
+            <span class="description">Salva um usuário no banco de dados.</span><pre>generate</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getIdEntityPasswordAndNameByEmail" title="getIdEntityPasswordAndNameByEmail :: Retorna o id, entity, password e name do usuário.">
+            <span class="description">Retorna o id, entity, password e name do usuário.</span><pre>getIdEntityPasswordAndNameByEmail</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getLogDescription" title="getLogDescription :: Generic description for user log.">
+            <span class="description">Generic description for user log.</span><pre>getLogDescription</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_inUsed" title="inUsed :: Pecorre os relacionamentos 1:N e 1:1
+e verifica se o registro está em us por algum deles.">
+            <span class="description">Pecorre os relacionamentos 1:N e 1:1
+e verifica se o registro está em us por algum deles.</span><pre>inUsed</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_register" title="register :: Faz o cadastro de um usuário de fora do sistema.">
+            <span class="description">Faz o cadastro de um usuário de fora do sistema.</span><pre>register</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_remove" title="remove :: Apaga uma usuário pelo ID.">
+            <span class="description">Apaga uma usuário pelo ID.</span><pre>remove</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_saveBackup" title="saveBackup :: Salva o registro na propriedade `backup_for_log`.">
+            <span class="description">Salva o registro na propriedade `backup_for_log`.</span><pre>saveBackup</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setUserAndEntity" title="setUserAndEntity :: Adiciona automaticamente a entity
+e o usuário que está criando o registro.">
+            <span class="description">Adiciona automaticamente a entity
+e o usuário que está criando o registro.</span><pre>setUserAndEntity</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_userLog" title="userLog :: Generate user log by action.">
+            <span class="description">Generate user log by action.</span><pre>userLog</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_userLogCreate" title="userLogCreate :: Generate user log after create.">
+            <span class="description">Generate user log after create.</span><pre>userLogCreate</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_userLogDestroy" title="userLogDestroy :: Generate user log after destroy.">
+            <span class="description">Generate user log after destroy.</span><pre>userLogDestroy</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_userLogUpdate" title="userLogUpdate :: Generate user log after update.">
+            <span class="description">Generate user log after update.</span><pre>userLogUpdate</pre>
+        </a>
+    </li>
+
+                                                </ul>
+        </li>
+        <li class="nav-header protected">» Protected
+            <ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+        </li>
+        <li class="nav-header private">» Private
+            <ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+        </li>
+        <li class="nav-header">
+            <i class="icon-custom icon-constant"></i> Constants
+            <ul>
+                            </ul>
+        </li>
+    </ul>
+
+
+        </div>
+
+        <div class="span8">
+            <div class="element class">
+                <h1>Anonimous</h1>
+                <small style="display: block; text-align: right">
+                                            Extends <a href="../classes/User.html">\User</a>
+                                                        </small>
+                <p class="short_description">Esta classe faz referencia a tabela `users` no banco de dados.</p>
+                <div class="details">
+                    <div class="long_description">
+                        
+                    </div>
+                    <table class="table table-bordered">
+                                                                                    <tr>
+                                    <th>
+                                        author
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Gilglécio Santos de Oliveira <a href="mailto:gilglecio.dev@gmail.com">gilglecio.dev@gmail.com</a></p>
+                                    </td>
+                                </tr>
+                                                                                                                <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
+
+                    <h3><i class="icon-custom icon-method"></i> Methods</h3>
+                                                                <a id="method_afterRestored"></a>
+                        <div class="element clickable method public  method_afterRestored inherited" data-toggle="collapse" data-target=".method_afterRestored .collapse">
+                            <h2>Este método é invocado após uma restauração de backup de registro.</h2>
+                            <pre>afterRestored() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_encryptPassword"></a>
+                        <div class="element clickable method public  method_encryptPassword inherited" data-toggle="collapse" data-target=".method_encryptPassword .collapse">
+                            <h2>Encripta a senha do usuário.</h2>
+                            <pre>encryptPassword() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_find"></a>
+                        <div class="element clickable method public  method_find inherited" data-toggle="collapse" data-target=".method_find .collapse">
+                            <h2>Persnalizado para quando exista um usuário autenticado, as consultas ao banco de dados seja feita incluindo o id da `entity` do usuário logado.</h2>
+                            <pre>find() : \any</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>\any</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_generate"></a>
+                        <div class="element clickable method public  method_generate inherited" data-toggle="collapse" data-target=".method_generate .collapse">
+                            <h2>Salva um usuário no banco de dados.</h2>
+                            <pre>generate(array $fields) : \User</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>Mensagem de erro do model.</p></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$fields</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/User.html">\User</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getIdEntityPasswordAndNameByEmail"></a>
+                        <div class="element clickable method public  method_getIdEntityPasswordAndNameByEmail inherited" data-toggle="collapse" data-target=".method_getIdEntityPasswordAndNameByEmail .collapse">
+                            <h2>Retorna o id, entity, password e name do usuário.</h2>
+                            <pre>getIdEntityPasswordAndNameByEmail(string $email) : \stdClass</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"><p>Método utilizado na authenticação.</p></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$email</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\stdClass</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getLogDescription"></a>
+                        <div class="element clickable method public  method_getLogDescription inherited" data-toggle="collapse" data-target=".method_getLogDescription .collapse">
+                            <h2>Generic description for user log.</h2>
+                            <pre>getLogDescription(string $action) : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$action</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>Description</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_inUsed"></a>
+                        <div class="element clickable method public  method_inUsed inherited" data-toggle="collapse" data-target=".method_inUsed .collapse">
+                            <h2>Pecorre os relacionamentos 1:N e 1:1
+e verifica se o registro está em us por algum deles.</h2>
+                            <pre>inUsed() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><called class> está send usado por '<relation>'</dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_register"></a>
+                        <div class="element clickable method public  method_register" data-toggle="collapse" data-target=".method_register .collapse">
+                            <h2>Faz o cadastro de um usuário de fora do sistema.</h2>
+                            <pre>register(array $fields) : \User</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>As senhas não conferem.</p></dd>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>Usuário já cadastrado no sistema.</p></dd>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>Nenhum registro localizado.</p></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$fields</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/User.html">\User</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_remove"></a>
+                        <div class="element clickable method public  method_remove inherited" data-toggle="collapse" data-target=".method_remove .collapse">
+                            <h2>Apaga uma usuário pelo ID.</h2>
+                            <pre>remove(integer $user_id) : boolean</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"><p>Verifica o usuário pode ser apagado.</p></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>User está sendo usada por '{$relation}'.</p></dd>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>Você não pode apagar a si mesmo.</p></dd>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd><p>Usuário <user_id> não foi apagada.</p></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_saveBackup"></a>
+                        <div class="element clickable method public  method_saveBackup inherited" data-toggle="collapse" data-target=".method_saveBackup .collapse">
+                            <h2>Salva o registro na propriedade `backup_for_log`.</h2>
+                            <pre>saveBackup() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setUserAndEntity"></a>
+                        <div class="element clickable method public  method_setUserAndEntity inherited" data-toggle="collapse" data-target=".method_setUserAndEntity .collapse">
+                            <h2>Adiciona automaticamente a entity
+e o usuário que está criando o registro.</h2>
+                            <pre>setUserAndEntity() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_userLog"></a>
+                        <div class="element clickable method public  method_userLog inherited" data-toggle="collapse" data-target=".method_userLog .collapse">
+                            <h2>Generate user log by action.</h2>
+                            <pre>userLog(string $action) : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$action</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_userLogCreate"></a>
+                        <div class="element clickable method public  method_userLogCreate inherited" data-toggle="collapse" data-target=".method_userLogCreate .collapse">
+                            <h2>Generate user log after create.</h2>
+                            <pre>userLogCreate() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_userLogDestroy"></a>
+                        <div class="element clickable method public  method_userLogDestroy inherited" data-toggle="collapse" data-target=".method_userLogDestroy .collapse">
+                            <h2>Generate user log after destroy.</h2>
+                            <pre>userLogDestroy() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_userLogUpdate"></a>
+                        <div class="element clickable method public  method_userLogUpdate inherited" data-toggle="collapse" data-target=".method_userLogUpdate .collapse">
+                            <h2>Generate user log after update.</h2>
+                            <pre>userLogUpdate() : void</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                    
+                    
+                                                                <h3><i class="icon-custom icon-property"></i> Properties</h3>
+                                                    <a id="property_validates_presence_of"> </a>
+                            <div class="element clickable property  public property_validates_presence_of inherited" data-toggle="collapse" data-target=".property_validates_presence_of .collapse">
+                                <h2>Validação de campos obrigatŕios.</h2>
+                                <pre>validates_presence_of : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_validates_format_of"> </a>
+                            <div class="element clickable property  public property_validates_format_of inherited" data-toggle="collapse" data-target=".property_validates_format_of .collapse">
+                                <h2>Validação para saber se o email passado é válido.</h2>
+                                <pre>validates_format_of : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_validates_uniqueness_of"> </a>
+                            <div class="element clickable property  public property_validates_uniqueness_of inherited" data-toggle="collapse" data-target=".property_validates_uniqueness_of .collapse">
+                                <h2>Validação para não permitir que exista dois usuários com dois emails iguais.</h2>
+                                <pre>validates_uniqueness_of : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_validates_length_of"> </a>
+                            <div class="element clickable property  public property_validates_length_of inherited" data-toggle="collapse" data-target=".property_validates_length_of .collapse">
+                                <h2>Validação para definir a quantidade de caracteres campo a campo.</h2>
+                                <pre>validates_length_of : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_has_many"> </a>
+                            <div class="element clickable property  public property_has_many inherited" data-toggle="collapse" data-target=".property_has_many .collapse">
+                                <h2>Define os relacionamentos 1:N.</h2>
+                                <pre>has_many : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_before_create"> </a>
+                            <div class="element clickable property  public property_before_create inherited" data-toggle="collapse" data-target=".property_before_create .collapse">
+                                <h2>Callbacks invocados antes do registro ser criado.</h2>
+                                <pre>before_create : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_backup_for_log"> </a>
+                            <div class="element clickable property  public property_backup_for_log inherited" data-toggle="collapse" data-target=".property_backup_for_log .collapse">
+                                <h2>Quando um registro e apagado ou editado, o registro fica armzenado para ser backpiado em log.</h2>
+                                <pre>backup_for_log : \ActiveRecord\Model</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>\ActiveRecord\Model</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_before_update"> </a>
+                            <div class="element clickable property  public property_before_update inherited" data-toggle="collapse" data-target=".property_before_update .collapse">
+                                <h2>Callbacks invocados antes do registro ser atualizado.</h2>
+                                <pre>before_update : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_before_destroy"> </a>
+                            <div class="element clickable property  public property_before_destroy inherited" data-toggle="collapse" data-target=".property_before_destroy .collapse">
+                                <h2>Callbacks invocados antes do registro ser apagado.</h2>
+                                <pre>before_destroy : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_after_create"> </a>
+                            <div class="element clickable property  public property_after_create inherited" data-toggle="collapse" data-target=".property_after_create .collapse">
+                                <h2>Callbacks invocados depois que o registro é criado.</h2>
+                                <pre>after_create : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_after_update"> </a>
+                            <div class="element clickable property  public property_after_update inherited" data-toggle="collapse" data-target=".property_after_update .collapse">
+                                <h2>Callbacks invocados depois que o registro é atualizado.</h2>
+                                <pre>after_update : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_after_destroy"> </a>
+                            <div class="element clickable property  public property_after_destroy inherited" data-toggle="collapse" data-target=".property_after_destroy .collapse">
+                                <h2>Callbacks invocados depois que o registro é apagado.</h2>
+                                <pre>after_destroy : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_has_one"> </a>
+                            <div class="element clickable property  public property_has_one inherited" data-toggle="collapse" data-target=".property_has_one .collapse">
+                                <h2>Define os reacionamentos 1:1.</h2>
+                                <pre>has_one : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                            </div>
+            </div>
+            <a id="\Anonimous"></a>
+            <ul class="breadcrumb">
+                <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
+                    
+    
+    <li><span class="divider">\</span><a href="../namespaces/default.html">\</a></li>
+
+                <li class="active"><span class="divider">\</span><a href="../classes/Anonimous.html">Anonimous</a></li>
+            </ul>
+        </div>
+    </div>
+
+    </div>
+
+        <footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
+            <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
+            generated on Sun, 11 Dec 2016 17:12:31 +0000.<br/>
+    </footer>
+    </body>
+</html>

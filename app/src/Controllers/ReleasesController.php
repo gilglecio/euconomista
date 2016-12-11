@@ -100,7 +100,7 @@ final class ReleasesController extends Controller
      */
     public function form(Request $request, Response $response, array $args)
     {
-        $data = $this->flash->getMessages();
+        $data = ['messages' => $this->getMessages()];
 
         $data['data']['data_vencimento'] = date('Y-m-d');
 
@@ -201,7 +201,7 @@ final class ReleasesController extends Controller
             'title' => 'Extrato de lançamento',
             'release' => $release,
             'rows' => $rows,
-            'error' => $this->getErrorMessages(),
+            'messages' => $this->getMessages(),
             'canLiquidar' => $release->canLiquidar(),
             'canDesfazer' => $release->canDesfazer(),
             'canEditar' => $release->canEditar()
@@ -227,7 +227,7 @@ final class ReleasesController extends Controller
             return $response->withRedirect('/app/releases/' . $release->id . '/logs');
         }
 
-        $data = $this->flash->getMessages();
+        $data = ['messages' => $this->getMessages()];
         $data['title'] = 'Liquidação de Parcela';
 
         $data['value'] = $release->value;

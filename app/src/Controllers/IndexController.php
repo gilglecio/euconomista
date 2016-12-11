@@ -26,7 +26,7 @@ final class IndexController extends Controller
      * 
      * @var string
      */
-    protected $title = 'Gerenciador Financeiro';
+    protected $title = 'Gestor Financeiro Pessoal';
 
 	/**
      * Renderiza a página index do sistema.

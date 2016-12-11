@@ -1,9 +1,7 @@
-{% for rows in messages %}
-	{% for type, mms in rows %}
-	<div class="alert alert-{{ type }}">
-		{% for m in mms %}
-	    <a title="Fechar" href class="alert-link" data-dismiss="alert">{{ m }}</a>
-		{% endfor %}
-	</div>
+{% for type, mms in messages %}
+<div class="alert alert-{{ type }}">
+	{% for m in mms %}
+    <a title="Fechar" href class="alert-link" data-dismiss="alert">{{ m }}</a>
 	{% endfor %}
+</div>
 {% endfor %}

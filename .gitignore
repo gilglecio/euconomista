@@ -3,7 +3,7 @@ log/*
 cache/*
 *.local
 *.bak
-public/phpdoc
+*.dat
 /scripts
 /public/behat.html
 /public/assets

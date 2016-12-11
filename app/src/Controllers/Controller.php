@@ -130,8 +130,6 @@ abstract class Controller
             return isset($messages[$key]) ? $messages[$key] : null;
         }
 
-        return [
-            'messages' => $messages
-        ];
+        return $messages;
     }
 }

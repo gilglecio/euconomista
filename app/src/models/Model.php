@@ -1,18 +1,33 @@
 <?php
 
+/**
+ * Abstracti Model class.
+ * 
+ * @uses App\Auth\AuthSession
+ * @uses ActiveRecord\SQLBuilder
+ * @uses UserLog
+ */
+
 use App\Auth\AuthSession;
 use ActiveRecord\SQLBuilder;
 
 use UserLog;
 
+/**
+ * Classe abstrata para o models.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 abstract class Model extends ActiveRecord\Model
 {
 	/**
+	 * Quando um registro e apagado ou editado, o registro fica armzenado para ser backpiado em log.
 	 * @var ActiveRecord\Model
 	 */
 	public $backup_for_log;
 
 	/**
+	 * Callbacks invocados antes do registro ser atualizado. 
 	 * @var array
 	 */
 	public static $before_update = [
@@ -20,6 +35,7 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Callbacks invocados antes do registro ser apagado.
 	 * @var array
 	 */
 	public static $before_destroy = [
@@ -27,6 +43,7 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Callbacks invocados antes do registro ser criado.
 	 * @var array
 	 */
 	public static $before_create = [
@@ -34,6 +51,7 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Callbacks invocados depois que o registro é criado.
 	 * @var array
 	 */
 	public static $after_create = [
@@ -41,6 +59,7 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Callbacks invocados depois que o registro é atualizado.
 	 * @var array
 	 */
 	public static $after_update = [
@@ -48,6 +67,7 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Callbacks invocados depois que o registro é apagado.
 	 * @var array
 	 */
 	public static $after_destroy = [
@@ -55,15 +75,22 @@ abstract class Model extends ActiveRecord\Model
 	];
 
 	/**
+	 * Define os relacionamentos 1:N.
 	 * @var array
 	 */
 	public static $has_many = [];
 
 	/**
+	 * Define os reacionamentos 1:1.
 	 * @var array
 	 */
 	public static $has_one = [];
 
+	/**
+	 * Salva o registro na propriedade `backup_for_log`.
+	 * 
+	 * @return void
+	 */
 	public function saveBackup()
 	{
 		$this->backup_for_log = static::find($this->id);
@@ -173,6 +200,11 @@ abstract class Model extends ActiveRecord\Model
 		}
 	}
 
+	/**
+	 * Persnalizado para quando exista um usuário autenticado, as consultas ao banco de dados seja feita incluindo o id da `entity` do usuário logado.
+	 * 
+	 * @return any
+	 */
 	public static function find(/* $type, $options */)
 	{
 		$class = get_called_class();

@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Model People.
+ */
+
+/**
+ * Esta classe faz referencia a tabela `peoples` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class People extends Model
 {
 	/**
+	 * Validação de campos obrigatórios.
 	 * @var array
 	 */
 	public static $validates_presence_of = [
@@ -10,6 +20,7 @@ final class People extends Model
 	];
 
 	/**
+	 * Não permite que na entidade exista duas pessoas com o mesmo nome.
 	 * @var array
 	 */
 	public static $validates_uniqueness_of = [
@@ -17,6 +28,7 @@ final class People extends Model
 	];
 
 	/**
+	 * Validação para limitir a quantidade de caracteres da coluna `name` entre 3 e 60.
 	 * @var array
 	 */
 	public static $validates_length_of = [
@@ -24,6 +36,7 @@ final class People extends Model
 	];
 
 	/**
+	 * Define os relacionamentos 1:N.
 	 * @var array
 	 */
 	public static $has_many = [
@@ -100,6 +113,12 @@ final class People extends Model
 		return true;
 	}
 
+	/**
+	 * Personaliza a descrição dos logs, ao criar, editar e apagar.
+	 * 
+	 * @param string $action A ação pode ser `create`, `update` ou `destroy`.
+	 * @return string Frase personalizada confirme ação.
+	 */
 	public function getLogDescription($action)
 	{
 		return [

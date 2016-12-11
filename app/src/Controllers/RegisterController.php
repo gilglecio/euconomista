@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package RegisterController
- * @subpackage App\Controller
+ * RegisterController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -19,6 +19,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use App\Auth\AuthSession;
 use Anonimous;
 
+/**
+ * Responsável pelo cadastro externo de usuários.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class RegisterController extends Controller
 {
 	/**
@@ -29,6 +34,8 @@ final class RegisterController extends Controller
     protected $title = 'Cadastro';
 
 	/**
+	 * Renderiza o formulário de cadastro de usuário.
+	 * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -47,6 +54,8 @@ final class RegisterController extends Controller
     }
 
     /**
+     * Recebe o post do formulário de cadastro.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -67,7 +76,7 @@ final class RegisterController extends Controller
 		}
 
 		$this->logger->info('Register: ' . $request->getParsedBodyParam('email'));
-		$this->flash->addMessage('success', 'Cadastrado! Acesso liberado.');
+		$this->success('Cadastrado! Acesso liberado.');
 
 		return $response->withRedirect('/login');
     }

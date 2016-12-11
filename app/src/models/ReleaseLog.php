@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * ReleaseLog model.
+ * 
+ * @uses App\Util\Toolkit
+ */
+
 use App\Util\Toolkit;
 
+/**
+ * Esta classe faz referencia a tabela `release_logs` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class ReleaseLog extends Model
 {
 	const ACTION_EMISSAO = 1;
 	const ACTION_LIQUIDACAO = 2;
 
 	/**
+	 * Define os relacionamentos 1:1.
      * @var array
      */
 	public static $belongs_to = [
@@ -16,6 +28,7 @@ final class ReleaseLog extends Model
     ];
 
     /**
+     * Validação de campos obrigatórios.
      * @var array
      */
 	public static $validates_presence_of = [

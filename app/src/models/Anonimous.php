@@ -1,7 +1,19 @@
 <?php
 
+/**
+ * Anonimous model
+ */
+
+/**
+ * Esta classe faz referencia a tabela `users` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class Anonimous extends User
 {
+    /**
+     * Este método foi reescrito para que não seja setado a coluna `entity` e `user_id` automaticamente.
+     */
     public function setUserAndEntity()
     {
     }

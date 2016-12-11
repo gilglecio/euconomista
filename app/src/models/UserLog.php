@@ -1,10 +1,20 @@
 <?php
 
 /**
- * Gerencia a captura das ações dos usuários. 
+ * UserLog model
+ */
+
+/**
+ * Esta classe faz referencia a tabela `user_logs` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 class UserLog extends Model
 {
+	/**
+	 * Define os relacionamentos 1:1.
+	 * @var array
+	 */
 	static $belongs_to = [
 		['user']
 	];
@@ -148,6 +158,10 @@ class UserLog extends Model
         return $log;
 	}
 
+	/**
+	 * Verifica se o log é o último, para isso é verificado se existe algum log que a coluna `class_name` e `row_id` possua o id maior que o log atual.
+	 * @return boolean Retorna TRUE se o log for o último.
+	 */
 	public function isLastLog()
 	{
 		$find = self::find('last', [

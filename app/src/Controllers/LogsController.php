@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package LogsController
- * @subpackage App\Controller
+ * LogsController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -17,6 +17,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use UserLog;
 
+/**
+ * Responsável pelas rotas de acesso e manipulação dos logs dos usuários.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class LogsController extends Controller
 {
 	/**
@@ -27,6 +32,8 @@ final class LogsController extends Controller
 	protected $title = 'Logs dos usuários';
 
 	/**
+     * Renderiza a página com os logs dos usuários.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -56,6 +63,8 @@ final class LogsController extends Controller
     }
 
     /**
+     * Recebe a solicitação para restauração de um log.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -70,7 +79,7 @@ final class LogsController extends Controller
         	return $this->redirectWithError($response, $e->getMessage(), '/app/logs');
         }
 
-        $this->flash->addMessage('success', 'Backup restaurado!');
+        $this->success('Backup restaurado!');
 
         return $response->withRedirect('/app/logs');
     }

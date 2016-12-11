@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Category model.
+ */
+
+/**
+ * Esta classe faz referencia a tabela `categories` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class Category extends Model
 {
 	/**
+	 * Validação dos campos obrigatórios.
 	 * @var array
 	 */
 	public static $validates_presence_of = [
@@ -10,6 +20,7 @@ final class Category extends Model
 	];
 
 	/**
+	 * Validação que não permite que haja na mesma entidade duas categorias com o mesmo nome.
 	 * @var array
 	 */
 	public static $validates_uniqueness_of = [
@@ -17,6 +28,7 @@ final class Category extends Model
 	];
 
 	/**
+	 * Validação para que define o limite mínimo e máximo de caracteres que a coluna `name` pode ter.
 	 * @var array
 	 */
 	public static $validates_length_of = [
@@ -24,6 +36,7 @@ final class Category extends Model
 	];
 
 	/**
+	 * Define os relacionamentos 1:N.
 	 * @var array
 	 */
 	public static $has_many = [
@@ -100,6 +113,12 @@ final class Category extends Model
 		return true;
 	}
 
+	/**
+	 * Personaliza a descrição dos logs, ao criar, editar e apagar.
+	 * 
+	 * @param string $action A ação pode ser `create`, `update` ou `destroy`.
+	 * @return string Frase personalizada confirme ação.
+	 */
 	public function getLogDescription($action)
 	{
 		return [

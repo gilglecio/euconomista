@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package PeoplesController
- * @subpackage App\Controller
+ * PeoplesController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -17,6 +17,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use People;
 
+/**
+ * Reponse pelas rotas de exibição e manipulação de pesosas.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class PeoplesController extends Controller
 {
 	/**
@@ -27,6 +32,8 @@ final class PeoplesController extends Controller
 	protected $title = 'Pessoas';
 
 	/**
+     * Renderiza a pagina com o lista de pessoa cadastradas.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -45,6 +52,8 @@ final class PeoplesController extends Controller
     }
 
     /**
+     * Renderiza o formulário para inclusão e dição de pessoas.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -72,6 +81,8 @@ final class PeoplesController extends Controller
     }
 
     /**
+     * Recebe o post do formulário de pessoas.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -95,6 +106,8 @@ final class PeoplesController extends Controller
     }
 
     /**
+     * Apaga uma pessoa pelo ID.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args

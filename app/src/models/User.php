@@ -170,7 +170,7 @@ class User extends Model implements UserAuthInterface
 	}
 
 	/**
-	 * Personaliza a descrição dos logs do usuário, ao criar, editr e apagar.
+	 * Personaliza a descrição dos logs, ao criar, editar e apagar.
 	 * 
 	 * @param string $action A ação pode ser `create`, `update` ou `destroy`.
 	 * @return string Frase personalizada confirme ação.

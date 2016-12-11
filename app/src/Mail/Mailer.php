@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package Mailer
- * @subpackage App\Mail
+ * Mailer class
+ * 
+ * @package App\Mail
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Slim\Views\Twig
  * @uses PHPMailer
@@ -14,18 +14,31 @@ namespace App\Mail;
 use Slim\Views\Twig;
 use PHPMailer;
 
+/**
+ * Faz o envio dos e-mails.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 class Mailer
 {
     /**
+     * Instância do Twig
      * @var \Slim\Views\Twig
      */
     protected $view;
     
     /**
+     * Instância do PHPMailer
      * @var \PHPMailer
      */
     protected $mailer;
     
+    /**
+     * Recebe a instância do PHPMailer e Twig.
+     * 
+     * @param Twig      $view
+     * @param PHPMailer $mailer
+     */
     public function __construct(Twig $view, PHPMailer $mailer)
     {
         $this->view = $view;

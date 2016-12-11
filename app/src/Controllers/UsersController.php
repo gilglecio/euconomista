@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package UsersController
- * @subpackage App\Controller
+ * UsersController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -17,6 +17,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use User;
 
+/**
+ * Responsável pelas rotas de manipulação dos usuários do sistema.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class UsersController extends Controller
 {
 	/**
@@ -27,6 +32,8 @@ final class UsersController extends Controller
 	protected $title = 'Usuários';
 
 	/**
+     * Renderiza a página com a lista de usuários cadastrados.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -45,6 +52,8 @@ final class UsersController extends Controller
     }
 
     /**
+     * Renderiza o formulário para inclusão e edição de usuários.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -62,6 +71,8 @@ final class UsersController extends Controller
     }
 
     /**
+     * Recebe o post do formulário de usuário.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -86,6 +97,8 @@ final class UsersController extends Controller
     }
 
     /**
+     * Recebe a solicitação para apagar um usuário pelo ID.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args

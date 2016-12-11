@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package CategoriesController
- * @subpackage App\Controller
+ * CategoriesController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -17,6 +17,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use Category;
 
+/**
+ * Responsável pelas rotas de acesso as categorias.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class CategoriesController extends Controller
 {
 	/**
@@ -27,6 +32,8 @@ final class CategoriesController extends Controller
 	protected $title = 'Categorias';
 
 	/**
+     * Renderiza a página com a lista de categorias cadastradas.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -45,6 +52,8 @@ final class CategoriesController extends Controller
     }
 
     /**
+     * Renderiza o formulaio de inclusão e edição de categoria.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -72,6 +81,8 @@ final class CategoriesController extends Controller
     }
 
     /**
+     * Recebe o post do frmulário de categoria.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -97,6 +108,8 @@ final class CategoriesController extends Controller
     }
 
     /**
+     * Apaga uma categoria pelo ID.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args

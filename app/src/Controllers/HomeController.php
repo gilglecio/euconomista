@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package HomeController
- * @subpackage App\Controller
+ * HomeController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  *
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -21,6 +21,11 @@ use App\Auth\AuthSession;
 use User;
 use Release;
 
+/**
+ * Controller responsável pela rota home da aplicação.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class HomeController extends Controller
 {
     /**
@@ -31,6 +36,8 @@ final class HomeController extends Controller
     protected $title = 'Home';
 
     /**
+     * Renderiza a página home da aplicação.
+     * 
      * @param Request  $request
      * @param Response $response
      * @param array    $args

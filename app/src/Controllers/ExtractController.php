@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package ExtractController
- * @subpackage App\Controller
+ * ExtractController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -17,6 +17,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use Release;
 
+/**
+ * Responsável pelo gerenciamento das rotas do extrato.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class ExtractController extends Controller
 {
 	/**
@@ -27,6 +32,8 @@ final class ExtractController extends Controller
 	protected $title = 'Extrato';
 
 	/**
+	 * Renderiza a página com o extrato financeiro.
+	 * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package LoginController
- * @subpackage App\Controller
+ * LoginController class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Psr\Http\Message\ServerRequestInterface
  * @uses Psr\Http\Message\ResponseInterface
@@ -19,6 +19,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use App\Auth\AuthSession;
 use User;
 
+/**
+ * Controller responsável pelas rotas de login e logout.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class LoginController extends Controller
 {
 	/**
@@ -29,6 +34,8 @@ final class LoginController extends Controller
     protected $title = 'Login';
 
 	/**
+     * Renderiza o formulário de login.
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -47,6 +54,8 @@ final class LoginController extends Controller
     }
 
     /**
+     * Recebe o post do formulário de login. 
+     * 
 	 * @param Request  $request
 	 * @param Response $response
 	 * @param array    $args
@@ -69,8 +78,11 @@ final class LoginController extends Controller
     }
 
     /**
-     * Desloga o usuário.
+     * Desloga o usuário logado do sistema.
      * 
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
      * @return Response
      */
     public function logout(Request $request, Response $response, array $args)

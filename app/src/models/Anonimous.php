@@ -25,7 +25,7 @@ final class Anonimous extends User
             throw new \Exception('Usuário já cadastrado no sistema.');
         }
 
-        $entity = self::find_by_sql('select max(entity) as entity from users limit 1 ');
+        $entity = self::find_by_sql('select max(entity) as entity from users limit 1');
 
         $fields['entity'] = ((int) $entity[0]->entity) + 1;
 

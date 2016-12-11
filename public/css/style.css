@@ -1,3 +1,20 @@
+.alert {
+    padding: 4px 10px;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    right: 10px;
+}
+
+.alert .alert-link {
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.no-padding-top {
+    padding-top: 0;
+}
+
 .no-padding-bottom {
     padding-bottom: 0;
 }
@@ -16,6 +33,10 @@
 
 .no-margin-bottom {
     margin-bottom: 0;
+}
+
+.no-margin-top {
+    margin-top: 0;
 }
 
 .no-margin-left {

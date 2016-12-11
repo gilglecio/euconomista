@@ -6,7 +6,7 @@ $entidade = 51;
 $categoria = 1;
 
 $pessoas = $pdo->query('select id, nome from pessoas where status <> 0 and entidade_id = ' . $entidade)->fetchAll(\PDO::FETCH_ASSOC);
-$lancamentos = $pdo->query('select l.id, l.natureza, l.data_emissao, l.fin_lancamento_documento_id, l.situacao, l.data_vencimento, l.numero, l.valor, l.pessoa_id from fin_lancamentos l 
+$lancamentos = $pdo->query('select l.id, l.natureza, l.data_emissao, l.fin_lancamento_documento_id, l.situacao, l.data_vencimento, l.numero, l.valor, l.pessoa_id, ld.anotacao from fin_lancamentos l 
 	join fin_lancamento_documentos ld on ld.id = l.fin_lancamento_documento_id and ld.status <> 0
 	where l.status <> 0 and l.entidade_id = ' . $entidade)->fetchAll(\PDO::FETCH_ASSOC);
 $logs = $pdo->query('select ll.id, 2 as acao, ll.data, ll.fin_lancamento_id, ll.valor from fin_lancamento_logs ll 
@@ -98,7 +98,7 @@ try {
 
             $status = $lancamento['situacao'] == 4 ? 2 : 1;
 
-            $q1 = 'insert into releases set `user_id` = 1, `category_id` = 1, `people_id` = ' . $pid . ', `entity` = 1, `number` = \'' . $lancamento['numero'] . '\', `value` = \'' . $lancamento['valor'] . '\', `natureza` = ' . $lancamento['natureza'] . ', `data_vencimento` = \'' . $lancamento['data_vencimento'] . '\', `status` = ' . $status . ', `created_at` = \'' . $lancamento['data_emissao'] . '\', `updated_at` = \'' . $lancamento['data_emissao'] . '\', `process` = \'' . $process .  '\'';
+            $q1 = 'insert into releases set `description` = \'' . $lancamento['anotacao'] . '\', `user_id` = 1, `category_id` = 1, `people_id` = ' . $pid . ', `entity` = 1, `number` = \'' . $lancamento['numero'] . '\', `value` = \'' . $lancamento['valor'] . '\', `natureza` = ' . $lancamento['natureza'] . ', `data_vencimento` = \'' . $lancamento['data_vencimento'] . '\', `status` = ' . $status . ', `created_at` = \'' . $lancamento['data_emissao'] . '\', `updated_at` = \'' . $lancamento['data_emissao'] . '\', `process` = \'' . $process .  '\'';
 
             $hm->query($q1);
 

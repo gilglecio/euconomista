@@ -1,16 +1,29 @@
 <?php
 
 /**
- * @package UserAuthInterface
- * @subpackage App\Interfaces
+ * UserAuthInterface class
+ * 
+ * @package App\Interfaces
+ * @subpackage 
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 namespace App\Interfaces;
 
+/**
+ * Interface para authenticação de usuários.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 interface UserAuthInterface
 {
 	/**
+	 * Deve retorna obrigatoriamente um objeto com as colunas:
+	 *
+	 * - id;
+	 * - entity;
+	 * - password;
+	 * - name.
+	 * 
 	 * @param string $email
 	 * @return \stdClass
 	 */

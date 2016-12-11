@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * Model Release.
+ * 
+ * @uses App\Util\Toolkit
+ */
+
 use App\Util\Toolkit;
 
+/**
+ * Esta classe faz referencia a tabela `releases` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 final class Release extends Model
 {
     const STATUS_ABERTO = 1;
     const STATUS_LIQUIDADO = 2;
 
     /**
+     * Registra os relacionamentos 1:1.
      * @var array
      */
     public static $belongs_to = [
@@ -17,6 +29,7 @@ final class Release extends Model
     ];
 
     /**
+     * Registra os relacionamentos 1:N.
      * @var array
      */
     public static $has_many = [
@@ -24,6 +37,7 @@ final class Release extends Model
     ];
 
     /**
+     * Validação de campos obrigatŕios.
      * @var array
      */
     public static $validates_presence_of = [
@@ -35,13 +49,20 @@ final class Release extends Model
     ];
 
     /**
+     * Não permite que exista um lançamento na entidade, da mesma pessoa com natureza, data de vencimento e número iguais.
+     * 
      * @var array
      */
     public static $validates_uniqueness_of = [
-        [['entity', 'data_vencimento', 'people_id']]
+        [['entity', 'natureza', 'data_vencimento', 'people_id', 'number']]
     ];
 
     /**
+     * Callbacks executados antes de um lançamento ser apagado.
+     *
+     * - O callback `deleteAllLogs` é utilizado para remover os logs de emissão do lançamento.
+     * - O callback `saveBackup` é utilizado para armazenar o registro para que seja possível restaurar caso necessário.
+     * 
      * @var array
      */
     public static $before_destroy = [
@@ -391,6 +412,11 @@ final class Release extends Model
         return true;
     }
 
+    /**
+     * Verifica se o lançamento pode ser apagado. quanquer lançamento pode ser apagado basta ele não ter nenhum log de quitação.
+     * 
+     * @return boolean
+     */
     public function canDelete()
     {
         return is_null($this->getLastLog());

@@ -23,7 +23,7 @@
         <li><a onclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
     </ol>
 
-    {% include 'macro.twig' with {error:error} %}
+    {% include 'macro.twig' with {messages: messages} %}
 
     <table class="table">
     	<thead>

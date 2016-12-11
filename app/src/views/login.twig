@@ -4,30 +4,35 @@
 
 {% block content %}
 <div class="content-wrapper">
-    <div class="container jumbotron">
+    <div class="container">
         <div class="row">
-            <div class="col-xs-4 col-xs-offset-4">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 
-                {% include 'macro.twig' with {error:error} %}
+                {% include 'macro.twig' with {messages: messages} %}
 
-                <form class="form-horizontal" method="post" action="/login">
-                    <div class="row" style="margin-bottom:15px">
-                        <div class="col-xs-12">
-                            <input placeholder="E-Mail" type="text" name="email" class="form-control">
+                <form class="form-horizontal jumbotron" method="post" action="/login">
+
+                    <fieldset>
+                        <legend>LOGIN</legend>
+
+                        <div class="row" style="margin-bottom:15px">
+                            <div class="col-xs-12">
+                                <input required placeholder="E-Mail" type="text" name="email" class="form-control">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-bottom:15px">
-                        <div class="col-xs-12">
-                            <input placeholder="Senha" type="password" name="password" class="form-control">
+                        <div class="row" style="margin-bottom:15px">
+                            <div class="col-xs-12">
+                                <input required placeholder="Senha" type="password" name="password" class="form-control">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn btn-primary pull-right btn-block">Entrar</button>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-primary pull-right btn-block">Entrar</button>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
                     <div class="form-group no-margin-bottom">
                         <div class="col-xs-12">

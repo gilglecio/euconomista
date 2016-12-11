@@ -14,17 +14,18 @@
 
     <hr>
 
-    {% include 'macro.twig' with {error:error} %}
+    {% include 'macro.twig' with {messages: messages} %}
 
     <table class="table table-striped">
     	<thead>
     		<tr>
     			<th>Vencimento</th>
     			<th>Número</th>
-                <th>Categoria</th>
+                <th class="hidden-sm hidden-xs">Categoria</th>
                 <th>Pessoa</th>
+                <th class="hidden-sm hidden-xs">Descrição</th>
                 <th>Status</th>
-    			<th class="text-right">Valor R$</th>
+    			<th style="min-width:80px" class="text-right">Valor R$</th>
     		</tr>
     	</thead>
 
@@ -35,8 +36,9 @@
                 <td>
                     <a href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
                 </td>
-                <td>{{ row.category }}</td>
+                <td class="hidden-sm hidden-xs">{{ row.category }}</td>
                 <td>{{ row.people }}</td>
+                <td class="hidden-sm hidden-xs">{{ row.desc }}</td>
                 
                 <td style="{% if row.status == 'Vencido' %}font-weight:bold{% endif %}">
                     {{ row.status }}

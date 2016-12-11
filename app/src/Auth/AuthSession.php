@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package AuthSession
- * @subpackage App\Auth
+ * Authentication
+ * 
+ * @package App\Auth
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses App\Interfaces\UserAuthInterface
  */
@@ -12,6 +12,11 @@ namespace App\Auth;
 
 use App\Interfaces\UserAuthInterface;
 
+/**
+ * User authentication
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 class AuthSession
 {
 	/**
@@ -51,6 +56,11 @@ class AuthSession
 		return true;
 	}
 
+	/**
+	 * Verifica se existe um usuário logado.
+	 * 
+	 * @return boolean
+	 */
 	static function isAuthenticated()
 	{
 		return isset($_SESSION[self::AUTH_SESSION_NAME]);

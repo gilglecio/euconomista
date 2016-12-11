@@ -9,7 +9,7 @@
     	<li><a href="/app/releases">Lista de Lançamentos</a> | <a href="/app/releases">Lista de Ações da Parcela</a></li>
     </ul>
 
-    {% include 'macro.twig' with {error:error} %}
+    {% include 'macro.twig' with {messages: messages} %}
 
     <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/releases/{{ release_id }}/liquidar">

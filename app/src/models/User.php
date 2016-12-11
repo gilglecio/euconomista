@@ -1,16 +1,21 @@
 <?php
 
+/**
+ * Model User.
+ */
+
 use App\Interfaces\UserAuthInterface;
 use App\Auth\AuthSession;
 
+/**
+ * Esta classe faz referencia a tabela `users` no banco de dados.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 class User extends Model implements UserAuthInterface
 {
 	/**
-	 * @var string
-	 */
-	static $table_name = 'users';
-
-	/**
+	 * Validação de campos obrigatŕios.
 	 * @var array
 	 */
 	public static $validates_presence_of = [
@@ -20,6 +25,7 @@ class User extends Model implements UserAuthInterface
 	];
 
 	/**
+	 * Validação para saber se o email passado é válido.
 	 * @var array
 	 */
 	public static $validates_format_of = [
@@ -27,6 +33,7 @@ class User extends Model implements UserAuthInterface
 	];
 
 	/**
+	 * Validação para não permitir que exista dois usuários com dois emails iguais.
 	 * @var array
 	 */
 	public static $validates_uniqueness_of = [
@@ -34,6 +41,7 @@ class User extends Model implements UserAuthInterface
 	];
 
 	/**
+	 * Validação para definir a quantidade de caracteres campo a campo.
 	 * @var array
 	 */
 	public static $validates_length_of = [
@@ -42,6 +50,7 @@ class User extends Model implements UserAuthInterface
 	];
 
 	/**
+	 * Define os relacionamentos 1:N.
 	 * @var array
 	 */
 	public static $has_many = [
@@ -52,6 +61,11 @@ class User extends Model implements UserAuthInterface
 	];
 
 	/**
+	 * Callbacks que devem ser executados toda vez que um usuário é criado.
+	 * 
+	 * - O callback `setUserAndEntity` serve para setar 
+	 * automaticamente a coluna `entity` e a coluna `user_id`. 
+	 * - O callback `encryptPassword` é invocado para encriptar a senha do usuário.
 	 * @var array
 	 */
 	public static $before_create = [
@@ -155,6 +169,12 @@ class User extends Model implements UserAuthInterface
 		return true;
 	}
 
+	/**
+	 * Personaliza a descrição dos logs do usuário, ao criar, editr e apagar.
+	 * 
+	 * @param string $action A ação pode ser `create`, `update` ou `destroy`.
+	 * @return string Frase personalizada confirme ação.
+	 */
 	public function getLogDescription($action)
 	{
 		return [

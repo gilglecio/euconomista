@@ -1,15 +1,9 @@
-{% if error|length %}
-<div class="alert alert-danger">
-    {% for e in error %}
-    <span>{{ e }}</span>
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if success|length %}
-<div class="alert alert-success">
-    {% for s in success %}
-    <span>{{ s }}</span>
-    {% endfor %}
-</div>
-{% endif %}
+{% for rows in messages %}
+	{% for type, mms in rows %}
+	<div class="alert alert-{{ type }}">
+		{% for m in mms %}
+	    <a title="Fechar" href class="alert-link" data-dismiss="alert">{{ m }}</a>
+		{% endfor %}
+	</div>
+	{% endfor %}
+{% endfor %}

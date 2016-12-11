@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @package Controller
- * @subpackage App\Controller
+ * Controller class
+ * 
+ * @package App\Controller
  * @version v1.0
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  * 
  * @uses Slim\Container
  */
@@ -12,31 +12,39 @@ namespace App\Controller;
 
 use Slim\Container;
 
+/**
+ * Classe abstrata para ser extendida pelos contrllers.
+ * 
+ * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
+ */
 abstract class Controller
 {
 	/**
+     * Recebe a instância do Twig.
 	 * @var \Slim\Views\Twig
 	 */
     protected $view;
 
     /**
+     * Recebe a instância de Logger.
      * @var \Monolog\Logger
      */
     protected $logger;
 
     /**
+     * Recebe a instância de Messages.
      * @var \Slim\Flash\Messages
      */
     protected $flash;
 
     /**
-     * Título da página
-     * 
+     * Título da página padrão.
      * @var string
      */
     protected $title = 'Page Title';
 
     /**
+     * Recebe a instancia do container do Slim.
      * @param Container $app
      */
     public function __construct(Container $app)
@@ -58,36 +66,72 @@ abstract class Controller
     public function redirectWithError($response, $message, $url, $status = 406)
     {
         $this->logger->info(get_called_class() . ': ' . $message);
-        $this->flash->addMessage('error', $message);
+        $this->error($message);
 
         return $response->withRedirect($url, $status);
     }
 
-    public function getErrorMessages()
+    /**
+     * Adiciona uma mensagem do tipo `success` no flash message.
+     * 
+     * @param string $message Mensagem de sucesso.
+     * @return void
+     */
+    public function success($message)
     {
-        /**
-         * @var array
-         */
-        $messages = $this->flash->getMessages();
-
-        if (isset($messages['error'])) {
-            return $messages['error'];
-        }
-
-        return null;
+        $this->flash->addMessage('success', $message);
     }
 
+    /**
+     * Adiciona uma mensagem do tipo `error` no flash message.
+     * 
+     * @param string $message Mensagem de error.
+     * @return void
+     */
+    public function error($message)
+    {
+        $this->flash->addMessage('danger', $message);
+    }
+
+    /**
+     * Retorna as mensagens de erro armazenadas no flash message.
+     * 
+     * @return array
+     */
+    public function getErrorMessages()
+    {
+        return $this->getMessages('error');
+    }
+
+    /**
+     * Retorna as mensagens de sucesso armazenadas no flash message.
+     * 
+     * @return array
+     */
     public function getSuccessMessages()
+    {
+        return $this->getMessages('success');
+    }
+
+    /**
+     * Retorna mensagens do flash message.
+     * 
+     * @param string $key Nome da chave que a mensagem foi armazenada.
+     * @return array Mensagens armazenadas na chave passada.
+     */
+    public function getMessages($key = null)
     {
         /**
          * @var array
          */
         $messages = $this->flash->getMessages();
 
-        if (isset($messages['success'])) {
-            return $messages['success'];
+        if ($key) {
+            return isset($messages[$key]) ? $messages[$key] : null;
         }
 
-        return null;
+        return [
+            'messages' => $messages
+        ];
     }
 }

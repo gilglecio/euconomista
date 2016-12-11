@@ -168,7 +168,7 @@ abstract class Model extends ActiveRecord\Model
 			$relation = $relation[0];
 
 			if (count($this->{$relation})) {
-				throw new \Exception(get_called_class() . " está sendo usado por '{$relation}'");
+				throw new \Exception('Este registro está em uso no sistema.');
 			}
 		}
 	}

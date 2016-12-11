@@ -37,7 +37,7 @@ final class CategoriesController extends Controller
     {
         $this->view->render($response, 'app/categories/index.twig', [
         	'title' => $this->title,
-            'error' => $this->getErrorMessages(),
+            'messages' => $this->getMessages(),
         	'rows' => Category::find('all')
         ]);
         
@@ -53,7 +53,7 @@ final class CategoriesController extends Controller
 	 */
     public function form(Request $request, Response $response, array $args)
     {
-    	$data = $this->flash->getMessages();
+    	$data = $this->getMessages();
 
         if (isset($args['category_id'])) {
 
@@ -91,6 +91,8 @@ final class CategoriesController extends Controller
         	return $this->redirectWithError($response, $e->getMessage(), '/app/categories/form');
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/categories');
     }
 
@@ -108,6 +110,8 @@ final class CategoriesController extends Controller
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/categories');
         }
+
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/categories');
     }

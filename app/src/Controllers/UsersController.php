@@ -93,6 +93,8 @@ final class UsersController extends Controller
         	return $this->redirectWithError($response, $e->getMessage(), '/app/users/form');
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/users');
     }
 
@@ -112,6 +114,8 @@ final class UsersController extends Controller
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/users');
         }
+
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/users');
     }

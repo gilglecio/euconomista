@@ -79,7 +79,7 @@ final class LogsController extends Controller
         	return $this->redirectWithError($response, $e->getMessage(), '/app/logs');
         }
 
-        $this->success('Backup restaurado!');
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/logs');
     }

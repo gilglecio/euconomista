@@ -156,6 +156,8 @@ final class ReleasesController extends Controller
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/releases');
     }
 
@@ -265,6 +267,8 @@ final class ReleasesController extends Controller
             );
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
@@ -288,6 +292,8 @@ final class ReleasesController extends Controller
                 '/app/releases/' . $args['release_id'] . '/logs'
             );
         }
+
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
@@ -313,6 +319,8 @@ final class ReleasesController extends Controller
             );
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/releases');
     }
 
@@ -336,6 +344,8 @@ final class ReleasesController extends Controller
                 '/app/releases/' . $args['release_id'] . '/logs'
             );
         }
+
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/releases');
     }

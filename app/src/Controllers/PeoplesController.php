@@ -102,6 +102,8 @@ final class PeoplesController extends Controller
         	return $this->redirectWithError($response, $e->getMessage(), '/app/peoples/form');
         }
 
+        $this->success('Sucesso!');
+
         return $response->withRedirect('/app/peoples');
     }
 
@@ -121,6 +123,8 @@ final class PeoplesController extends Controller
         } catch (\Exception $e) {
         	return $this->redirectWithError($response, $e->getMessage(), '/app/peoples');
         }
+
+        $this->success('Sucesso!');
 
         return $response->withRedirect('/app/peoples');
     }

@@ -38,6 +38,15 @@ Config::initialize(function ($cfg) use ($settings) {
     $cfg->set_model_directory($settings['settings']['models_path']);
     $cfg->set_connections([
         // 'development' => 'mysql://username:password@localhost/database_name'
+        'test' => sprintf(
+            '%s://%s:%s@%s/%s?charset=utf8',
+            $db->driver,
+            $db->username,
+            $db->password,
+            $db->host,
+            $db->dbname . '_test'
+        ),
+
         'development' => sprintf(
             '%s://%s:%s@%s/%s?charset=utf8',
             $db->driver,
@@ -47,6 +56,14 @@ Config::initialize(function ($cfg) use ($settings) {
             $db->dbname
         )
     ]);
+
+    $default = 'development';
+
+    if (APP_URL == 'http://localhost:3002') {
+        $default = 'test';
+    }
+
+    $cfg->set_default_connection($default);
 });
 
 $app = new App($settings);

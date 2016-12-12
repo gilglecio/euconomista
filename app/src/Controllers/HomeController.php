@@ -50,14 +50,13 @@ final class HomeController extends Controller
          * @var User
          */
         if (! $user = User::find(AuthSession::getUserId())) {
-            throw new \Exception('Usuário não localizado.');
+            return $this->redirectWithError($response, 'Usuário não localizado.', '/logout');
         }
 
         $start_date = new \Datetime(date('Y-m-15'));
         $start_date->sub(new \Dateinterval('P6M'));
         $end_date = new \Datetime(date('Y-m-15'));
         $end_date->add(new \Dateinterval('P6M'));
-
 
         $rows = Release::find_by_sql(
             "select count(*) as rows, sum(value) as value, natureza, date from (

@@ -110,6 +110,10 @@ class UserLog extends Model
 	 */
 	public static function logout()
 	{
+		if (! User::find(AuthSession::getUserId())) {
+			return null;
+		}
+
 		$log = self::create([
 			'action' => 'logout',
 			'class_name' => AuthSession::class,
@@ -160,6 +164,10 @@ class UserLog extends Model
 		$description = $data['model']->getLogDescription($data['action']);
 
 		if (is_null($description)) {
+			return;
+		}
+
+		if (is_null($data['model']->user_id)) {
 			return;
 		}
 

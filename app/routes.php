@@ -4,6 +4,30 @@
 $app->get('/', 'App\Controller\IndexController:index')
 	->setName('index');
 
+# RESET
+$app->get('/reset', function () {
+
+	$pdo = new \PDO('mysql:host=localhost;dbname=hmgestor_test', 'root', '123', [
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+	]);
+
+	try {
+		$pdo->beginTransaction();
+
+		foreach (['release_logs', 'releases', 'peoples', 'categories', 'user_logs', 'users'] as $table) {
+			$pdo->query('delete from `' . $table . '`');
+		}
+
+		$pdo->commit();
+	} catch (\Exception $e) {
+		$pdo->rollback();
+		die($e->getMessge());
+	}
+
+	die('OK');
+
+})->setName('reset');
+
 # AUTHENTICATION
 $app->get('/login', 'App\Controller\LoginController:index')
 	->setName('login.form');
@@ -50,6 +74,12 @@ $app->group('/app', function () {
 	$this->group('/reports', function () {
 		$this->get('', 'App\Controller\ReportsController:index')
 			->setName('reports');
+	});
+
+	# MY
+	$this->group('/me', function () {
+		$this->get('', 'App\Controller\MeController:index')
+			->setName('me');
 	});
 
 	# USER LOGS

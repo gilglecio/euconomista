@@ -200,6 +200,7 @@ final class Release extends Model
                     'data_vencimento' => clone $vencimento,
                     'people_id' => $fields['people_id'],
                     'category_id' => $fields['category_id'],
+                    'description' => $fields['description'],
                     'process' => $process
                 ]);
                 

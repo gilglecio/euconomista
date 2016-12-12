@@ -20,7 +20,7 @@ class FeatureContext extends MinkContext
      */
     public function before($args)
     {
-        $this->getSession()->resizeWindow(800, 600);
+        $this->getSession()->resizeWindow(1280, 720);
         $this->visit($this->parameters['base_url']);
     }
 

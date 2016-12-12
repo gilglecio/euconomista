@@ -15,14 +15,18 @@
     <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/categories">
 
-	    	<input type="hidden" name="id" value="{{ data.id }}">
+	    	<fieldset>
+	    		<legend>Categoria</legend>
 
-	    	<div class="form-group">
-	    		<label for="name" class="control-label col-xs-3">Nome</label>
-	    		<div class="col-xs-9">
-	    			<input type="text" minlength="3" value="{{ data.name }}" maxlength="25" id="name" autofocus required name="name" class="form-control">
-	    		</div>
-	    	</div>
+	    		<input type="hidden" name="id" value="{{ data.id }}">
+
+		    	<div class="form-group">
+		    		<label for="name" class="control-label col-xs-3">Nome</label>
+		    		<div class="col-xs-9">
+		    			<input type="text" minlength="3" value="{{ data.name }}" maxlength="25" id="name" autofocus required name="name" class="form-control">
+		    		</div>
+		    	</div>
+	    	</fieldset>
 
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-9 col-xs-offset-3">

@@ -83,6 +83,7 @@ final class ReleasesController extends Controller
 
         $this->view->render($response, 'app/releases/index.twig', [
             'title' => $this->title,
+            'messages' => $this->getMessages(),
             'rows' => $rows
         ]);
         
@@ -151,6 +152,7 @@ final class ReleasesController extends Controller
                 'natureza' => (int) $request->getParsedBodyParam('natureza'),
                 'value' => (float) $request->getParsedBodyParam('value'),
                 'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
+                'description' => $request->getParsedBodyParam('description'),
             ]);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');

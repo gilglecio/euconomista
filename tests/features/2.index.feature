@@ -1,3 +1,4 @@
+@index
 Feature: Página index
 	
 	@javascript
@@ -5,5 +6,5 @@ Feature: Página index
 		
 		Then I should see "HmGestor"
 		Then I should see "Login"
-		Then I should see "Register"
+		Then I should see "Cadastro"
 		Then I should see "Todos os direitos reservados"

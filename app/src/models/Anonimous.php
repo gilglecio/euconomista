@@ -12,6 +12,12 @@
 final class Anonimous extends User
 {
     /**
+     * Nome da tabela.
+     * @var string
+     */
+    public static $table_name = 'users';
+
+    /**
      * Este método foi reescrito para que não seja setado a coluna `entity` e `user_id` automaticamente.
      */
     public function setUserAndEntity()

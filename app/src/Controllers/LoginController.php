@@ -47,7 +47,6 @@ final class LoginController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
     	$data = ['messages' => $this->getMessages()];
-        // dd($data);
     	$data['title'] = $this->title;
 
         $this->view->render($response, 'login.twig', $data);
@@ -92,8 +91,10 @@ final class LoginController extends Controller
      */
     public function logout(Request $request, Response $response, array $args)
     {
-        UserLog::logout();
-        AuthSession::clear();
+        if (AuthSession::isAuthenticated()) {
+            UserLog::logout();
+            AuthSession::clear();
+        }
 
     	return $response->withRedirect('/login');
     }

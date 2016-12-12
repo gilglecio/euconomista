@@ -1,3 +1,7 @@
+.nav > li > a {
+    padding: 15px 8px;
+}
+
 .alert .alert-link {
     text-decoration: none;
     font-weight: normal;

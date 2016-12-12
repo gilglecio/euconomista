@@ -3,7 +3,6 @@ log/*
 cache/*
 *.local
 *.bak
-*.dat
 /scripts
 /public/behat.html
 /public/assets

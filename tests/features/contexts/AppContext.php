@@ -3,6 +3,7 @@
 use Behat\MinkExtension\Context\MinkContext;
 
 include __DIR__ . '/PeopleContext.php';
+include __DIR__ . '/CategoryContext.php';
 
 /**
  * App Context
@@ -10,6 +11,7 @@ include __DIR__ . '/PeopleContext.php';
 class AppContext extends MinkContext
 {
     use \PeopleContext;
+    use \CategoryContext;
 
     /**
      * @var array

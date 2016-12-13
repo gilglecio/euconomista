@@ -17,14 +17,7 @@ Feature: Página de categorias
 	@javascript
 	Scenario: Cadastrando uma categoria
 
-		When I follow "Adicionar"
-		Then I should be on "/app/categories/form"
-		Then I should see "Salvar"
-
-		Given When I fill in "name" with "Categoria 001"
-		Given I press "Salvar" button
-		Then I should be on "/app/categories"
-		Then I should see "Sucesso!"
+		When I add the person "Categoria 001"
 		Then I should see "Categoria 001"
 
 	@javascript

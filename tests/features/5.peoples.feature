@@ -1,5 +1,5 @@
 @peoples
-Feature: Página de categorias
+Feature: Página de pessoas
 
 	Background:
 		When I login
@@ -8,23 +8,16 @@ Feature: Página de categorias
 		Then I should be on "/app/peoples"
 
 	@javascript
-	Scenario: Verificando a grid de categorias
+	Scenario: Verificando a grid de pessoas
 		
 		Then I should see "Adicionar"
 		Then I should see "Nome"
 		Then I should see "Sem registros."
 
 	@javascript
-	Scenario: Cadastrando uma categoria
+	Scenario: Cadastrando uma pessoa
 
-		When I follow "Adicionar"
-		Then I should be on "/app/peoples/form"
-		Then I should see "Salvar"
-
-		Given When I fill in "name" with "Pessoa 001"
-		Given I press "Salvar" button
-		Then I should be on "/app/peoples"
-		Then I should see "Sucesso!"
+		When I add the person "Pessoa 001"
 		Then I should see "Pessoa 001"
 
 	@javascript

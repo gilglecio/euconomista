@@ -2,11 +2,15 @@
 
 use Behat\MinkExtension\Context\MinkContext;
 
+include __DIR__ . '/PeopleContext.php';
+
 /**
  * App Context
  */
 class AppContext extends MinkContext
 {
+    use \PeopleContext;
+
     /**
      * @var array
      */

@@ -1,7 +1,16 @@
 default:
     context:
-        class: FeatureContext
+        class: AppContext
         parameters:
+            width: 1280
+            heigth: 1280
+            
+            user_email: test@hmgestor.com
+            user_name: Tester
+            user_password: 123456
+
+            private_index: '/app'
+
             base_url: http://localhost:3002
     paths:
         features: tests/features

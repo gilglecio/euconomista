@@ -3,6 +3,7 @@ Feature: Página de categorias
 
 	Background:
 		When I login
+		Then I should be on "/app"
 		When I follow "Pessoas"
 		Then I should be on "/app/peoples"
 

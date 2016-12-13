@@ -156,15 +156,29 @@ JS;
     }
 
     /**
+     * @When /^I register user$/
+     */
+    public function register()
+    {
+        $this->visit($this->params['base_url'] . '/register');
+
+        $this->getSession()->getPage()->fillField('name', $this->params['user_name']);
+        $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
+        $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
+        $this->getSession()->getPage()->fillField('confirm_password', $this->params['user_password']);
+
+        $this->getSession()->getPage()->find('named', array('button', "\"Cadastrar\""))->click();
+    }
+
+    /**
      * @When /^I login$/
      */
     public function login()
     {
-        $this->logout();
+        $this->visit($this->params['base_url'] . '/login');
         $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
         $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
         $this->getSession()->getPage()->find('named', array('button', "\"Entrar\""))->click();
-        $this->assertPageAddress($this->params['private_index']);
     }
 
     /**
@@ -173,6 +187,5 @@ JS;
     public function logout()
     {
         $this->visit($this->params['base_url'] . '/logout');
-        $this->assertPageAddress('/login');
     }
 }

@@ -3,7 +3,7 @@ default:
         class: AppContext
         parameters:
             width: 1280
-            heigth: 1280
+            heigth: 720
             
             user_email: test@hmgestor.com
             user_name: Tester

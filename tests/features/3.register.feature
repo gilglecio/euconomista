@@ -12,11 +12,7 @@ Feature: Página de cadastro
 		Then I should see "Cadastre-se"
 		Then I should see "Cadastrar"
 
-		Given When I fill in "name" with "Tester"
-		Given When I fill in "email" with "test@hmgestor.com"
-		Given When I fill in "password" with "123456"
-		Given When I fill in "confirm_password" with "123456"
-		Given I press "Cadastrar" button
+		When I register user
 
 		Then I should be on "/login"
 		Then I should see "Cadastrado! Acesso liberado."
@@ -24,11 +20,7 @@ Feature: Página de cadastro
 	@javascript
 	Scenario: Verificando validação que não permite cadastrar dois usuários com o mesmo e-mail
 		
-		Given When I fill in "name" with "Tester"
-		Given When I fill in "email" with "test@hmgestor.com"
-		Given When I fill in "password" with "123456"
-		Given When I fill in "confirm_password" with "123456"
-		Given I press "Cadastrar" button
+		When I register user
 
 		Then I should be on "/register"
 		Then I should see "Usuário já cadastrado no sistema."

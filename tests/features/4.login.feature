@@ -16,6 +16,7 @@ Feature: Página de login
 	Scenario: Acessando o sistema com o usuário Tester
 
 		When I login
+		Then I should be on "/app"
 		Then I should see "Tester"
 		Then I should see "Sair"
 
@@ -23,7 +24,7 @@ Feature: Página de login
 	Scenario: Todas as grid devem está vazias
 
 		When I login
-
+		Then I should be on "/app"
 		When I follow "Lançamentos"
 		Then I should be on "/app/releases"
 		Then I should see "Adicionar"

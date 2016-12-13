@@ -92,3 +92,45 @@ Feature: Página de lançamentos
 		Then I should see "166,67"
 		Then I should see "166,66"
 		Then I should see "Receita de R$ 500,00 em 3x"
+
+	@javascript
+	Scenario: Verificando logs dos lançamentos emitidos
+	
+		Then I follow "Logs"
+		Then I devo esta em "/app/logs"
+		
+		Then I should see "Emissão receita nº 1/1 'Pessoa 001' R$ 1.000,00"
+		
+		Then I should see "Emissão despesa nº 1/2 'Pessoa 001' R$ 50,00"
+		Then I should see "Emissão despesa nº 2/2 'Pessoa 001' R$ 50,00"
+
+		Then I should see "Emissão despesa nº 1/3 'Pessoa 001' R$ 166,67"
+		Then I should see "Emissão despesa nº 2/3 'Pessoa 001' R$ 166,67"
+		Then I should see "Emissão despesa nº 3/3 'Pessoa 001' R$ 166,66"
+
+		Then I should not see "Restaurar"
+
+	@javascript
+	Scenario: Liquidação parcial de um lançamento
+
+		Then I follow "1/1"
+		Then I should see "Extrato de lançamento"
+		Then I should see "Emissão"
+		Then I should see "Lançamento nº 1/1"
+		Then I should see "Liquidar"
+		Then I should see "Editar"
+		Then I should see "Apagar este lançamento"
+		Then I should see "Apagar todos os lançamentos deste documento"
+		Then I should see "1.000,00"
+
+		Then I follow "Liquidar"
+
+		Then I should see "Lista de ações da parcela"
+		Then I should see "1000"
+		Then I should see "Liquidar"
+
+		Given When I fill in "value" with "350"
+		Given I press "Liquidar" button
+		Then I should see "Sucesso!"
+		Then I should see "Recebimento"
+		Then I should see "350,00"

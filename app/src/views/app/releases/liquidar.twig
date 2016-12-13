@@ -3,11 +3,11 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <h3>{{ title }}</h3>
 
-    <ul>
-    	<li><a href="/app/releases">Lista de Lançamentos</a> | <a href="/app/releases">Lista de Ações da Parcela</a></li>
-    </ul>
+    <ol class="breadcrumb">
+    	<li><a href="/app/releases">Lançamentos</a></li>
+    	<li><a href="/app/releases/{{ release_id }}/logs">Lista de ações da parcela</a></li>
+    </ol>
 
     {% include 'macro.twig' with {messages: messages} %}
 
@@ -30,7 +30,7 @@
 
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-10 col-xs-offset-2">
-	    			<button class="btn btn-primary" type="submit">Salvar</button>
+	    			<button class="btn btn-primary" type="submit">Liquidar</button>
 	    		</div>
 	    	</div>
 	    </form>

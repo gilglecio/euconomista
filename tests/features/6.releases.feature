@@ -63,7 +63,7 @@ Feature: Página de lançamentos
 		Then I should see "Receita de R$ 100,00 em 2x"
 
 	@javascript
-	Scenario: Lançando trẽs despesas
+	Scenario: Lançando três despesas
 
 		When I follow "Adicionar"
 		Then I should be on "/app/releases/form"
@@ -235,7 +235,22 @@ Feature: Página de lançamentos
 		Then I should see "650,00"
 
 	@javascript
-	Scenario: Desfazendo a primeira liquidação
+	Scenario: Tentando apagar um lançamento que sofreu liquidação
+
+		Then I follow "1/1"
+		
+		Then I follow "Apagar este lançamento"
+		Then I should see "O lançamento '1/1' foi movimentado."
+		Then I follow "O lançamento '1/1' foi movimentado."
+		Then I should not see "O lançamento '1/1' foi movimentado."
+
+		Then I follow "Apagar todos os lançamentos deste documento"
+		Then I should see "O lançamento '1/1' foi movimentado."
+		Then I follow "O lançamento '1/1' foi movimentado."
+		Then I should not see "O lançamento '1/1' foi movimentado."		
+
+	@javascript
+	Scenario: Desfazendo a liquidação parcial
 		
 		Then I follow "1/1"
 		Then I follow "Desfazer"
@@ -247,3 +262,36 @@ Feature: Página de lançamentos
 		Then I follow "Lançamentos"
 		Then I should see "1/1"
 		Then I should see "1.000,00"
+
+	@javascript
+	Scenario: Tentando apagar a pessoa usada nos lançamentos
+		
+		Then I follow "Pessoas"
+		Then I should be on "/app/peoples"
+		Then I follow "delete-person-1"
+		Then I should see "Este registro está em uso no sistema."
+
+	@javascript
+	Scenario: Tentando apagar a categoria usada nos lançamentos
+		
+		Then I follow "Categorias"
+		Then I should be on "/app/categories"
+		Then I follow "delete-category-1"
+		Then I should see "Este registro está em uso no sistema."
+
+	@javascript
+	Scenario: Apagando o lançamento de mil reais
+		
+		Then I follow "1/1"
+		Then I follow "Apagar este lançamento"
+		Then I should see "Sucesso!"
+		Then I should not see "1/1"
+
+		Then I follow "Todas"
+		Then I should not see "1/1"
+
+		Then I should see "1/2"
+		Then I should see "2/2"
+		Then I should see "1/3"
+		Then I should see "2/3"
+		Then I should see "3/3"

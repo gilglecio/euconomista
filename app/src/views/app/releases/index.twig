@@ -47,7 +47,7 @@
                 <td style="color:{{ row.color }}" class="text-right">
                     {{ row.value }}
                     {% if row.status != 'Pago' %}
-                    <a id="liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
+                    <a id="release-liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
                     </i></a>
                     {% endif %}
                 </td>

@@ -162,22 +162,7 @@ JS;
     }
 
     /**
-     * @When /^I register user$/
-     */
-    public function register()
-    {
-        $this->visit($this->params['base_url'] . '/register');
-
-        $this->getSession()->getPage()->fillField('name', $this->params['user_name']);
-        $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
-        $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
-        $this->getSession()->getPage()->fillField('confirm_password', $this->params['user_password']);
-
-        $this->getSession()->getPage()->find('named', array('button', "\"Cadastrar\""))->click();
-    }
-
-    /**
-     * @When /^I login$/
+     * @When /^I log in I should be inside the application$/
      */
     public function login()
     {
@@ -185,6 +170,7 @@ JS;
         $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
         $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
         $this->getSession()->getPage()->find('named', array('button', "\"Entrar\""))->click();
+        $this->assertPageAddress('/app');
     }
 
     /**
@@ -193,5 +179,43 @@ JS;
     public function logout()
     {
         $this->visit($this->params['base_url'] . '/logout');
+    }
+
+    /**
+     * @When /^resetting the database I should see the text OK on screen$/
+     */
+    public function resettingTheDatabaseIShouldSeeTheTextOKOnScreen()
+    {
+        $this->visit($this->params['base_url'] . '/reset');
+        $this->assertPageContainsText('OK');
+    }
+
+    /**
+     * @When /^registering a user$/
+     */
+    public function registeringAUser()
+    {
+        $this->visit($this->params['base_url'] . '/register');
+        $this->getSession()->getPage()->fillField('name', $this->params['user_name']);
+        $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
+        $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
+        $this->getSession()->getPage()->fillField('confirm_password', $this->params['user_password']);
+        $this->getSession()->getPage()->find('named', array('button', "\"Cadastrar\""))->click();
+    }
+
+    /**
+     * @Then /^I should be redirected to the login page$/
+     */
+    public function iShouldBeRedirectedToTheLoginPage()
+    {
+        $this->assertPageAddress('/login');
+    }
+
+    /**
+     * @Given /^view the message of success$/
+     */
+    public function viewTheMessageOfSuccess()
+    {
+        $this->assertPageContainsText('Sucesso!');
     }
 }

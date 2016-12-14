@@ -2,8 +2,7 @@
 Feature: Página de categorias
 
 	Background:
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		When I follow "Categorias"
 		Then I should be on "/app/categories"
 

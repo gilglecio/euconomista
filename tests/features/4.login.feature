@@ -15,16 +15,14 @@ Feature: Página de login
 	@javascript
 	Scenario: Acessando o sistema com o usuário Tester
 
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		Then I should see "Tester"
 		Then I should see "Sair"
 
 	@javascript
 	Scenario: Todas as grid devem está vazias
 
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		When I follow "Lançamentos"
 		Then I should be on "/app/releases"
 		Then I should see "Adicionar"

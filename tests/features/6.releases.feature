@@ -2,8 +2,7 @@
 Feature: Página de lançamentos
 
 	Background:
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		When I follow "Lançamentos"
 		Then I should be on "/app/releases"
 

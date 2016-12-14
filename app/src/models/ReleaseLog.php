@@ -17,6 +17,8 @@ final class ReleaseLog extends Model
 {
 	const ACTION_EMISSAO = 1;
 	const ACTION_LIQUIDACAO = 2;
+	const ACTION_ENCARGO = 3;
+	const ACTION_DESCONTO = 4;
 
 	/**
 	 * Define os relacionamentos 1:1.
@@ -25,6 +27,14 @@ final class ReleaseLog extends Model
 	public static $belongs_to = [
         ['release'],
         ['user']
+    ];
+
+    /**
+	 * Define os relacionamentos 1:N.
+     * @var array
+     */
+	public static $has_many = [
+        ['childs', 'class_name' => 'ReleaseLog', 'foreign_key' => 'parent_id']
     ];
 
     /**
@@ -48,6 +58,8 @@ final class ReleaseLog extends Model
 	{
 		return [
 			self::ACTION_EMISSAO => 'Emissão',
+			self::ACTION_ENCARGO => 'Encargos',
+			self::ACTION_DESCONTO => 'Desconto',
 			self::ACTION_LIQUIDACAO => $this->release->natureza == 1 ? 'Recebimento' : 'Pagamento'
 		][$this->action];
 	}
@@ -92,6 +104,8 @@ final class ReleaseLog extends Model
 				throw new \Exception($release->errors->full_messages()[0]);
 			}
 
+			$this->deleteChilds();
+
 			if (! $this->delete()) {
 				throw new \Exception("Falha ao apagar o log #{$this->id}.", 1);
 			}
@@ -104,6 +118,13 @@ final class ReleaseLog extends Model
 		}
 
 		return true;
+	}
+
+	public function deleteChilds()
+	{
+		foreach ($this->childs as $log) {
+			$log->delete();
+		}
 	}
 
 	/**

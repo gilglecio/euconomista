@@ -104,6 +104,7 @@ final class ReleasesController extends Controller
         $data = ['messages' => $this->getMessages()];
 
         $data['data']['data_vencimento'] = date('Y-m-d');
+        $data['data']['data_emissao'] = date('Y-m-d');
 
         if (isset($args['release_id'])) {
             
@@ -118,8 +119,11 @@ final class ReleasesController extends Controller
                 return $this->redirectWithError($response, 'Lançamento movimentado não pode ser editado.', "/app/releases/{$release->id}/logs");
             }
 
-            $data['data'] = $release->to_array();
-            $data['data']['data_vencimento'] = (new \Datetime($data['data']['data_vencimento']))->format('Y-m-d');
+            $release_data = $release->to_array();
+
+            $data['data'] = $release_data;
+            $data['data']['data_vencimento'] = $release->data_vencimento->format('Y-m-d');
+            $data['data']['data_emissao'] = $release->log_emissao->date->format('Y-m-d');
         }
 
         $data['title'] = $this->title;
@@ -151,7 +155,9 @@ final class ReleasesController extends Controller
                 'quantity' => (int) $request->getParsedBodyParam('quantity'),
                 'natureza' => (int) $request->getParsedBodyParam('natureza'),
                 'value' => (float) $request->getParsedBodyParam('value'),
+                'data_emissao' => $request->getParsedBodyParam('data_emissao'),
                 'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
+                'data_liquidacao' => $request->getParsedBodyParam('data_liquidacao'),
                 'description' => $request->getParsedBodyParam('description'),
             ]);
         } catch (\Exception $e) {
@@ -258,6 +264,7 @@ final class ReleasesController extends Controller
         try {
             Release::liquidar([
                 'value' => $request->getParsedBodyParam('value'),
+                'desconto' => !! $request->getParsedBodyParam('desconto'),
                 'date' => $request->getParsedBodyParam('date'),
                 'release_id' => $args['release_id']
             ]);

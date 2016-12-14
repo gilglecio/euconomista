@@ -37,6 +37,23 @@ final class Release extends Model
     ];
 
     /**
+     * Registra os relacionamentos 1:1.
+     * @var array
+     */
+    public static $has_one = [
+        [
+            'log_emissao', 
+            'class_name' => 'ReleaseLog', 
+            [
+                'conditions' => [
+                    'action = ?', 
+                    ReleaseLog::ACTION_EMISSAO
+                ]
+            ]
+        ]
+    ];
+
+    /**
      * Validação de campos obrigatŕios.
      * @var array
      */
@@ -185,7 +202,17 @@ final class Release extends Model
                 }
             }
 
+            /**
+             * Sera TRUE se a data de liquidação for informada.
+             * @var boolean
+             */
+            $liquidar = !! $fields['data_liquidacao'];
+
             for ($i=0; $i < $quantity; $i++) {
+
+                /**
+                 * Adiciona a diferença da dízima na última parcela.
+                 */
                 if ($i == ($quantity - 1)) {
                     $value += $diff;
                 }
@@ -215,13 +242,40 @@ final class Release extends Model
                  */
                 $log = ReleaseLog::create([
                     'release_id' => $row->id,
-                    'date' => date('Y-m-d'),
+                    'date' => $fields['data_emissao'],
                     'action' => ReleaseLog::ACTION_EMISSAO,
                     'value' => $row->value
                 ]);
 
+                
                 if ($log->is_invalid()) {
                     throw new \Exception($log->errors->full_messages()[0]);
+                }
+                
+                if ($liquidar) {
+
+                    $backup = json_encode($row->to_array());
+
+                    /**
+                     * Faz a liquidação automática do lançamento.
+                     */
+                    $liquidacao = ReleaseLog::create([
+                        'release_id' => $row->id,
+                        'backup' => $backup,
+                        'date' => $fields['data_liquidacao'],
+                        'action' => ReleaseLog::ACTION_LIQUIDACAO,
+                        'value' => $row->value
+                    ]);
+
+                    if ($liquidacao->is_invalid()) {
+                        throw new \Exception($liquidacao->errors->full_messages()[0]);
+                    }
+
+                    /**
+                     * Altera o status do lançamento para liquidado.
+                     */
+                    $row->status = self::STATUS_LIQUIDADO;
+                    $row->save();
                 }
 
                 $releases[] = $row;
@@ -232,18 +286,20 @@ final class Release extends Model
                 $vencimento->add(new \DateInterval('P1M'));
             }
 
+
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollback();
             throw $e;
         }
 
+
         return $releases;
     }
 
     /**
      * Liquida um lançamento.
-     * Aceita liquidação parcial.
+     * Aceita liquidação partial.
      * Aceita pagamento maior que o valor do lançamento,
      * neste caso entende-se que seja encargos.
      *
@@ -267,33 +323,70 @@ final class Release extends Model
 
             /**
              * Todo o registro do lançamento em formato JSON.
-             *
              * @var string
              */
             $backup = $release->to_json();
 
             /**
              * Quando o usuário liquida um vlaor menor que o valor do lançamento.
-             *
              * @var boolean
              */
             $partial = $fields['value'] < $release->value;
 
             /**
-             * Quando a liquidação é parcial,
+             * Quando o valor liquidado é maior que o valor aberto,
+             * entende-se que a diferença são encargos.
+             * @var float
+             */
+            $encargos = $fields['value'] - $release->value;
+
+            $log_desconto = $log_encargo = null;
+
+            /**
+             * Quando a liquidação é partial,
              * o valor do lançamento é atualizado.
              * O novo valor do lançamento é o valor atual menos o valor pago.
              *
-             * Quando a liquidação não é parcial,
+             * Quando a liquidação não é partial,
              * O valor do lançamento é atualizado para
              * a soma de todas as liquidações feitas.
              */
-            if ($partial) {
+            if ($partial && ! $fields['desconto']) {
                 $release->value = $release->value - $fields['value'];
                 $release->save();
+            } else if ($partial && $fields['desconto']) {
 
-                if ($release->is_invalid()) {
-                    throw new \Exception($release->errors->full_messages()[0]);
+                $log_desconto = ReleaseLog::create([
+                    'action' => ReleaseLog::ACTION_DESCONTO,
+                    'release_id' => $release->id,
+                    'date' => $fields['date'],
+                    'value' => $release->value - $fields['value']
+                ]);
+
+                if ($log_desconto->is_invalid()) {
+                    throw new \Exception($log_desconto->errors->full_messages()[0]);
+                }
+
+                $release->value = $fields['value'] + $release->getSumLiquidacoes();
+                $release->status = self::STATUS_LIQUIDADO;
+                $release->save();
+
+            } else if ($encargos > 0) {
+
+                $release->value = $fields['value'] + $release->getSumLiquidacoes();
+                $release->status = self::STATUS_LIQUIDADO;
+                $release->save();
+
+                $log_encargo = ReleaseLog::create([
+                    'action' => ReleaseLog::ACTION_ENCARGO,
+                    'release_id' => $release->id,
+                    'date' => $fields['date'],
+                    'value' => $encargos,
+                    'backup' => $backup,
+                ]);
+
+                if ($log_encargo->is_invalid()) {
+                    throw new \Exception($log_encargo->errors->full_messages()[0]);
                 }
             } else {
                 $release->value = $fields['value'] + $release->getSumLiquidacoes();
@@ -301,10 +394,7 @@ final class Release extends Model
                 $release->save();
             }
 
-            /**
-             * @var ReleaseLog
-             */
-            $log = ReleaseLog::create([
+            $log_quitacao = ReleaseLog::create([
                 'action' => ReleaseLog::ACTION_LIQUIDACAO,
                 'release_id' => $release->id,
                 'date' => $fields['date'],
@@ -312,8 +402,18 @@ final class Release extends Model
                 'backup' => $backup,
             ]);
 
-            if ($log->is_invalid()) {
-                throw new \Exception($log->errors->full_messages()[0]);
+            if ($log_quitacao->is_invalid()) {
+                throw new \Exception($log_quitacao->errors->full_messages()[0]);
+            }
+
+            if ($log_encargo) {
+                $log_encargo->parent_id = $log_quitacao->id;
+                $log_encargo->save();
+            }
+
+            if ($log_desconto) {
+                $log_desconto->parent_id = $log_quitacao->id;
+                $log_desconto->save();
             }
 
             $connection->commit();

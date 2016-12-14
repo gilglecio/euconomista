@@ -18,6 +18,8 @@ Feature: Página de pessoas
 	Scenario: Cadastrando uma pessoa
 
 		When I add the person "Pessoa 001"
+		Then I should be on "/app/peoples"
+		Then I should see "Sucesso!"
 		Then I should see "Pessoa 001"
 
 	@javascript
@@ -26,3 +28,10 @@ Feature: Página de pessoas
 		When I follow "Logs"
 		Then I should be on "/app/logs"
 		Then I should see "Adicionou 'Pessoa 001' em pessoas."
+
+	@javascript
+	Scenario: Não permitir duas pessoas com o mesmo nome
+
+		When I add the person "Pessoa 001"
+		Then I should be on "/app/peoples/form"
+		Then I should see "Name must be unique"

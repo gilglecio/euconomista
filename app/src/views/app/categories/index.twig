@@ -25,7 +25,7 @@
     		<tr>
                 <td>
                     <a href="/app/categories/{{ row.id }}/edit">{{ row.name }}</a>
-                    <a title="Apagar registro" class="pull-right" onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a title="Apagar registro" class="pull-right" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>
     		{% endfor %}

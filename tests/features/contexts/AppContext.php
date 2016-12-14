@@ -140,7 +140,7 @@ JS;
         $el = $this->getSession()->getPage()->find('named', ['checkbox', "\"{$checkbox}\""]);
         
         if (!$el) {
-            throw new Exception("checkbox {$checkbox} not found", 1);
+            throw new Exception("checkbox {$checkbox} not found");
         }
 
         $el->click();
@@ -155,7 +155,7 @@ JS;
         $options = $el->findAll('css', 'option');
         
         if (!$options) {
-            throw new Exception("Select not {$select} found", 1);
+            throw new Exception("Select not {$select} found");
         }
 
         $el->selectOption($options[$option]->getValue());

@@ -12,15 +12,15 @@
         {% endif %}
 
         {% if canDesfazer %}
-        <li><a onclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer">Desfazer</a></li>
+        <li><a onbsclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer">Desfazer</a></li>
         {% endif %}
 
         {% if not canDesfazer %}
         <li><a href="/app/releases/{{ release.id }}/form">Editar</a></li>
         {% endif %}
 
-        <li><a onclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
-        <li><a onclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
+        <li><a onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
+        <li><a onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
     </ol>
 
     {% include 'macro.twig' with {messages: messages} %}

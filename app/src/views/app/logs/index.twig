@@ -28,7 +28,7 @@
                     {% endif %}
 
                     {% if row.can_restore %}
-                    <a onclick="return confirm('Deseja realmente RESTAURAR o registro?')" href="/app/logs/{{ row.id }}/restore" style="color:red">
+                    <a onbsclick="return confirm('Deseja realmente RESTAURAR o registro?')" href="/app/logs/{{ row.id }}/restore" style="color:red">
                         Restaurar
                     </a>
                     {% endif %}

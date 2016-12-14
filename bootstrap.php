@@ -1,7 +1,6 @@
 <?php
 
 if (PHP_SAPI == 'cli-server') {
-    
     // To help the built-in PHP dev server, check if the request was actually for
     // something which should probably be served as a static file
     $file = __DIR__ . $_SERVER['REQUEST_URI'];
@@ -32,7 +31,6 @@ $env = require __DIR__ . '/app/env.php';
 $settings['settings'] = array_merge($settings['settings'], (array) $env);
 
 Config::initialize(function ($cfg) use ($settings) {
-    
     $db = $settings['settings']['db'];
     
     $cfg->set_model_directory($settings['settings']['models_path']);

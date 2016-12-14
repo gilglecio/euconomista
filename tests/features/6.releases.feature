@@ -122,7 +122,7 @@ Feature: Página de lançamentos
 		Then I follow "Liquidar"
 
 		Then I should see "Lista de ações da parcela"
-		Then I should see "1000"
+		Then the "value" field should contain "1000"
 		Then I should see "Liquidar"
 
 		Given When I fill in "value" with "350"
@@ -130,3 +130,120 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 		Then I should see "Recebimento"
 		Then I should see "350,00"
+		Then I should not see "Editar"
+
+	@javascript
+	Scenario: Liquidação de um lançamento com encargos
+
+		Then I follow "1/1"
+		Then I follow "Liquidar"
+
+		Then the "value" field should contain "650"
+		Given When I fill in "value" with "712"
+		Given I press "Liquidar" button
+		Then I should see "Sucesso!"
+
+		Then I should see "Emissão"
+		Then I should see "1.000,00"
+
+		Then I should see "Recebimento"
+		Then I should see "350,00"
+
+		Then I should see "Encargos"
+		Then I should see "62,00"
+		Then I should see "712,00"
+
+	@javascript
+	Scenario: Verificando logs das liquidações
+
+		Then I follow "Logs"
+		Then I should be on "/app/logs"
+		
+		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 350,00"
+		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 712,00"
+		Then I should see "Encargos receita nº 1/1 'Pessoa 001' R$ 62,00"
+
+	@javascript
+	Scenario: Desfazendo liquidação com encargos
+		
+		Then I follow "Todas"
+		Then I follow "1/1"
+		Then I follow "Desfazer"
+		Then I should see "Sucesso!"
+
+		Then I should not see "Encargos"
+		Then I should not see "62,00"
+		Then I should not see "712,00"
+
+		Then I should see "Recebimento"
+		Then I should see "350,00"
+
+	@javascript
+	Scenario: Liquidação de um lançamento com desconto
+
+		Then I follow "1/1"
+		Then I follow "Liquidar"
+
+		Then the "value" field should contain "650"
+		Given When I fill in "value" with "585"
+		Then I check with click on "desconto"
+		Given I press "Liquidar" button
+		Then I should see "Sucesso!"
+
+		Then I should see "Emissão"
+		Then I should see "1.000,00"
+
+		Then I should see "Recebimento"
+		Then I should see "350,00"
+
+		Then I should see "Desconto"
+		Then I should see "65,00"
+		Then I should see "585,00"
+
+		Then I follow "Lançamentos"
+		Then I should not see "1/1"
+		Then I follow "Todas"
+		Then I should see "1/1"
+		Then I should see "Pago"
+		Then I should see "935,00"
+
+	@javascript
+	Scenario: Verificando logs das liquidações
+
+		Then I follow "Logs"
+		Then I should be on "/app/logs"
+		
+		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 585,00"
+		Then I should see "Desconto receita nº 1/1 'Pessoa 001' R$ 65,00"
+
+	@javascript
+	Scenario: Desfazendo liquidação com desconto
+
+		Then I follow "Todas"
+		Then I follow "1/1"
+		Then I follow "Desfazer"
+		Then I should see "Sucesso!"
+
+		Then I should not see "Desconto"
+		Then I should not see "65,00"
+		Then I should not see "585,00"
+
+		Then I should see "Recebimento"
+		Then I should see "350,00"
+
+		Then I follow "Lançamentos"
+		Then I should see "650,00"
+
+	@javascript
+	Scenario: Desfazendo a primeira liquidação
+		
+		Then I follow "1/1"
+		Then I follow "Desfazer"
+		Then I should see "Sucesso!"
+
+		Then I should not see "Recebimento"
+		Then I should not see "350,00"
+		Then I should see "Editar"
+		Then I follow "Lançamentos"
+		Then I should see "1/1"
+		Then I should see "1.000,00"

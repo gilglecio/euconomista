@@ -2,14 +2,10 @@
 Feature: Página de lançamentos
 
 	Background:
-		Given I am on "/login" visit
-		Then I devo esta em "/login"
-		Given When I fill in "email" with "test@hmgestor.com"
-		Given When I fill in "password" with "123456"
-		Given I press "Entrar" button
-		Then I devo esta em "/app"
+		When I login
+		Then I should be on "/app"
 		When I follow "Lançamentos"
-		Then I devo esta em "/app/releases"
+		Then I should be on "/app/releases"
 
 	@javascript
 	Scenario: Verificando a grid de lançamentos
@@ -23,7 +19,7 @@ Feature: Página de lançamentos
 	Scenario: Lançando uma receita
 
 		When I follow "Adicionar"
-		Then I devo esta em "/app/releases/form"
+		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
 		When I select "Pessoa 001" from "people_id"
@@ -32,7 +28,7 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 1.000,00 em 1x"
 
 		Given I press "Salvar" button
-		Then I devo esta em "/app/releases"
+		Then I should be on "/app/releases"
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
@@ -45,7 +41,7 @@ Feature: Página de lançamentos
 	Scenario: Lançando duas despesas
 
 		When I follow "Adicionar"
-		Then I devo esta em "/app/releases/form"
+		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
 		When I select "Despesa" from "natureza"
@@ -56,7 +52,7 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 100,00 em 2x"
 
 		Given I press "Salvar" button
-		Then I devo esta em "/app/releases"
+		Then I should be on "/app/releases"
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
@@ -70,7 +66,7 @@ Feature: Página de lançamentos
 	Scenario: Lançando trẽs despesas
 
 		When I follow "Adicionar"
-		Then I devo esta em "/app/releases/form"
+		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
 		When I select "Despesa" from "natureza"
@@ -81,7 +77,7 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 500,00 em 3x"
 
 		Given I press "Salvar" button
-		Then I devo esta em "/app/releases"
+		Then I should be on "/app/releases"
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
@@ -97,7 +93,7 @@ Feature: Página de lançamentos
 	Scenario: Verificando logs dos lançamentos emitidos
 	
 		Then I follow "Logs"
-		Then I devo esta em "/app/logs"
+		Then I should be on "/app/logs"
 		
 		Then I should see "Emissão receita nº 1/1 'Pessoa 001' R$ 1.000,00"
 		

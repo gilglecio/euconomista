@@ -1,7 +1,6 @@
 #!/bin/bash
 
-PARAMNS=$1
 PORT=3002
 
-./vendor/bin/behat $PARAMNS -f html --stop-on-failure --lang="pt" --out="public/behat.html"
-xdg-open http://localhost:$PORT/behat.html
+./vendor/bin/behat $PARAMNS --stop-on-failure --lang="pt" #-f html --out="public/behat.html"
+# xdg-open http://localhost:$PORT/behat.html

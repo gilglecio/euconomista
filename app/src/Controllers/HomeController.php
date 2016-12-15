@@ -2,7 +2,7 @@
 
 /**
  * HomeController class
- * 
+ *
  * @package App\Controller
  * @version v1.0
  *
@@ -23,7 +23,7 @@ use Release;
 
 /**
  * Controller responsável pela rota home da aplicação.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 final class HomeController extends Controller
@@ -37,7 +37,7 @@ final class HomeController extends Controller
 
     /**
      * Renderiza a página home da aplicação.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args

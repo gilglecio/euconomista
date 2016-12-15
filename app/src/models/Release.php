@@ -2,7 +2,7 @@
 
 /**
  * Model Release.
- * 
+ *
  * @uses App\Util\Toolkit
  */
 
@@ -10,7 +10,7 @@ use App\Util\Toolkit;
 
 /**
  * Esta classe faz referencia a tabela `releases` no banco de dados.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 final class Release extends Model
@@ -22,6 +22,7 @@ final class Release extends Model
 
     /**
      * Registra os relacionamentos 1:1.
+     *
      * @var array
      */
     public static $belongs_to = [
@@ -32,6 +33,7 @@ final class Release extends Model
 
     /**
      * Registra os relacionamentos 1:N.
+     *
      * @var array
      */
     public static $has_many = [
@@ -41,12 +43,13 @@ final class Release extends Model
 
     /**
      * Registra os relacionamentos 1:1.
+     *
      * @var array
      */
     public static $has_one = [
         [
-            'log_emissao', 
-            'class_name' => 'ReleaseLog', 
+            'log_emissao',
+            'class_name' => 'ReleaseLog',
             [
                 'conditions' => [
                     'action = ?',
@@ -58,6 +61,7 @@ final class Release extends Model
 
     /**
      * Validação de campos obrigatŕios.
+     *
      * @var array
      */
     public static $validates_presence_of = [
@@ -70,6 +74,7 @@ final class Release extends Model
 
     /**
      * Validação para definir a quantidade de caracteres campo a campo.
+     *
      * @var array
      */
     public static $validates_length_of = [
@@ -78,7 +83,7 @@ final class Release extends Model
 
     /**
      * Não permite que exista um lançamento na entidade, da mesma pessoa com natureza, data de vencimento e número iguais.
-     * 
+     *
      * @var array
      */
     public static $validates_uniqueness_of = [
@@ -90,7 +95,7 @@ final class Release extends Model
      *
      * - O callback `deleteAllLogs` é utilizado para remover os logs de emissão do lançamento.
      * - O callback `saveBackup` é utilizado para armazenar o registro para que seja possível restaurar caso necessário.
-     * 
+     *
      * @var array
      */
     public static $before_destroy = [
@@ -351,7 +356,7 @@ final class Release extends Model
                 if (! $release->delete()) {
                     throw new \Exception('Falha ao apagar o lançamento.');
                 }
-            } 
+            }
 
             /**
              * Se não for uma edição de lançamento e quantidade for uma.
@@ -426,7 +431,6 @@ final class Release extends Model
                 }
                 
                 if ($liquidar) {
-
                     $backup = json_encode($row->to_array());
 
                     /**
@@ -527,8 +531,7 @@ final class Release extends Model
             if ($partial && ! $fields['desconto']) {
                 $release->value = $release->value - $fields['value'];
                 $release->save();
-            } else if ($partial && $fields['desconto']) {
-
+            } elseif ($partial && $fields['desconto']) {
                 $log_desconto = ReleaseLog::create([
                     'action' => ReleaseLog::ACTION_DESCONTO,
                     'release_id' => $release->id,
@@ -543,9 +546,7 @@ final class Release extends Model
                 $release->value = $fields['value'] + $release->getSumLiquidacoes();
                 $release->status = self::STATUS_LIQUIDADO;
                 $release->save();
-
-            } else if ($encargos > 0) {
-
+            } elseif ($encargos > 0) {
                 $release->value = $fields['value'] + $release->getSumLiquidacoes();
                 $release->status = self::STATUS_LIQUIDADO;
                 $release->save();
@@ -612,7 +613,6 @@ final class Release extends Model
     public static function rollback($release_id, $connection = null, $action = null)
     {
         try {
-            
             if (! $release = self::find($release_id)) {
                 throw new \Exception('Lançamento não localizado.');
             }
@@ -640,10 +640,13 @@ final class Release extends Model
             
             $last->rollback();
 
-            if ($begin) $connection->commit();
-
+            if ($begin) {
+                $connection->commit();
+            }
         } catch (\Exception $e) {
-            if ($begin) $connection->rollback();
+            if ($begin) {
+                $connection->rollback();
+            }
             throw $e;
         }
 
@@ -770,7 +773,7 @@ final class Release extends Model
 
     /**
      * Verifica se o lançamento pode ser apagado. quanquer lançamento pode ser apagado basta ele não ter nenhum log de quitação.
-     * 
+     *
      * @return boolean
      */
     public function canDelete()
@@ -828,7 +831,7 @@ final class Release extends Model
 
     /**
      * Recadastra o log de emissão do lançamento.
-     * 
+     *
      * @return void
      */
     public function afterRestored()
@@ -847,7 +850,7 @@ final class Release extends Model
 
     /**
      * Verifica se o lançamento foi agrupado.
-     * 
+     *
      * @return boolean
      */
     public function isGrouped()
@@ -857,7 +860,7 @@ final class Release extends Model
 
     /**
      * Verifica se um lançamento aberto está em atraso.
-     * 
+     *
      * @return boolean
      */
     public function emAtraso()
@@ -892,7 +895,7 @@ final class Release extends Model
 
     /**
      * Formata os logs de quitação para exibição o extrato.
-     * 
+     *
      * @return array
      */
     public static function extract()
@@ -927,7 +930,7 @@ final class Release extends Model
 
     /**
      * Retorna o valor do lançamento formatado.
-     * 
+     *
      * @return string
      */
     public function getFormatValue()
@@ -937,12 +940,12 @@ final class Release extends Model
 
     /**
      * Formata os lançamentos com o padrão que a grid de lançamentos necessita.
-     * 
+     *
      * @param array                         $rows Release list.
      * @param boolean $include_data_emissao Se true, adiciona a data de emissão nos lançamentos.
      * @return array
      */
-    static function gridFormat($rows, $include_data_emissao = false)
+    public static function gridFormat($rows, $include_data_emissao = false)
     {
         return array_map(function ($r) use ($include_data_emissao) {
             $row = $r->to_array();
@@ -966,16 +969,16 @@ final class Release extends Model
 
     /**
      * Seleciona e formta os lançamentos para apresentação no formulário de agrupamento de lançamentos.
-     * 
+     *
      * @param boolean $return_qtd_rows Se true, retorna a quantidade de linhas filtradas.
      * @return array
      */
-    static function gridGroupFormat($return_qtd_rows = false)
+    public static function gridGroupFormat($return_qtd_rows = false)
     {
         $releases = self::find('all', [
             'order' => 'data_vencimento asc',
             'conditions' => [
-                'status = ? and data_vencimento < ?', 
+                'status = ? and data_vencimento < ?',
                 self::STATUS_ABERTO,
                 (new \Datetime(date('Y-m-d')))->add(new \Dateinterval('P1M'))->format('Y-m-d')
             ]
@@ -994,7 +997,7 @@ final class Release extends Model
 
     /**
      * Verifica se o lançamento foi originado de um agrupamento de lançamentos.
-     * 
+     *
      * @return boolean
      */
     public function isGroup()
@@ -1059,7 +1062,7 @@ final class Release extends Model
 
     /**
      * Verifica se um originado de um agrupamento pode ser desagrupado.
-     * 
+     *
      * @return boolean
      */
     public function canUngroup()
@@ -1079,14 +1082,14 @@ final class Release extends Model
 
     /**
      * Personalizando a descrição do log de usuário.
-     * 
+     *
      * @param string $action
      * @return string Description
      */
     public function getLogDescription($action)
     {
         if ($action == 'destroy') {
-            return 'Apagou o lançamento nº ' . $this->number . ', #' . $this->id . '.';    
+            return 'Apagou o lançamento nº ' . $this->number . ', #' . $this->id . '.';
         }
 
         return null;

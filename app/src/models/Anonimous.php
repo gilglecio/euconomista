@@ -6,13 +6,14 @@
 
 /**
  * Esta classe faz referencia a tabela `users` no banco de dados.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 final class Anonimous extends User
 {
     /**
      * Nome da tabela.
+     *
      * @var string
      */
     public static $table_name = 'users';

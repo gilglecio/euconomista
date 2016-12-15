@@ -2,10 +2,10 @@
 
 /**
  * Controller class
- * 
+ *
  * @package App\Controller
  * @version v1.0
- * 
+ *
  * @uses Slim\Container
  */
 namespace App\Controller;
@@ -14,15 +14,15 @@ use Slim\Container;
 
 /**
  * Classe abstrata para ser extendida pelos contrllers.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 abstract class Controller
 {
-	/**
+    /**
      * Recebe a instância do Twig.
-	 * @var \Slim\Views\Twig
-	 */
+     * @var \Slim\Views\Twig
+     */
     protected $view;
 
     /**
@@ -56,12 +56,12 @@ abstract class Controller
 
     /**
      * Redirect with flash error.
-     * 
+     *
      * @param Psr\Http\Message\ResponseInterface $response
      * @param array                              $message
      * @param string                             $url
      * @param integer                            $status
-     * @return Psr\Http\Message\ResponseInterface 
+     * @return Psr\Http\Message\ResponseInterface
      */
     public function redirectWithError($response, $message, $url, $status = 406)
     {
@@ -73,7 +73,7 @@ abstract class Controller
 
     /**
      * Adiciona uma mensagem do tipo `success` no flash message.
-     * 
+     *
      * @param string $message Mensagem de sucesso.
      * @return void
      */
@@ -84,7 +84,7 @@ abstract class Controller
 
     /**
      * Adiciona uma mensagem do tipo `error` no flash message.
-     * 
+     *
      * @param string $message Mensagem de error.
      * @return void
      */
@@ -95,7 +95,7 @@ abstract class Controller
 
     /**
      * Retorna as mensagens de erro armazenadas no flash message.
-     * 
+     *
      * @return array
      */
     public function getErrorMessages()
@@ -105,7 +105,7 @@ abstract class Controller
 
     /**
      * Retorna as mensagens de sucesso armazenadas no flash message.
-     * 
+     *
      * @return array
      */
     public function getSuccessMessages()
@@ -115,7 +115,7 @@ abstract class Controller
 
     /**
      * Retorna mensagens do flash message.
-     * 
+     *
      * @param string $key Nome da chave que a mensagem foi armazenada.
      * @return array Mensagens armazenadas na chave passada.
      */

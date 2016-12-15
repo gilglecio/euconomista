@@ -2,7 +2,7 @@
 
 /**
  * ReleasesController class
- * 
+ *
  * @package App\Controller
  * @version v1.0
  *
@@ -26,7 +26,7 @@ use Category;
 
 /**
  * Controller responsável pelas rotas de acesso e movimentação dos lançamentos.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 final class ReleasesController extends Controller
@@ -40,7 +40,7 @@ final class ReleasesController extends Controller
 
     /**
      * Renderiza a grid de lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -80,7 +80,7 @@ final class ReleasesController extends Controller
 
     /**
      * Renderiza o formulário para editar e adicionar novos lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -126,7 +126,7 @@ final class ReleasesController extends Controller
 
     /**
      * Renderiza o formulário agrupar lançamentos, e gerar um lançamento só.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -156,7 +156,7 @@ final class ReleasesController extends Controller
 
     /**
      * Recebe o post do formulário de inclusão/edição de lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -189,7 +189,7 @@ final class ReleasesController extends Controller
 
     /**
      * Recebe o post do formulário de agrupamento de lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -221,7 +221,7 @@ final class ReleasesController extends Controller
     /**
      * Renderiza a grid com as alterações que o lançamento sofreu ao longo do tempo
      * como emissão, e quitações.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -271,7 +271,7 @@ final class ReleasesController extends Controller
 
     /**
      * Renderiza o formulário para liquidação de lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -301,9 +301,9 @@ final class ReleasesController extends Controller
     }
 
     /**
-     * Recebe o post do formulário de liquidação e envia as informações passados 
+     * Recebe o post do formulário de liquidação e envia as informações passados
      * da view para o model salvar no banco de dados.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -334,7 +334,7 @@ final class ReleasesController extends Controller
 
     /**
      * Utilizada para desfazimento de ações feitas no lançamento. As ações são desfeitas da última para a primeira.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -360,7 +360,7 @@ final class ReleasesController extends Controller
 
     /**
      * Cancela um agrupamento de lançamentos.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -372,7 +372,9 @@ final class ReleasesController extends Controller
         try {
             Release::ungroup($args['release_id']);
         } catch (\Exception $e) {
-            return $this->redirectWithError($response, $e->getMessage(),
+            return $this->redirectWithError(
+                $response,
+                $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/logs'
             );
         }
@@ -384,7 +386,7 @@ final class ReleasesController extends Controller
 
     /**
      * Utilizada para apagar um lançamento isolado.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args
@@ -410,7 +412,7 @@ final class ReleasesController extends Controller
 
     /**
      * Utilizada para apagar todos os lançamentos que possuem vinculo entre si, este vículo é criado quando um lançamento parcelado.
-     * 
+     *
      * @param Request  $request
      * @param Response $response
      * @param array    $args

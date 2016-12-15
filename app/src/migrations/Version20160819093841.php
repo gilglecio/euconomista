@@ -62,7 +62,7 @@ class Version20160819093841 extends AbstractMigration
         $table->addUniqueIndex(['email']);
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_users_user_id');
     }

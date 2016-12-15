@@ -67,12 +67,12 @@ class Version20161204112806 extends AbstractMigration
         $table->addIndex(['release_id'], 'fk_release_idx');
 
         $table->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_release_logs_user_id');
 
         $table->addForeignKeyConstraint($schema->getTable('releases'), ['release_id'], ['id'], [
-            'onDelete' => 'NO ACTION', 
+            'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
         ], 'fk_release_logs_release_id');
     }

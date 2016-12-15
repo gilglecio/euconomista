@@ -2,7 +2,7 @@
 
 /**
  * Message class
- * 
+ *
  * @package App\Mail
  * @version v1.0
  * @uses PHPMailer
@@ -13,20 +13,21 @@ use PHPMailer;
 
 /**
  * Responsaǘel pela confecção da mensagem para ser enviada via PHPMailer.
- * 
+ *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
 class Message
 {
     /**
      * PHPMailer instance.
+     *
      * @var \PHPMailer
      */
     protected $mailer;
     
     /**
      * Construtor da classe, recebe a instancia do PHPMailer.
-     * 
+     *
      * @param PHPMailer $mailer [description]
      */
     public function __construct(PHPMailer $mailer)
@@ -37,7 +38,7 @@ class Message
     /**
      * Usado para adicionar destinatários.
      * Para cada destinatário, invocar o método.
-     * 
+     *
      * @param string $address E-mail do destinatário
      * @param string $name    Nome do destinatário
      * @return void
@@ -49,7 +50,7 @@ class Message
 
     /**
      * Altera o assunto da mensagem.
-     * 
+     *
      * @param string $subject Assunto do e-mail
      * @return void
      */
@@ -60,7 +61,7 @@ class Message
 
     /**
      * Altera o corpo do e-mail.
-     * 
+     *
      * @param string $body Mensagem no corpo do e-mail
      * @return void
      */
@@ -71,7 +72,7 @@ class Message
 
     /**
      * Alterar o email do remetente.
-     * 
+     *
      * @param string $from E-mail de quem está enviando o e-mail
      * @return void
      */
@@ -82,7 +83,7 @@ class Message
     
     /**
      * Alterar o nome do remetente.
-     * 
+     *
      * @param string $fromName Nome de quem está enviando o e-mail
      * @return void
      */

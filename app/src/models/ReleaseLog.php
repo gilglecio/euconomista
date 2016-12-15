@@ -19,6 +19,7 @@ final class ReleaseLog extends Model
 	const ACTION_LIQUIDACAO = 2;
 	const ACTION_ENCARGO = 3;
 	const ACTION_DESCONTO = 4;
+	const ACTION_GROUPED = 5;
 
 	/**
 	 * Define os relacionamentos 1:1.
@@ -59,6 +60,7 @@ final class ReleaseLog extends Model
 		return [
 			self::ACTION_EMISSAO => 'Emissão',
 			self::ACTION_ENCARGO => 'Encargos',
+			self::ACTION_GROUPED => 'Agrupamento',
 			self::ACTION_DESCONTO => 'Desconto',
 			self::ACTION_LIQUIDACAO => $this->release->natureza == 1 ? 'Recebimento' : 'Pagamento'
 		][$this->action];
@@ -75,51 +77,44 @@ final class ReleaseLog extends Model
 	 */
 	public function rollback()
 	{
-		try {
+		/**
+		 * Estado do lançamento antes do log ser realizado.
+		 * 
+		 * @var array
+		 */
+		$backup = (array) json_decode($this->backup);
 
-			$connection = static::connection();
-			$connection->transaction();
-			
-			/**
-			 * Estado do lançamento antes do log ser realizado.
-			 * 
-			 * @var array
-			 */
-			$backup = (array) json_decode($this->backup);
+		/**
+		 * @var Release
+		 */
+		if (! $release = Release::find($backup['id'])) {
+			throw new \Exception('Lançamento não localizado.');
+		}
 
-			/**
-			 * @var Release
-			 */
-			if (! $release = Release::find($backup['id'])) {
-				throw new \Exception('Lançamento não localizado.');
-			}
+		foreach ($backup as $key => $value) {
+			$release->$key = $value;
+		}
 
-			foreach ($backup as $key => $value) {
-				$release->$key = $value;
-			}
+		$release->save();
 
-			$release->save();
+		if ($release->is_invalid()) {
+			throw new \Exception($release->getFisrtError());
+		}
 
-			if ($release->is_invalid()) {
-				throw new \Exception($release->errors->full_messages()[0]);
-			}
+		$this->deleteChilds();
 
-			$this->deleteChilds();
-
-			if (! $this->delete()) {
-				throw new \Exception("Falha ao apagar o log #{$this->id}.", 1);
-			}
-
-			$connection->commit();
-
-		} catch (\Exception $e) {
-			$connection->rollback();
-			throw $e;
+		if (! $this->delete()) {
+			throw new \Exception("Falha ao apagar o log #{$this->id}.", 1);
 		}
 
 		return true;
 	}
 
+	/**
+	 * Apaga os logs relacionados.
+	 * 
+	 * @return void
+	 */
 	public function deleteChilds()
 	{
 		foreach ($this->childs as $log) {

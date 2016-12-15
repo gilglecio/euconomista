@@ -288,14 +288,8 @@ Feature: HmGestor
 		# Tentando apagar um lançamento que sofreu liquidação
 		When I follow "Lançamentos"
 		Then I follow "1/1"
-		Then I follow "Apagar este lançamento"
-		Then I should see "O lançamento '1/1' foi movimentado."
-		Then I follow "O lançamento '1/1' foi movimentado."
-		Then I should not see "O lançamento '1/1' foi movimentado."
-		Then I follow "Apagar todos os lançamentos deste documento"
-		Then I should see "O lançamento '1/1' foi movimentado."
-		Then I follow "O lançamento '1/1' foi movimentado."
-		Then I should not see "O lançamento '1/1' foi movimentado."		
+		Then I should not see "Apagar este lançamento"
+		Then I should not see "Apagar todos os lançamentos deste documento"	
 
 		# Desfazendo a liquidação parcial
 		When I follow "Lançamentos"

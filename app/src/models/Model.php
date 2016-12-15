@@ -151,6 +151,17 @@ abstract class Model extends ActiveRecord\Model
 	}
 
 	/**
+	 * Retorna o primeiro erro ocorrido.
+	 * @return string
+	 */
+	public function getFisrtError()
+	{
+		$errors = $this->errors->full_messages();
+
+		return $errors ? $errors[0] : 'Error';
+	}
+
+	/**
 	 * Adiciona automaticamente a entity
 	 * e o usuário que está criando o registro.
 	 *

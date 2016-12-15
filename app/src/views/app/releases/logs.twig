@@ -7,20 +7,28 @@
     <ol class="breadcrumb">
         <li>Lançamento nº <strong>{{ release.number }}</strong></li>
         
+        {% if release.parent_id %}
+        <li><a href="/app/releases/{{ release.parent_id }}/logs">Lançamento</a></li>
+        {% endif %}
+
         {% if canLiquidar %}
         <li><a href="/app/releases/{{ release.id }}/liquidar">Liquidar</a></li>
         {% endif %}
 
-        {% if canDesfazer %}
-        <li><a onbsclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer">Desfazer</a></li>
+        {% if canDesfazer and not release.parent_id %}
+        <li><a onbsclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer" style="color:red">Desfazer</a></li>
         {% endif %}
 
-        {% if not canDesfazer %}
-        <li><a href="/app/releases/{{ release.id }}/form">Editar</a></li>
+        {% if canUngroup %}
+        <li><a onbsclick="return confirm('Deseja realmente CANCELAR o agrupamento?')" href="/app/releases/{{ release.id }}/ungroup" style="color:red">Desfazer Agrupamento</a></li>
         {% endif %}
+
+        {% if canEditar and not isGroup %}
+        <li><a href="/app/releases/{{ release.id }}/form">Editar</a></li>
 
         <li><a onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
         <li><a onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
+        {% endif %}
     </ol>
 
     {% include 'macro.twig' with {messages: messages} %}

@@ -49,10 +49,10 @@ final class ReleasesController extends Controller
      */
     public function index(Request $request, Response $response, array $args)
     {
-        $conditions[] = 'status = 1';
+        $conditions = ['status = 1'];
 
         if (isset($args['target']) && $args['target'] == 'all') {
-            $conditions = null;
+            $conditions = ['status in (1,2)'];
         }
 
         /**
@@ -66,23 +66,11 @@ final class ReleasesController extends Controller
         /**
          * @var array
          */
-        $rows = array_map(function ($r) {
-            $row = $r->to_array();
-
-            $row['people'] = $r->people->name;
-            $row['category'] = $r->category->name;
-            $row['natureza'] = $r->getNaturezaName();
-            $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
-            $row['value'] = number_format($row['value'], 2, ',', '.');
-            $row['status'] = $r->getStatusName();
-            $row['color'] = $r->getColor();
-            $row['desc'] = $r->description;
-
-            return $row;
-        }, $rows);
+        $rows = Release::gridFormat($rows);
 
         $this->view->render($response, 'app/releases/index.twig', [
             'title' => $this->title,
+            'hasReleasesForGroup' => !! Release::gridGroupFormat(true),
             'messages' => $this->getMessages(),
             'rows' => $rows
         ]);
@@ -137,6 +125,36 @@ final class ReleasesController extends Controller
     }
 
     /**
+     * Renderiza o formulário agrupar lançamentos, e gerar um lançamento só.
+     * 
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     * @return Response
+     */
+    public function group(Request $request, Response $response, array $args)
+    {
+        $data = ['messages' => $this->getMessages()];
+
+        $data['data']['data_vencimento'] = date('Y-m-d');
+        $data['data']['data_emissao'] = date('Y-m-d');
+
+        $data['title'] = 'Agrupamento de lançamentos';
+
+        $data['categories'] = Category::find('all');
+        $data['peoples'] = People::find('all');
+        
+        /**
+         * Lançamentos abertos com vencimento para até 30 dias
+         */
+        $data['releases'] = Release::gridGroupFormat();
+
+        $this->view->render($response, 'app/releases/group.twig', $data);
+        
+        return $response;
+    }
+
+    /**
      * Recebe o post do formulário de inclusão/edição de lançamentos.
      * 
      * @param Request  $request
@@ -162,6 +180,37 @@ final class ReleasesController extends Controller
             ]);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');
+        }
+
+        $this->success('Sucesso!');
+
+        return $response->withRedirect('/app/releases');
+    }
+
+    /**
+     * Recebe o post do formulário de agrupamento de lançamentos.
+     * 
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function saveGroup(Request $request, Response $response, array $args)
+    {
+        try {
+            Release::generateGroup([
+                'releases' => $request->getParsedBodyParam('releases'),
+                'category_id' => (int) $request->getParsedBodyParam('category_id'),
+                'people_id' => (int) $request->getParsedBodyParam('people_id'),
+                'number' => $request->getParsedBodyParam('number'),
+                'data_emissao' => $request->getParsedBodyParam('data_emissao'),
+                'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
+                'data_liquidacao' => $request->getParsedBodyParam('data_liquidacao'),
+                'description' => $request->getParsedBodyParam('description'),
+            ]);
+        } catch (\Exception $e) {
+            return $this->redirectWithError($response, $e->getMessage(), '/app/releases/group');
         }
 
         $this->success('Sucesso!');
@@ -214,7 +263,9 @@ final class ReleasesController extends Controller
             'messages' => $this->getMessages(),
             'canLiquidar' => $release->canLiquidar(),
             'canDesfazer' => $release->canDesfazer(),
-            'canEditar' => $release->canEditar()
+            'canEditar' => $release->canEditar(),
+            'canUngroup' => $release->canUngroup(),
+            'isGroup' => $release->isGroup()
         ]);
     }
 
@@ -305,6 +356,30 @@ final class ReleasesController extends Controller
         $this->success('Sucesso!');
 
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
+    }
+
+    /**
+     * Cancela um agrupamento de lançamentos.
+     * 
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function ungroup(Request $request, Response $response, array $args)
+    {
+        try {
+            Release::ungroup($args['release_id']);
+        } catch (\Exception $e) {
+            return $this->redirectWithError($response, $e->getMessage(),
+                '/app/releases/' . $args['release_id'] . '/logs'
+            );
+        }
+
+        $this->success('Sucesso!');
+
+        return $response->withRedirect('/app/releases');
     }
 
     /**

@@ -7,6 +7,13 @@
     <div class="row">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/releases/form">Adicionar</a>
+
+            {% if hasReleasesForGroup %}
+            <a class="btn btn-info" href="/app/releases/group">Agrupar</a>
+            {% else %}
+            <a title="Não há lançamentos disponíves para agrupar" class="btn btn-default" href>Agrupar</a>
+            {% endif %}
+
             <a class="btn btn-link" href="/app/releases">Abertas</a>
             <a class="btn btn-link" href="/app/releases/i/all">Todas</a>
         </div>

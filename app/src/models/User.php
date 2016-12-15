@@ -127,7 +127,7 @@ class User extends Model implements UserAuthInterface
 		]);
 
 		if ($row->is_invalid()) {
-			throw new \Exception($row->errors->full_messages()[0]);
+			throw new \Exception($row->getFisrtError());
 		}
 
 		return $row;

@@ -143,6 +143,12 @@ $app->group('/app', function () {
 		$this->get('/form', 'App\Controller\ReleasesController:form')
 			->setName('releases.form');
 
+		$this->get('/group', 'App\Controller\ReleasesController:group')
+			->setName('releases.group');
+
+		$this->post('/group', 'App\Controller\ReleasesController:saveGroup')
+			->setName('releases.save-group');
+
 		$this->get('/{release_id}/form', 'App\Controller\ReleasesController:form')
 			->setName('releases.edit');
 		
@@ -166,6 +172,9 @@ $app->group('/app', function () {
 
 		$this->get('/{release_id}/delete_all', 'App\Controller\ReleasesController:deleteAll')
 			->setName('releases.delete_all');
+
+		$this->get('/{release_id}/ungroup', 'App\Controller\ReleasesController:ungroup')
+			->setName('releases.ungroup');
 	});
 });
 

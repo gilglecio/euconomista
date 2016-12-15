@@ -239,15 +239,8 @@ Feature: Página de lançamentos
 
 		Then I follow "1/1"
 		
-		Then I follow "Apagar este lançamento"
-		Then I should see "O lançamento '1/1' foi movimentado."
-		Then I follow "O lançamento '1/1' foi movimentado."
-		Then I should not see "O lançamento '1/1' foi movimentado."
-
-		Then I follow "Apagar todos os lançamentos deste documento"
-		Then I should see "O lançamento '1/1' foi movimentado."
-		Then I follow "O lançamento '1/1' foi movimentado."
-		Then I should not see "O lançamento '1/1' foi movimentado."		
+		Then I should not see "Apagar este lançamento"
+		Then I should not see "Apagar todos os lançamentos deste documento"
 
 	@javascript
 	Scenario: Desfazendo a liquidação parcial

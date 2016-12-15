@@ -17,6 +17,8 @@ final class Release extends Model
 {
     const STATUS_ABERTO = 1;
     const STATUS_LIQUIDADO = 2;
+    const STATUS_EM_ATRASO = 3;
+    const STATUS_GROUPED = 4;
 
     /**
      * Registra os relacionamentos 1:1.
@@ -33,7 +35,8 @@ final class Release extends Model
      * @var array
      */
     public static $has_many = [
-        ['logs', 'class_name' => 'ReleaseLog']
+        ['logs', 'class_name' => 'ReleaseLog'],
+        ['releases', 'foreign_key' => 'parent_id']
     ];
 
     /**
@@ -46,7 +49,7 @@ final class Release extends Model
             'class_name' => 'ReleaseLog', 
             [
                 'conditions' => [
-                    'action = ?', 
+                    'action = ?',
                     ReleaseLog::ACTION_EMISSAO
                 ]
             ]
@@ -63,6 +66,14 @@ final class Release extends Model
         ['value'],
         ['natureza'],
         ['data_vencimento']
+    ];
+
+    /**
+     * Validação para definir a quantidade de caracteres campo a campo.
+     * @var array
+     */
+    public static $validates_length_of = [
+        ['number', 'within' => [3, 15]]
     ];
 
     /**
@@ -105,6 +116,141 @@ final class Release extends Model
                 $this->id
             ]
         ]);
+    }
+
+    /**
+     * Salva um lançamento no banco de dados.
+     *
+     * @param array $fields
+     * @throws \Exception Favor selecionar lançamentos da mesma natureza.
+     * @throws \Exception Mensagem de erro do model.
+     * @return array Lançamentos gerados
+     */
+    public static function generateGroup($fields)
+    {
+        try {
+            $connection = static::connection();
+            $connection->transaction();
+
+            /**
+             * Sum release values
+             * @var float
+             */
+            $value = 0;
+            $natureza = [];
+            $releases = [];
+
+            foreach ($fields['releases'] as $release_id) {
+                $release = self::find($release_id);
+                $natureza[$release->natureza] = true;
+                $releases[] = $release;
+                $value += $release->value;
+            }
+
+
+            if (count($natureza) > 1) {
+                throw new \Exception('Favor selecionar lançamentos da mesma natureza.');
+            }
+
+            /**
+             * @var string
+             */
+            $process = Toolkit::uniqHash();
+
+            /**
+             * @var Release
+             */
+            $row = self::create([
+                'number' => $fields['number'],
+                'value' => $value,
+                'natureza' => key($natureza),
+                'data_vencimento' => $fields['data_vencimento'],
+                'people_id' => $fields['people_id'],
+                'category_id' => $fields['category_id'],
+                'description' => $fields['description']
+            ]);
+            
+            if ($row->is_invalid()) {
+                throw new \Exception($row->getFisrtError());
+            }
+
+            /**
+             * Gera o log de emissão.
+             * @var ReleaseLog
+             */
+            $emissao = ReleaseLog::create([
+                'release_id' => $row->id,
+                'date' => $fields['data_emissao'],
+                'action' => ReleaseLog::ACTION_EMISSAO,
+                'value' => $value
+            ]);
+            
+            if ($emissao->is_invalid()) {
+                throw new \Exception($emissao->getFisrtError());
+            }
+
+            /**
+             * Sera TRUE se a data de liquidação for informada.
+             * @var boolean
+             */
+            if (!! $fields['data_liquidacao']) {
+
+                /**
+                 * Faz a liquidação automática do lançamento.
+                 */
+                $liquidacao = ReleaseLog::create([
+                    'release_id' => $row->id,
+                    'backup' => json_encode($row->to_array()),
+                    'date' => $fields['data_liquidacao'],
+                    'action' => ReleaseLog::ACTION_LIQUIDACAO,
+                    'value' => $row->value
+                ]);
+
+                if ($liquidacao->is_invalid()) {
+                    throw new \Exception($liquidacao->getFisrtError());
+                }
+
+                /**
+                 * Altera o status do lançamento para liquidado.
+                 */
+                $row->status = self::STATUS_LIQUIDADO;
+                $row->save();
+            }
+
+            foreach ($releases as $release) {
+
+                /**
+                 * Backup do lançamento.
+                 * @var string
+                 */
+                $backup = json_encode($release->to_array());
+
+                $release->parent_id = $row->id;
+                $release->status = self::STATUS_GROUPED;
+                $release->save();
+
+                if ($release->is_invalid()) {
+                    throw new \Exception($release->getFisrtError());
+                }
+
+                $grouped = ReleaseLog::create([
+                    'release_id' => $release->id,
+                    'backup' => $backup,
+                    'date' => $fields['data_emissao'],
+                    'action' => ReleaseLog::ACTION_GROUPED,
+                    'value' => $release->value
+                ]);
+                
+                if ($grouped->is_invalid()) {
+                    throw new \Exception($grouped->getFisrtError());
+                }
+            }
+
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -173,10 +319,14 @@ final class Release extends Model
             $connection = static::connection();
             $connection->transaction();
 
+            $isEdit = isset($fields['id']) && is_numeric($fields['id']);
+
+            $release_number = null;
+
             /**
              * Se o ID foi passado, é porque se trata de uma edição.
              */
-            if (isset($fields['id']) && is_numeric($fields['id'])) {
+            if ($isEdit) {
                 
                 /**
                  * @var Release
@@ -187,10 +337,11 @@ final class Release extends Model
 
                 /**
                  * Se o usuário não alterou a quantidade de parcelas
-                 * o lançamento vai contnuar com o mesmo numero de processo.
+                 * o lançamento vai continuar com o mesmo numero de processo.
                  */
                 if ($quantity == 1) {
                     $process = $release->process;
+                    $release_number = $release->number;
                 }
 
                 /**
@@ -200,6 +351,15 @@ final class Release extends Model
                 if (! $release->delete()) {
                     throw new \Exception('Falha ao apagar o lançamento.');
                 }
+            } 
+
+            /**
+             * Se não for uma edição de lançamento e quantidade for uma.
+             * O número do processo só se faz necessário em lançamentos parcelados,
+             * pois é a única forma de saber quais lançamentos estão envolvidos.
+             */
+            if (! $isEdit && $quantity == 1) {
+                $process = null;
             }
 
             /**
@@ -209,6 +369,20 @@ final class Release extends Model
             $liquidar = !! $fields['data_liquidacao'];
 
             for ($i=0; $i < $quantity; $i++) {
+
+                /**
+                 * Numero sequencial / quantidade de parcelas.
+                 * @var string
+                 */
+                $number = ($i + 1) . '/' . $quantity;
+
+                /**
+                 * Se for uma edição na qual o usuário não redividiu o lançamento,
+                 * o numeração do lançamento não deve ser alterada.
+                 */
+                if ($isEdit && $quantity == 1) {
+                    $number = $release_number;
+                }
 
                 /**
                  * Adiciona a diferença da dízima na última parcela.
@@ -221,7 +395,7 @@ final class Release extends Model
                  * @var Release
                  */
                 $row = self::create([
-                    'number' => ($i + 1) . '/' . $quantity,
+                    'number' => $number,
                     'value' => $value,
                     'natureza' => $fields['natureza'],
                     'data_vencimento' => clone $vencimento,
@@ -232,7 +406,7 @@ final class Release extends Model
                 ]);
                 
                 if ($row->is_invalid()) {
-                    throw new \Exception($row->errors->full_messages()[0]);
+                    throw new \Exception($row->getFisrtError());
                 }
 
                 /**
@@ -240,16 +414,15 @@ final class Release extends Model
                  *
                  * @var ReleaseLog
                  */
-                $log = ReleaseLog::create([
+                $emissao = ReleaseLog::create([
                     'release_id' => $row->id,
                     'date' => $fields['data_emissao'],
                     'action' => ReleaseLog::ACTION_EMISSAO,
                     'value' => $row->value
                 ]);
-
                 
-                if ($log->is_invalid()) {
-                    throw new \Exception($log->errors->full_messages()[0]);
+                if ($emissao->is_invalid()) {
+                    throw new \Exception($emissao->getFisrtError());
                 }
                 
                 if ($liquidar) {
@@ -268,7 +441,7 @@ final class Release extends Model
                     ]);
 
                     if ($liquidacao->is_invalid()) {
-                        throw new \Exception($liquidacao->errors->full_messages()[0]);
+                        throw new \Exception($liquidacao->getFisrtError());
                     }
 
                     /**
@@ -364,7 +537,7 @@ final class Release extends Model
                 ]);
 
                 if ($log_desconto->is_invalid()) {
-                    throw new \Exception($log_desconto->errors->full_messages()[0]);
+                    throw new \Exception($log_desconto->getFisrtError());
                 }
 
                 $release->value = $fields['value'] + $release->getSumLiquidacoes();
@@ -386,7 +559,7 @@ final class Release extends Model
                 ]);
 
                 if ($log_encargo->is_invalid()) {
-                    throw new \Exception($log_encargo->errors->full_messages()[0]);
+                    throw new \Exception($log_encargo->getFisrtError());
                 }
             } else {
                 $release->value = $fields['value'] + $release->getSumLiquidacoes();
@@ -403,7 +576,7 @@ final class Release extends Model
             ]);
 
             if ($log_quitacao->is_invalid()) {
-                throw new \Exception($log_quitacao->errors->full_messages()[0]);
+                throw new \Exception($log_quitacao->getFisrtError());
             }
 
             if ($log_encargo) {
@@ -428,22 +601,104 @@ final class Release extends Model
     /**
      * Cancela o ultimo log do lançamento.
      *
-     * @param integer $release_id
+     * @param integer                  $release_id
+     * @param \ActiveRecord\Connection $connection
+     * @param integer                  $action
      * @throws \Exception Não foi possível cancelar o ultimo log do lançamento.
+     * @throws \Exception Lançamento não localizado.
+     * @throws \Exception A ação do log que será cancelado é diferente da ação especificada.
+     * @return boolean
+     */
+    public static function rollback($release_id, $connection = null, $action = null)
+    {
+        try {
+            
+            if (! $release = self::find($release_id)) {
+                throw new \Exception('Lançamento não localizado.');
+            }
+
+            if (! $release->canDesfazer()) {
+                throw new \Exception('Não foi possível cancelar o ultimo log do lançamento.');
+            }
+
+            /**
+             * @var ReleaseLog
+             */
+            $last = $release->getLastLog();
+
+            if ($action && $last->action != $action) {
+                throw new \Exception('A ação do log que será cancelado é diferente da ação especificada.');
+            }
+
+            $begin = false;
+
+            if (! $connection) {
+                $connection = static::connection();
+                $connection->transaction();
+                $begin = true;
+            }
+            
+            $last->rollback();
+
+            if ($begin) $connection->commit();
+
+        } catch (\Exception $e) {
+            if ($begin) $connection->rollback();
+            throw $e;
+        }
+
+        return true;
+    }
+
+    /**
+     * Cancela o agrupamento do lançamento.
+     *
+     * @param integer $release_id
+     * @throws \Exception Não foi possível desagrupar os lançamentos.
      * @throws \Exception Lançamento não localizado.
      * @return boolean
      */
-    public static function rollback($release_id)
+    public static function ungroup($release_id)
     {
         if (! $release = self::find($release_id)) {
             throw new \Exception('Lançamento não localizado.');
         }
 
-        if (! $release->canDesfazer()) {
-            throw new \Exception('Não foi possível cancelar o ultimo log do lançamento.');
+        if (! $release->canUngroup()) {
+            throw new \Exception('Não foi possível desagrupar os lançamentos.');
         }
 
-        return $release->getLastLog()->rollback();
+        try {
+            $connection = static::connection();
+            $connection->transaction();
+
+            foreach ($release->releases as $row) {
+                
+                /**
+                 * Cancela o log de agrupamento.
+                 */
+                self::rollback($row->id, $connection, ReleaseLog::ACTION_GROUPED);
+                
+                /**
+                 * Limpa o id do lançamento.
+                 * @var null
+                 */
+                $row->parent_id = null;
+                $row->save();
+            }
+
+            /**
+             * Apaga o lançamento.
+             */
+            $release->delete();
+
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw $e;
+        }
+
+        return true;
     }
 
     /**
@@ -586,8 +841,28 @@ final class Release extends Model
         ]);
 
         if ($log->is_invalid()) {
-            throw new \Exception($log->errors->full_messages()[0]);
+            throw new \Exception($log->getFisrtError());
         }
+    }
+
+    /**
+     * Verifica se o lançamento foi agrupado.
+     * 
+     * @return boolean
+     */
+    public function isGrouped()
+    {
+        return $this->status == self::STATUS_GROUPED;
+    }
+
+    /**
+     * Verifica se um lançamento aberto está em atraso.
+     * 
+     * @return boolean
+     */
+    public function emAtraso()
+    {
+        return $this->status == self::STATUS_ABERTO && $this->data_vencimento < (new \Datetime(date('Y-m-d')));
     }
 
     /**
@@ -599,14 +874,19 @@ final class Release extends Model
     {
         $status = $this->status;
 
-        if (! $this->isLiquidado() && $this->data_vencimento < (new \Datetime(date('Y-m-d')))) {
-            $status = 3;
+        /**
+         * Se o lançamento não estiver sido agrupado
+         * e estiver em atraso, o status é dinamicamente alterado para 'Vencido'.
+         */
+        if (! $this->isGrouped() && $this->emAtraso()) {
+            $status = self::STATUS_EM_ATRASO;
         }
 
         return [
             self::STATUS_ABERTO => 'Aberto',
+            self::STATUS_EM_ATRASO => 'Vencido',
+            self::STATUS_GROUPED => 'Agrupada',
             self::STATUS_LIQUIDADO => 'Pago',
-            3 => 'Vencido'
         ][$status];
     }
 
@@ -646,6 +926,83 @@ final class Release extends Model
     }
 
     /**
+     * Retorna o valor do lançamento formatado.
+     * 
+     * @return string
+     */
+    public function getFormatValue()
+    {
+        return number_format($this->value, 2, ',', '.');
+    }
+
+    /**
+     * Formata os lançamentos com o padrão que a grid de lançamentos necessita.
+     * 
+     * @param array                         $rows Release list.
+     * @param boolean $include_data_emissao Se true, adiciona a data de emissão nos lançamentos.
+     * @return array
+     */
+    static function gridFormat($rows, $include_data_emissao = false)
+    {
+        return array_map(function ($r) use ($include_data_emissao) {
+            $row = $r->to_array();
+
+            $row['people'] = $r->people->name;
+            $row['category'] = $r->category->name;
+            $row['natureza'] = $r->getNaturezaName();
+            $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
+            $row['value'] = $r->getFormatValue();
+            $row['status'] = $r->getStatusName();
+            $row['color'] = $r->getColor();
+            $row['desc'] = $r->description;
+
+            if ($include_data_emissao) {
+                $row['emissao'] = $r->log_emissao->date->format('d/m/Y');
+            }
+
+            return $row;
+        }, $rows);
+    }
+
+    /**
+     * Seleciona e formta os lançamentos para apresentação no formulário de agrupamento de lançamentos.
+     * 
+     * @param boolean $return_qtd_rows Se true, retorna a quantidade de linhas filtradas.
+     * @return array
+     */
+    static function gridGroupFormat($return_qtd_rows = false)
+    {
+        $releases = self::find('all', [
+            'order' => 'data_vencimento asc',
+            'conditions' => [
+                'status = ? and data_vencimento < ?', 
+                self::STATUS_ABERTO,
+                (new \Datetime(date('Y-m-d')))->add(new \Dateinterval('P1M'))->format('Y-m-d')
+            ]
+        ]);
+
+        $filtered = array_filter($releases, function ($r) {
+            return $r->canEditar() && ! $r->isGroup();
+        });
+
+        if ($return_qtd_rows) {
+            return count($filtered);
+        }
+
+        return self::gridFormat($filtered, true);
+    }
+
+    /**
+     * Verifica se o lançamento foi originado de um agrupamento de lançamentos.
+     * 
+     * @return boolean
+     */
+    public function isGroup()
+    {
+        return !! count($this->releases);
+    }
+
+    /**
      * Retorna uma cor de identifcação
      * com base na natureza do lanamento.
      *
@@ -666,7 +1023,7 @@ final class Release extends Model
      */
     public function canLiquidar()
     {
-        return ! $this->isLiquidado();
+        return $this->status == self::STATUS_ABERTO;
     }
 
     /**
@@ -676,7 +1033,11 @@ final class Release extends Model
      */
     public function canDesfazer()
     {
-        return $this->getLastLog()->action == ReleaseLog::ACTION_LIQUIDACAO;
+        if (! $last = $this->getLastLog()) {
+            return false;
+        }
+
+        return $last->action != ReleaseLog::ACTION_EMISSAO;
     }
 
     /**
@@ -694,6 +1055,16 @@ final class Release extends Model
         ]);
 
         return $count <= 1;
+    }
+
+    /**
+     * Verifica se um originado de um agrupamento pode ser desagrupado.
+     * 
+     * @return boolean
+     */
+    public function canUngroup()
+    {
+        return $this->isGroup() && $this->canEditar();
     }
 
     /**

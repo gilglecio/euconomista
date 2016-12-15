@@ -77,7 +77,7 @@ class UserLog extends Model
             }
 
 			if ($object->is_invalid()) {
-	            throw new \Exception($object->errors->full_messages()[0]);
+	            throw new \Exception($object->getFisrtError());
 	        }
 
 	        $object->afterRestored();
@@ -90,7 +90,7 @@ class UserLog extends Model
 	        $log->save();
 
 	        if ($log->is_invalid()) {
-	            throw new \Exception($log->errors->full_messages()[0]);
+	            throw new \Exception($log->getFisrtError());
 	        }
 
             $connection->commit();
@@ -122,7 +122,7 @@ class UserLog extends Model
 		]);
 
 		if ($log->is_invalid()) {
-            throw new \Exception($log->errors->full_messages()[0]);
+            throw new \Exception($log->getFisrtError());
         }
 
         return $log;
@@ -143,7 +143,7 @@ class UserLog extends Model
 		]);
 
 		if ($log->is_invalid()) {
-            throw new \Exception($log->errors->full_messages()[0]);
+            throw new \Exception($log->getFisrtError());
         }
 
         return $log;
@@ -205,7 +205,7 @@ class UserLog extends Model
 		]);
 
 		if ($log->is_invalid()) {
-            throw new \Exception($log->errors->full_messages()[0]);
+            throw new \Exception($log->getFisrtError());
         }
 
         return $log;

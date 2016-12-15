@@ -1,0 +1,120 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+    
+    {% include 'macro.twig' with {messages: messages} %}
+
+    <div class="jumbotron no-margin-bottom">
+	    <form class="form-horizontal" method="post" action="/app/releases/group">
+
+	    	<fieldset>
+	    		<legend>Lançamentos</legend>
+
+	    		<div style="max-height:500px;overflow-y:scroll">
+
+			    	<table class="table table-striped">
+				    	<thead>
+				    		<tr>
+				    			<th width="20px">#</th>
+				    			<th>Emissão</th>
+				    			<th>Vencimento</th>
+				    			<th>Número</th>
+				                <th>Pessoa</th>
+				                <th>Descrição</th>
+				    			<th style="min-width:80px" class="text-right">Valor R$</th>
+				    		</tr>
+				    	</thead>
+
+				    	<tbody>
+				    		{% for row in releases %}
+				    		<tr>
+				                <td>
+				                	<input type="checkbox" name="releases[]" value="{{ row.id }}">
+				                </td>
+				                <td style="color:{{ row.color }}">{{ row.emissao }}</td>
+				                <td style="color:{{ row.color }}">{{ row.vencimento }}</td>
+				                <td style="color:{{ row.color }}">{{ row.number }}</td>
+				                <td>{{ row.people }}</td>
+				                <td>{{ row.desc }}</td>
+				                <td class="text-right">{{ row.value }}</td>
+				    		</tr>
+				    		{% endfor %}
+				    	</tbody>
+				    </table>
+			    </div>
+			</fieldset>
+
+	    	<fieldset>
+	    		<legend>Lançamento</legend>
+
+		    	<div class="form-group">
+		    		<label for="people_id" class="control-label no-padding-right col-xs-3">Pessoa</label>
+		    		<div class="col-xs-9">
+		    			<select class="form-control" id="people_id" name="people_id" required>
+		    				<option></option>
+		    				{% for r in peoples %}
+		    				<option {% if r.id == data.people_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
+		    				{% endfor %}
+		    			</select>
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="category_id" class="control-label no-padding-right col-xs-3">Categoria</label>
+		    		<div class="col-xs-9">
+		    			<select class="form-control" id="category_id" name="category_id" required>
+		    				<option></option>
+		    				{% for r in categories %}
+		    				<option {% if r.id == data.category_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
+		    				{% endfor %}
+		    			</select>
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="data_emissao" class="control-label no-padding-right col-xs-3">Emissão</label>
+		    		<div class="col-xs-9 col-md-5">
+		    			<input type="date" min="1" value="{{ data.data_emissao }}" max="99" id="data_emissao" required name="data_emissao" value="1" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="data_vencimento" class="control-label no-padding-right col-xs-3">Vencimento</label>
+		    		<div class="col-xs-9 col-md-5">
+		    			<input type="date" min="1" value="{{ data.data_vencimento }}" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="data_liquidacao" class="control-label no-padding-right col-xs-3">Liquidação</label>
+		    		<div class="col-xs-9 col-md-5">
+		    			<input type="date" min="1" value="{{ data.data_liquidacao }}" max="99" id="data_liquidacao" placeholder="(Opcional)" name="data_liquidacao" value="1" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="number" class="control-label no-padding-right col-xs-3">Número</label>
+		    		<div class="col-xs-9">
+		    			<input type="text" value="{{ data.number }}" required maxlength="15" id="number" name="number" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="description" class="control-label no-padding-right col-xs-3">Descrição</label>
+		    		<div class="col-xs-9">
+		    			<input type="text" value="{{ data.description }}" placeholder="(Opcional)" maxlength="255" id="description" name="description" class="form-control">
+		    		</div>
+		    	</div>
+	    	</fieldset>
+
+	    	<div class="form-group no-margin-bottom">
+	    		<div class="col-xs-9 col-xs-offset-3">
+	    			<button {% if data.id %} onbsclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn btn-primary" type="submit">Salvar</button>
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+
+{% endblock %}

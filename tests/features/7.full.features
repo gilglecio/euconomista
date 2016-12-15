@@ -82,7 +82,7 @@ Feature: HmGestor
 		Then I should see "Apagar minha conta"
 		
 		# Cadastrando uma categoria
-		When I add category "Categoria 001"
+		When I register the category "Categoria 001"
 		Then I should be on "/app/categories"
 		Then I should see "Sucesso!"
 		Then I should see "Categoria 001"
@@ -93,7 +93,7 @@ Feature: HmGestor
 		Then I should see "Criou a categotia 'Categoria 001'."
 		
 		# Não permitir duas categorias com o mesmo nome
-		When I add category "Categoria 001"
+		When I register the category "Categoria 001"
 		Then I should be on "/app/categories/form"
 		Then I should see "Name must be unique"
 		

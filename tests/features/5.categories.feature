@@ -2,8 +2,7 @@
 Feature: Página de categorias
 
 	Background:
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		When I follow "Categorias"
 		Then I should be on "/app/categories"
 
@@ -17,17 +16,10 @@ Feature: Página de categorias
 	@javascript
 	Scenario: Cadastrando uma categoria
 
-		When I add category "Categoria 001"
-		Then I should be on "/app/categories"
-		Then I should see "Sucesso!"
-		Then I should see "Categoria 001"
-
-	@javascript
-	Scenario: Verificando log
-
-		When I follow "Logs"
-		Then I should be on "/app/logs"
-		Then I should see "Criou a categotia 'Categoria 001'."
+	    When I register the category "Categoria 001"
+	    Then I need to see the success message in the category grid
+	    And the category must be present in the list of categories
+	    And in the user log must be registered the creation of this category
 
 	@javascript
 	Scenario: Não permitir duas categorias com o mesmo nome

@@ -2,8 +2,7 @@
 Feature: Página de pessoas
 
 	Background:
-		When I login
-		Then I should be on "/app"
+		When I log in I should be inside the application
 		When I follow "Pessoas"
 		Then I should be on "/app/peoples"
 

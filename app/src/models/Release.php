@@ -903,8 +903,8 @@ final class Release extends Model
         $rows = ReleaseLog::find('all', [
             'order' => 'date asc',
             'conditions' => [
-                'action <> ?',
-                ReleaseLog::ACTION_EMISSAO
+                'action = ?',
+                ReleaseLog::ACTION_LIQUIDACAO
             ]
         ]);
 

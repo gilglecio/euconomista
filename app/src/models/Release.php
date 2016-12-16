@@ -922,6 +922,8 @@ final class Release extends Model
             return [
                 'date' => $r->date->format('d/m/Y'),
                 'saldo' => Toolkit::showMoney($saldo),
+                'people' => $r->release->people->name,
+                'desc' => $r->release->description,
                 'value' => Toolkit::showMoney($value),
                 'color' => $value < 0 ? 'red' : 'blue'
             ];

@@ -214,6 +214,7 @@ JS;
         $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
         $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
         $this->getSession()->getPage()->fillField('confirm_password', $this->params['user_password']);
+        $this->checkWithClickOn('accept_terms');
         $this->getSession()->getPage()->find('named', array('button', "\"Cadastrar\""))->click();
     }
 

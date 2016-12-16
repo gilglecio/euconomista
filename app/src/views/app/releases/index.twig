@@ -38,27 +38,36 @@
 
     	<tbody>
     		{% for row in rows %}
-    		<tr>
-                <td>{{ row.vencimento }}</td>
-                <td>
-                    <a href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
-                </td>
-                <td class="hidden-sm hidden-xs">{{ row.category }}</td>
-                <td>{{ row.people }}</td>
-                <td class="hidden-sm hidden-xs">{{ row.desc }}</td>
-                
-                <td style="{% if row.status == 'Vencido' %}font-weight:bold{% endif %}">
-                    {{ row.status }}
-                </td>
-    			
-                <td style="color:{{ row.color }}" class="text-right">
-                    {{ row.value }}
-                    {% if row.status != 'Pago' %}
-                    <a id="release-liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
-                    </i></a>
-                    {% endif %}
-                </td>
-    		</tr>
+            
+                {% if row.sum %}
+                <tr>
+                    <td colspan="6"><strong>Saldo em {{ row.month }}</strong></td>
+                    <td class="text-right"><strong>{{ row.sum }}</strong></td>
+                </tr>
+                {% else %}
+
+                <tr>
+                    <td>{{ row.vencimento }}</td>
+                    <td>
+                        <a href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
+                    </td>
+                    <td class="hidden-sm hidden-xs">{{ row.category }}</td>
+                    <td>{{ row.people }}</td>
+                    <td class="hidden-sm hidden-xs">{{ row.desc }}</td>
+                    
+                    <td style="{% if row.status == 'Vencido' %}font-weight:bold{% endif %}">
+                        {{ row.status }}
+                    </td>
+                    
+                    <td style="color:{{ row.color }}" class="text-right">
+                        {{ row.value }}
+                        {% if row.status != 'Pago' %}
+                        <a id="release-liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
+                        </i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
     		{% endfor %}
 
     		{% if not rows|length %}

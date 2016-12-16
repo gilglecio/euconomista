@@ -162,6 +162,20 @@ JS;
     }
 
     /**
+     * @Then /^the element "(?P<element>[^"]*)" contain "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function elementHasContains($element, $text)
+    {
+        $el = $this->assertSession()->elementExists('css', $element)->getText();
+        
+        foreach (explode('|', $text) as $t) {
+            if (!preg_match('/' . preg_quote($t, '/') . '/ui', $el)) {
+                throw new Exception("The element \"{$element}\" not contains \"{$t}\"");
+            }
+        }
+    }
+
+    /**
      * @When /^I log in I should be inside the application$/
      */
     public function login()

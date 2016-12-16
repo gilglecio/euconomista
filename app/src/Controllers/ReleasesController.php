@@ -50,9 +50,11 @@ final class ReleasesController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $conditions = ['status = 1'];
+        $abertas = true;
 
         if (isset($args['target']) && $args['target'] == 'all') {
             $conditions = ['status in (1,2)'];
+            $abertas = false;
         }
 
         /**
@@ -67,6 +69,39 @@ final class ReleasesController extends Controller
          * @var array
          */
         $rows = Release::gridFormat($rows);
+
+        if ($abertas) {
+            $before_month = null;
+            $sum = 0;
+
+            $_rows = [];
+
+            foreach ($rows as $row) {
+                $month = (new \Datetime($row['data_vencimento']))->format('M \d\e Y');
+                $value = $row['_value'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
+
+                if (is_null($before_month)) {
+                    $before_month = $month;
+                }
+
+                if ($before_month != $month) {
+                    $_rows[] = [
+                        'month' => $month,
+                        'sum' => Toolkit::showMoney($sum)
+                    ];
+
+                    $before_month = $month;
+
+                    $sum = $value;
+                } else {
+                    $sum += $value;
+                }
+
+                $_rows[] = $row;
+            }
+
+            $rows = $_rows;
+        }
 
         $this->view->render($response, 'app/releases/index.twig', [
             'title' => $this->title,

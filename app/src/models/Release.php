@@ -947,7 +947,7 @@ final class Release extends Model
      */
     public static function gridFormat($rows, $include_data_emissao = false)
     {
-        return array_map(function ($r) use ($include_data_emissao) {
+        return array_map(function ($r) use ($include_data_emissao, $before_month, $sum) {
             $row = $r->to_array();
 
             $row['people'] = $r->people->name;
@@ -955,6 +955,7 @@ final class Release extends Model
             $row['natureza'] = $r->getNaturezaName();
             $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
             $row['value'] = $r->getFormatValue();
+            $row['_value'] = $r->value;
             $row['status'] = $r->getStatusName();
             $row['color'] = $r->getColor();
             $row['desc'] = $r->description;

@@ -86,7 +86,7 @@ final class ReleasesController extends Controller
 
                 if ($before_month != $month) {
                     $_rows[] = [
-                        'month' => $month,
+                        'month' => $before_month,
                         'sum' => Toolkit::showMoney($sum)
                     ];
 

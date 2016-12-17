@@ -151,8 +151,8 @@ final class ReleasesController extends Controller
 
         $data['title'] = $this->title;
 
-        $data['categories'] = Category::find('all');
-        $data['peoples'] = People::find('all');
+        $data['categories'] = Category::find('all', ['order' => 'name asc']);
+        $data['peoples'] = People::find('all', ['order' => 'name asc']);
 
         $this->view->render($response, 'app/releases/form.twig', $data);
         
@@ -176,8 +176,8 @@ final class ReleasesController extends Controller
 
         $data['title'] = 'Agrupamento de lançamentos';
 
-        $data['categories'] = Category::find('all');
-        $data['peoples'] = People::find('all');
+        $data['categories'] = Category::find('all', ['order' => 'name asc']);
+        $data['peoples'] = People::find('all', ['order' => 'name asc']);
         
         /**
          * Lançamentos abertos com vencimento para até 30 dias

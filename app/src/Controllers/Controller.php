@@ -38,6 +38,12 @@ abstract class Controller
     protected $flash;
 
     /**
+     * Recebe a instância de Mailer.
+     * @var \App\Mail\Mailer
+     */
+    protected $mailer;
+
+    /**
      * Título da página padrão.
      * @var string
      */
@@ -52,6 +58,7 @@ abstract class Controller
         $this->view = $app->get('view');
         $this->logger = $app->get('logger');
         $this->flash = $app->get('flash');
+        $this->mailer = $app->get('mailer');
     }
 
     /**

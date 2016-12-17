@@ -12,7 +12,6 @@
     			<th style="width:160px">Data</th>
                 <th>Description</th>
                 <th>Usuário</th>
-    			<th style="width:160px">Restauração</th>
     		</tr>
     	</thead>
 
@@ -22,17 +21,6 @@
     			<td>{{ row.date }}</td>
                 <td>{{ row.description }}</td>
     			<td>{{ row.user }}</td>
-                <td>
-                    {% if row.restored_at %}
-                    {{ row.restored_at }}
-                    {% endif %}
-
-                    {% if row.can_restore %}
-                    <a onbsclick="return confirm('Deseja realmente RESTAURAR o registro?')" href="/app/logs/{{ row.id }}/restore" style="color:red">
-                        Restaurar
-                    </a>
-                    {% endif %}
-                </td>
     		</tr>
     		{% endfor %}
 

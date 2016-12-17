@@ -27,5 +27,5 @@ interface UserAuthInterface
      * @param string $email
      * @return \stdClass
      */
-    public function getIdEntityPasswordAndNameByEmail($email);
+    public function getIdEntityPasswordStatusAndNameByEmail($email);
 }

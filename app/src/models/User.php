@@ -14,6 +14,9 @@ use App\Auth\AuthSession;
  */
 class User extends Model implements UserAuthInterface
 {
+    const STATUS_UNCONFIRMED = 0;
+    const STATUS_CONFIRMED = 1;
+
     /**
      * Validação de campos obrigatŕios.
      *
@@ -95,10 +98,14 @@ class User extends Model implements UserAuthInterface
      * @param string $email
      * @return \stdClass
      */
-    public function getIdEntityPasswordAndNameByEmail($email)
+    public function getIdEntityPasswordStatusAndNameByEmail($email)
     {
         if (! $user = self::find('first', ['conditions' => ['email = ?', $email]])) {
             return null;
+        }
+
+        if ($user->status == self::STATUS_UNCONFIRMED) {
+            throw new \Exception('E-mail não confirmado.');
         }
 
         $user = (object) $user->to_array();
@@ -128,6 +135,7 @@ class User extends Model implements UserAuthInterface
             'entity' => isset($fields['entity']) ? $fields['entity'] : null,
             'name' => $fields['name'],
             'email' => $fields['email'],
+            'email' => $fields['email'],
             'password' => $fields['password']
         ]);
 
@@ -136,6 +144,11 @@ class User extends Model implements UserAuthInterface
         }
 
         return $row;
+    }
+
+    public function getFirstName()
+    {
+        return explode(' ', $this->name)[0];
     }
 
     /**

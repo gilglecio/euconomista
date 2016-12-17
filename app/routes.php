@@ -42,6 +42,9 @@ $app->get('/logout', 'App\Controller\LoginController:logout')
 $app->get('/register', 'App\Controller\RegisterController:index')
 	->setName('register.form');
 
+$app->get('/register/confirm_email/{token}', 'App\Controller\RegisterController:confirmEmail')
+	->setName('register.confirm-email');
+
 $app->post('/register', 'App\Controller\RegisterController:post')
 	->setName('register.post');
 

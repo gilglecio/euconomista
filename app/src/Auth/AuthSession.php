@@ -38,7 +38,7 @@ class AuthSession
      */
     public static function attemp(UserAuthInterface $user, $email, $password)
     {
-        if (! $user = $user->getIdEntityPasswordAndNameByEmail($email)) {
+        if (! $user = $user->getIdEntityPasswordStatusAndNameByEmail($email)) {
             throw new \Exception('Este e-mail não está cadastrado.');
         }
 

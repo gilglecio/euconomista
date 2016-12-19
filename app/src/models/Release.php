@@ -988,7 +988,7 @@ final class Release extends Model
         ]);
 
         $filtered = array_filter($releases, function ($r) {
-            return $r->canEditar() && ! $r->isGroup();
+            return ! $r->isGroup();
         });
 
         if ($return_qtd_rows) {

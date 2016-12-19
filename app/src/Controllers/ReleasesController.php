@@ -295,6 +295,7 @@ final class ReleasesController extends Controller
             'title' => 'Extrato de lançamento',
             'release' => $release,
             'rows' => $rows,
+            'releases' => Release::gridFormat($release->releases, true),
             'messages' => $this->getMessages(),
             'canLiquidar' => $release->canLiquidar(),
             'canDesfazer' => $release->canDesfazer(),

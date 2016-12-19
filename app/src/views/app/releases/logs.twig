@@ -25,7 +25,6 @@
 
         {% if canEditar and not isGroup %}
         <li><a href="/app/releases/{{ release.id }}/form">Editar</a></li>
-
         <li><a onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
         <li><a onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
         {% endif %}
@@ -60,4 +59,36 @@
             {% endif %}
     	</tbody>
     </table>
+
+    {% if releases|length %}
+    <ol class="breadcrumb">
+        <li><a onclick="$('.table-releases').toggle(); return false;" href>Lançamentos do agrupamento</a></li>
+    </ol>
+
+    <table class="table table-releases table-striped" style="display:none">
+        <thead>
+            <tr>
+                <th>Vencimento</th>
+                <th>Número</th>
+                <th class="hidden-sm hidden-xs">Categoria</th>
+                <th>Pessoa</th>
+                <th class="hidden-sm hidden-xs">Descrição</th>
+                <th style="min-width:80px" class="text-right">Valor R$</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for row in releases %}
+            <tr>
+                <td>{{ row.vencimento }}</td>
+                <td><a href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a></td>
+                <td>{{ row.category }}</td>
+                <td>{{ row.people }}</td>
+                <td>{{ row.desc }}</td>
+                <td class="text-right">{{ row.value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 {% endblock %}

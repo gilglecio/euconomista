@@ -6,3 +6,4 @@ cache/*
 /scripts
 /public/behat.html
 /public/assets
+backups/*

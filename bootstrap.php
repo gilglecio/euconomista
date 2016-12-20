@@ -11,6 +11,8 @@ if (PHP_SAPI == 'cli-server') {
 }
 
 define('APP_URL', 'http://' . $_SERVER['HTTP_HOST']);
+define('ENV_TEST', APP_URL == 'http://localhost:3002');
+define('ENV_PROD', APP_URL == 'http://fn.gilglecio.com.br');
 
 session_start();
 
@@ -57,7 +59,7 @@ Config::initialize(function ($cfg) use ($settings) {
 
     $default = 'development';
 
-    if (APP_URL == 'http://localhost:3002') {
+    if (ENV_TEST) {
         $default = 'test';
     }
 

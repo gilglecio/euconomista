@@ -64,4 +64,4 @@ Feature: Página de login
 		When I follow "Me"
 		Then I should be on "/app/me"
 		Then I should see "Baixar backup"
-		Then I should see "Apagar minha conta"
+		Then I should see "Desativar minha conta"

@@ -188,6 +188,36 @@ JS;
     }
 
     /**
+     * @Given /^I am on confirm email page$/
+     */
+    public function iAmOnConfirmEmailPage()
+    {
+        $this->visit($this->params['base_url'] . '/register/confirm_email/' . sha1($this->params['user_email']));
+    }
+
+    /**
+     * @Then /^I should see confirm register message in login page$/
+     */
+    public function iShouldSeeConfirmRegisterMessageInLoginPage()
+    {
+        $this->assertPageAddress('/login');
+        $this->assertPageContainsText($this->params['user_name'] . ', e-mail confirmado.');
+    }
+
+
+    /**
+     * @When /^I log in I should see unconfirmed message$/
+     */
+    public function loginUnconfirmed()
+    {
+        $this->visit($this->params['base_url'] . '/login');
+        $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
+        $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
+        $this->getSession()->getPage()->find('named', array('button', "\"Entrar\""))->click();
+        $this->assertPageContainsText('E-mail não confirmado.');
+    }
+
+    /**
      * @When /^I logout$/
      */
     public function logout()
@@ -214,6 +244,7 @@ JS;
         $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
         $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
         $this->getSession()->getPage()->fillField('confirm_password', $this->params['user_password']);
+        $this->checkWithClickOn('accept_terms');
         $this->getSession()->getPage()->find('named', array('button', "\"Cadastrar\""))->click();
     }
 

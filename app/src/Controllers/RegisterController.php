@@ -54,6 +54,28 @@ final class RegisterController extends Controller
     }
 
     /**
+     * Confirma o email do usuário pelo token.
+     * Os tokens de confirmação de email duram 24 horas.
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function confirmEmail(Request $request, Response $response, array $args)
+    {
+        try {
+            $user = Anonimous::confirmEmail($args['token']);
+            $this->success($user->getFirstName() . ', e-mail confirmado.');
+        } catch (\Exception $e) {
+            return $this->redirectWithError($response, $e->getMessage(), '/login');
+        }
+
+        return $response->withRedirect('/login');
+    }
+
+    /**
      * Recebe o post do formulário de cadastro.
      *
      * @param Request  $request
@@ -64,19 +86,46 @@ final class RegisterController extends Controller
      */
     public function post(Request $request, Response $response, array $args)
     {
+        $user = null;
+
         try {
-            Anonimous::register([
+            $user = Anonimous::register([
                 'name' => $request->getParsedBodyParam('name'),
                 'email' => $request->getParsedBodyParam('email'),
                 'password' => $request->getParsedBodyParam('password'),
                 'confirm_password' => $request->getParsedBodyParam('confirm_password')
             ]);
+
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/register');
         }
 
+        try {
+            /**
+             * Faz o envio do e-mail de confirmação.
+             */
+            $this->mailer->send(
+                'emails/confirm_email.twig', 
+                [
+                    'confirm_url' => APP_URL . '/register/confirm_email?token=' . $user->confirm_email_token
+                ], 
+                function ($m) use ($user) {
+                    $m->to($user->email, $user->name);
+                    $m->subject('HmGestor Confirmação de E-Mail');
+                    $m->from('no-replay@hmgestor.com');
+                    $m->fromName('HmGestor');
+                }
+            );
+
+            $this->success('Sucesso! Email de confirmação enviado.');
+
+        } catch (\Exception $e) {
+            $this->success('Sucesso! Mas o envio do email de confirmação falhou.');
+            $this->logger->error('Register: ' . $e->getMessage());
+        }
+
         $this->logger->info('Register: ' . $request->getParsedBodyParam('email'));
-        $this->success('Sucesso! Acesso liberado.');
+        
 
         return $response->withRedirect('/login');
     }

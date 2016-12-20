@@ -83,6 +83,8 @@ $app->group('/app', function () {
 	$this->group('/me', function () {
 		$this->get('', 'App\Controller\MeController:index')
 			->setName('me');
+		$this->get('/backup', 'App\Controller\MeController:backup')
+			->setName('me.backup');
 	});
 
 	# USER LOGS

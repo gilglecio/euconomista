@@ -45,6 +45,8 @@ final class PeoplesController extends Controller
         $this->view->render($response, 'app/peoples/index.twig', [
             'title' => $this->title,
             'messages' => $this->getMessages(),
+            'report_footer' => $this->getReportFooter(),
+            'report_title' => 'Relatório das pessoas cadastradas',
             'rows' => People::find('all', ['order' => 'name asc'])
         ]);
         

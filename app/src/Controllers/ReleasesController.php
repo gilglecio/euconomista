@@ -107,6 +107,8 @@ final class ReleasesController extends Controller
             'title' => $this->title,
             'hasReleasesForGroup' => !! Release::gridGroupFormat(true),
             'messages' => $this->getMessages(),
+            'report_footer' => $this->getReportFooter(),
+            'report_title' => 'Relatório de lançamentos em aberto',
             'rows' => $rows
         ]);
         

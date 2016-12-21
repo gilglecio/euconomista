@@ -45,6 +45,8 @@ final class CategoriesController extends Controller
         $this->view->render($response, 'app/categories/index.twig', [
             'title' => $this->title,
             'messages' => $this->getMessages(),
+            'report_footer' => $this->getReportFooter(),
+            'report_title' => 'Relatório das categorias cadastradas',
             'rows' => Category::find('all')
         ]);
         

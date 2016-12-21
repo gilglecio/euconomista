@@ -46,3 +46,37 @@
 .no-margin {
     margin: 0;
 }
+
+@page { 
+    size: portrait; 
+}
+
+@media print {
+  body {
+    font-size: 6pt;
+  }
+  td,
+  th {
+    padding: 3px !important;
+  }
+  .table>thead>tr>th {
+    border-bottom: 1px solid #ddd;
+  }
+  a,
+  a:visited {
+    text-decoration: none;
+  }
+  .container {
+    width: 100% !important;
+  }
+  a[href]:after {
+    content: "";
+  }
+  abbr[title]:after {
+    content: "";
+  }
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+}

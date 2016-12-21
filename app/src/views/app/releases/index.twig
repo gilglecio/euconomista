@@ -3,8 +3,7 @@
 {% block pageTitle title %}
 
 {% block app %}
-
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/releases/form">Adicionar</a>
 
@@ -16,10 +15,13 @@
 
             <a class="btn btn-link" href="/app/releases">Abertas</a>
             <a class="btn btn-link" href="/app/releases/i/all">Todas</a>
+            <a class="btn btn-default pull-right" href onclick="print()"><i class="glyphicon glyphicon-print"></i></a>
         </div>
     </div>
 
-    <hr>
+    <h5 class="visible-print">{{ report_title }}</h5>
+    <hr class="visible-print no-margin-top">
+    <hr class="hidden-print">
 
     {% include 'macro.twig' with {messages: messages} %}
 
@@ -41,7 +43,8 @@
             
                 {% if row.sum %}
                 <tr>
-                    <td colspan="6"><strong>Saldo em {{ row.month }}</strong></td>
+                    <td class="hidden-lg hidden-md" colspan="4"><strong>Saldo em {{ row.month }}</strong></td>
+                    <td class="hidden-sm hidden-xs" colspan="6"><strong>Saldo em {{ row.month }}</strong></td>
                     <td class="text-right"><strong>{{ row.sum }}</strong></td>
                 </tr>
                 {% else %}
@@ -62,7 +65,7 @@
                     <td style="color:{{ row.color }}" class="text-right">
                         {{ row.value }}
                         {% if row.status != 'Pago' %}
-                        <a id="release-liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check">
+                        <a id="release-liquidar-{{ loop.index }}" style="color:{{ row.color }}" title="Liquidar" href="/app/releases/{{ row.id }}/liquidar"><i class="glyphicon glyphicon-check hidden-print">
                         </i></a>
                         {% endif %}
                     </td>
@@ -77,4 +80,7 @@
             {% endif %}
     	</tbody>
     </table>
+
+    <p class="visible-print pull-right">{{ report_footer }}</p>
+
 {% endblock %}

@@ -61,7 +61,6 @@ final class MeController extends Controller
         $rows = [];
 
         foreach (ReleaseLog::find('all') as $log) {
-
             if (! in_array($log->action, [ReleaseLog::ACTION_EMISSAO, ReleaseLog::ACTION_LIQUIDACAO])) {
                 continue;
             }
@@ -74,7 +73,7 @@ final class MeController extends Controller
                 'data_pagamento' => $log->date->format('d/m/Y'),
                 'description' => $log->release->description,
                 'value' => $log->release->value,
-                'value_pago' => $log->value,
+                'value_pago' => $log->action == ReleaseLog::ACTION_LIQUIDACAO ? $log->value : null,
                 'number' => $log->release->number,
                 'status' => $log->release->getStatusName()
             ];

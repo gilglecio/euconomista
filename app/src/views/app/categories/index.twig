@@ -3,13 +3,16 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/categories/form">Adicionar</a>
+            <a class="btn btn-default pull-right" href onclick="print()"><i class="glyphicon glyphicon-print"></i></a>
         </div>
     </div>
 
-    <hr>
+    <h5 class="visible-print">{{ report_title }}</h5>
+    <hr class="visible-print no-margin-top">
+    <hr class="hidden-print">
 
     {% include 'macro.twig' with {messages: messages} %}
 
@@ -25,7 +28,7 @@
     		<tr>
                 <td>
                     <a href="/app/categories/{{ row.id }}/edit">{{ row.name }}</a>
-                    <a id="delete-category-{{ loop.index }}" title="Apagar registro" class="pull-right" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a id="delete-category-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>
     		{% endfor %}
@@ -37,4 +40,6 @@
             {% endif %}
     	</tbody>
     </table>
+
+    <p class="visible-print pull-right">{{ report_footer }}</p>
 {% endblock %}

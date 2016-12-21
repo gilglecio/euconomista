@@ -61,6 +61,11 @@ abstract class Controller
         $this->mailer = $app->get('mailer');
     }
 
+    public function getReportFooter()
+    {
+        return 'Relatório obtido em ' . date('d \d\e M \d\e Y à\s H\hi\m');
+    }
+
     /**
      * Redirect with flash error.
      *

@@ -1,5 +1,8 @@
 <?php
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+
 # INDEX
 $app->get('/', 'App\Controller\IndexController:index')
 	->setName('index');
@@ -139,11 +142,13 @@ $app->group('/app', function () {
 
 	# RELEASES
 	$this->group('/releases', function () {
-		$this->get('', 'App\Controller\ReleasesController:index')
-			->setName('releases.opens');
 
-		$this->get('/i/{target}', 'App\Controller\ReleasesController:index')
-			->setName('releases.all');
+		$this->get('', function (Request $request, Response $response, array $args) {
+			return $response->withRedirect('/app/releases/in/' . date('Y-m'));
+		});
+
+		$this->get('/in/{date}', 'App\Controller\ReleasesController:index')
+			->setName('releases');
 		
 		$this->get('/form', 'App\Controller\ReleasesController:form')
 			->setName('releases.form');

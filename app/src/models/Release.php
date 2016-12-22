@@ -949,7 +949,7 @@ final class Release extends Model
      */
     public static function gridFormat($rows, $include_data_emissao = false)
     {
-        return array_map(function ($r) use ($include_data_emissao, $before_month, $sum) {
+        return array_map(function ($r) use ($include_data_emissao) {
             $row = $r->to_array();
 
             $row['people'] = $r->people->name;

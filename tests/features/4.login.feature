@@ -24,18 +24,8 @@ Feature: Página de login
 
 		When I log in I should be inside the application
 		When I follow "Lançamentos"
-		Then I should be on "/app/releases"
+		Then I should be on current month releases
 		Then I should see "Adicionar"
-		Then I should see "Abertas"
-		Then I should see "Todas"
-		Then I should see "Sem registros."
-
-		When I follow "Todas"
-		Then I should be on "/app/releases/i/all"
-		Then I should see "Sem registros."
-
-		When I follow "Abertas"
-		Then I should be on "/app/releases"
 		Then I should see "Sem registros."
 
 		When I follow "Pessoas"

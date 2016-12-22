@@ -4,14 +4,12 @@ Feature: Página de lançamentos
 	Background:
 		When I log in I should be inside the application
 		When I follow "Lançamentos"
-		Then I should be on "/app/releases"
+		Then I should be on current month releases
 
 	@javascript
 	Scenario: Verificando a grid de lançamentos
 		
 		Then I should see "Adicionar"
-		Then I should see "Abertas"
-		Then I should see "Todas"
 		Then I should see "Sem registros."
 
 	@javascript
@@ -27,7 +25,7 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 1.000,00 em 1x"
 
 		Given I press "Salvar" button
-		Then I should be on "/app/releases"
+		Then I should be on current month releases
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
@@ -51,7 +49,7 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 100,00 em 2x"
 
 		Given I press "Salvar" button
-		Then I should be on "/app/releases"
+		Then I should be on current month releases
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
@@ -76,15 +74,18 @@ Feature: Página de lançamentos
 		Given When I fill in "description" with "Receita de R$ 500,00 em 3x"
 
 		Given I press "Salvar" button
-		Then I should be on "/app/releases"
+		Then I should be on current month releases
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
 		Then I should see "Categoria 001"
 		Then I should see "1/3"
-		Then I should see "2/3"
-		Then I should see "3/3"
 		Then I should see "166,67"
+		When I follow "next-month"
+		Then I should see "2/3"
+		Then I should see "166,67"
+		When I follow "next-month"
+		Then I should see "3/3"
 		Then I should see "166,66"
 		Then I should see "Receita de R$ 500,00 em 3x"
 
@@ -165,7 +166,6 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Desfazendo liquidação com encargos
 		
-		Then I follow "Todas"
 		Then I follow "1/1"
 		Then I follow "Desfazer"
 		Then I should see "Sucesso!"
@@ -200,8 +200,6 @@ Feature: Página de lançamentos
 		Then I should see "585,00"
 
 		Then I follow "Lançamentos"
-		Then I should not see "1/1"
-		Then I follow "Todas"
 		Then I should see "1/1"
 		Then I should see "Pago"
 		Then I should see "935,00"
@@ -218,7 +216,6 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Desfazendo liquidação com desconto
 
-		Then I follow "Todas"
 		Then I follow "1/1"
 		Then I follow "Desfazer"
 		Then I should see "Sucesso!"
@@ -279,11 +276,12 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 		Then I should not see "1/1"
 
-		Then I follow "Todas"
 		Then I should not see "1/1"
 
 		Then I should see "1/2"
 		Then I should see "2/2"
 		Then I should see "1/3"
+		When I follow "next-month"
 		Then I should see "2/3"
+		When I follow "next-month"
 		Then I should see "3/3"

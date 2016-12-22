@@ -49,20 +49,24 @@ final class ReleasesController extends Controller
      */
     public function index(Request $request, Response $response, array $args)
     {
-        $conditions = ['status = 1'];
-        $abertas = true;
+        $current = new \Datetime($args['date']);
 
-        if (isset($args['target']) && $args['target'] == 'all') {
-            $conditions = ['status in (1,2)'];
-            $abertas = false;
-        }
+        $prev_month = clone $current;
+        $next_month = clone $current;
+
+        $prev_month->sub(new \Dateinterval('P1M'));
+        $next_month->add(new \Dateinterval('P1M'));
 
         /**
          * @var array
          */
         $rows = Release::find('all', [
-            'order' => 'data_vencimento asc',
-            'conditions' => $conditions
+            'order' => 'status asc, data_vencimento asc',
+            'conditions' => [
+                'status in (1,2) and data_vencimento between ? and ?', 
+                $current->format('Y-m-01'), 
+                $current->format('Y-m-t')
+            ]
         ]);
 
         /**
@@ -70,37 +74,22 @@ final class ReleasesController extends Controller
          */
         $rows = Release::gridFormat($rows);
 
-        if ($abertas) {
-            $before_month = null;
-            $sum = 0;
+        /**
+         * Saldo do mês, receitas menos despesas.
+         * @var float
+         */
+        $sum = 0.00;
 
-            $_rows = [];
+        foreach ($rows as $key => $row) {
+            $sum += $row['_value'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
+        }
 
-            foreach ($rows as $row) {
-                $month = (new \Datetime($row['data_vencimento']))->format('M \d\e Y');
-                $value = $row['_value'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
-
-                if (is_null($before_month)) {
-                    $before_month = $month;
-                }
-
-                if ($before_month != $month) {
-                    $_rows[] = [
-                        'month' => $before_month,
-                        'sum' => Toolkit::showMoney($sum)
-                    ];
-
-                    $before_month = $month;
-
-                    $sum = $value;
-                } else {
-                    $sum += $value;
-                }
-
-                $_rows[] = $row;
-            }
-
-            $rows = $_rows;
+        if (count($rows)) {
+            $rows[] = [
+                'month' => $current->format('M \d\e Y'),
+                'color' => $sum < 0 ? 'red' : 'blue',
+                'sum' => Toolkit::showMoney($sum)
+            ];
         }
 
         $this->view->render($response, 'app/releases/index.twig', [
@@ -109,7 +98,18 @@ final class ReleasesController extends Controller
             'messages' => $this->getMessages(),
             'report_footer' => $this->getReportFooter(),
             'report_title' => 'Relatório de lançamentos em aberto',
-            'rows' => $rows
+            'rows' => $rows,
+
+            'current_month' => $current->format('M Y'),
+
+            'prev' => [
+                'link' => $prev_month->format('Y-m'), 
+                'month' => $prev_month->format('M Y')
+            ],
+            'next' => [
+                'link' => $next_month->format('Y-m'), 
+                'month' => $next_month->format('M Y')
+            ],
         ]);
         
         return $response;

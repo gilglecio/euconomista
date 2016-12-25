@@ -112,16 +112,14 @@ Feature: Página de lançamentos
 		Then I follow "1/1"
 		Then I should see "Extrato de lançamento"
 		Then I should see "Emissão"
-		Then I should see "Lançamento nº 1/1"
 		Then I should see "Liquidar"
 		Then I should see "Editar"
-		Then I should see "Apagar este lançamento"
-		Then I should see "Apagar todos os lançamentos deste documento"
+		Then I should see "Apagar"
+		Then I should see "Apagar todos"
 		Then I should see "1.000,00"
 
 		Then I follow "Liquidar"
 
-		Then I should see "Lista de ações da parcela"
 		Then the "value" field should contain "1000"
 		Then I should see "Liquidar"
 
@@ -235,8 +233,8 @@ Feature: Página de lançamentos
 
 		Then I follow "1/1"
 		
-		Then I should not see "Apagar este lançamento"
-		Then I should not see "Apagar todos os lançamentos deste documento"
+		Then I should not see "Apagar"
+		Then I should not see "Apagar todos"
 
 	@javascript
 	Scenario: Desfazendo a liquidação parcial
@@ -272,7 +270,7 @@ Feature: Página de lançamentos
 	Scenario: Apagando o lançamento de mil reais
 		
 		Then I follow "1/1"
-		Then I follow "Apagar este lançamento"
+		Then I follow "Apagar"
 		Then I should see "Sucesso!"
 		Then I should not see "1/1"
 

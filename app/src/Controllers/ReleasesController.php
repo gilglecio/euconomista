@@ -57,15 +57,18 @@ final class ReleasesController extends Controller
         $prev_month->sub(new \Dateinterval('P1M'));
         $next_month->add(new \Dateinterval('P1M'));
 
+        $condition = '((status in (1,2) and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))';
+
         /**
          * @var array
          */
         $rows = Release::find('all', [
             'order' => 'status asc, data_vencimento asc',
             'conditions' => [
-                'status in (1,2) and data_vencimento between ? and ?', 
+                $condition, 
                 $current->format('Y-m-01'), 
-                $current->format('Y-m-t')
+                $current->format('Y-m-t'),
+                $current->format('Y-m-01')
             ]
         ]);
 
@@ -78,27 +81,28 @@ final class ReleasesController extends Controller
          * Saldo do mês, receitas menos despesas.
          * @var float
          */
-        $sum = 0.00;
+        $sum_aberto = $sum_liquidado = 0.00;
 
         foreach ($rows as $key => $row) {
-            $sum += $row['_value'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
+            $sum_aberto += $row['_valor_aberto'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
+            $sum_liquidado += $row['_valor_liquidado'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
         }
 
-        if (count($rows)) {
-            $rows[] = [
-                'month' => $current->format('M \d\e Y'),
-                'color' => $sum < 0 ? 'red' : 'blue',
-                'sum' => Toolkit::showMoney($sum)
-            ];
-        }
+        $sum = $sum_aberto + $sum_liquidado;
+
+        $sum = [
+            'color' => $sum < 0 ? 'red' : ($sum == 0 ? '#666' : 'blue'),
+            'sum' => Toolkit::showMoney($sum),
+        ];
 
         $this->view->render($response, 'app/releases/index.twig', [
             'title' => $this->title,
             'hasReleasesForGroup' => !! Release::gridGroupFormat(true),
             'messages' => $this->getMessages(),
             'report_footer' => $this->getReportFooter(),
-            'report_title' => 'Relatório de lançamentos em aberto',
+            'report_title' => 'Relatório de lançamentos',
             'rows' => $rows,
+            'sum' => $sum,
 
             'current_month' => $current->format('M Y'),
 
@@ -339,6 +343,37 @@ final class ReleasesController extends Controller
     }
 
     /**
+     * Renderiza o formulário para prorrogação de lançamentos.
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     * @throws \Exception Lançamento não localizado.
+     * @return Response
+     */
+    public function prorrogarForm(Request $request, Response $response, array $args)
+    {
+        if (! $release = Release::find($args['release_id'])) {
+            throw new \Exception('Lançamento não localizado.');
+        }
+
+        if ($release->isLiquidado()) {
+            return $response->withRedirect('/app/releases/' . $release->id . '/logs');
+        }
+
+        $data = ['messages' => $this->getMessages()];
+        $data['title'] = 'Prorrogação de Parcela';
+
+        $data['value'] = $release->value;
+        $data['date'] = $release->getProrrogarDate();
+        $data['release_id'] = $release->id;
+
+        $this->view->render($response, 'app/releases/prorrogar.twig', $data);
+        
+        return $response;
+    }
+
+    /**
      * Recebe o post do formulário de liquidação e envia as informações passados
      * da view para o model salvar no banco de dados.
      *
@@ -362,6 +397,37 @@ final class ReleasesController extends Controller
                 $response,
                 $e->getMessage(),
                 '/app/releases/' . $args['release_id'] . '/liquidar'
+            );
+        }
+
+        $this->success('Sucesso!');
+
+        return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
+    }
+
+    /**
+     * Recebe o post do formulário de prorrogacao e envia as informações passados
+     * da view para o model salvar no banco de dados.
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function prorrogar(Request $request, Response $response, array $args)
+    {
+        try {
+            Release::prorrogar([
+                'value' => $request->getParsedBodyParam('value'),
+                'date' => $request->getParsedBodyParam('date'),
+                'release_id' => $args['release_id']
+            ]);
+        } catch (\Exception $e) {
+            return $this->redirectWithError(
+                $response,
+                $e->getMessage(),
+                '/app/releases/' . $args['release_id'] . '/prorrogar'
             );
         }
 

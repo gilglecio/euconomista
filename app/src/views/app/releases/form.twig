@@ -3,12 +3,13 @@
 {% block pageTitle title %}
 
 {% block app %}
-    
-    {% if data.id %}
-    <ol class="breadcrumb">
-        <li>Editando o lançamento nº <strong>{{ data.number }}</strong></li>
-    </ol>
-    {% endif %}
+
+	<style type="text/css">
+    body {
+    	position: relative;
+        min-width: 400px
+    }
+    </style>
 
     {% include 'macro.twig' with {messages: messages} %}
 
@@ -16,7 +17,7 @@
 	    <form class="form-horizontal" method="post" action="/app/releases">
 
 	    	<fieldset>
-	    		<legend>Lançamento</legend>
+	    		<legend>{% if data.id %}Edição lançamento nº {{ data.number }}{% else %}Lançamento{% endif %}</legend>
 
 	    		<input type="hidden" name="id" value="{{ data.id }}">
 
@@ -100,6 +101,8 @@
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-9 col-xs-offset-3">
 	    			<button {% if data.id %} onbsclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn btn-primary" type="submit">Salvar</button>
+
+	    			<a class="btn btn-link" href="/app/releases">Voltar</a>
 	    		</div>
 	    	</div>
 	    </form>

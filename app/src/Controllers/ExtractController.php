@@ -44,6 +44,8 @@ final class ExtractController extends Controller
     {
         $this->view->render($response, 'app/extract/index.twig', [
             'title' => $this->title,
+            'report_footer' => $this->getReportFooter(),
+            'report_title' => 'Relatório do extrato financeiro',
             'rows' => Release::extract()
         ]);
         

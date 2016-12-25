@@ -3,22 +3,19 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <div class="row">
+    <div class="row" style="margin-bottom:20px">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/users/form">Adicionar</a>
         </div>
     </div>
 
-    <hr>
-
     {% include 'macro.twig' with {messages: messages} %}
 
-    <table class="table table-striped">
+    <table class="table table-striped no-margin-bottom table-bordered">
     	<thead>
     		<tr>
     			<th>Nome</th>
                 <th>Email</th>
-    			<th width="25%"></th>
     		</tr>
     	</thead>
 
@@ -26,8 +23,7 @@
     		{% for row in rows %}
     		<tr>
     			<td>{{ row.name }}</td>
-    			<td>{{ row.email }}</td>
-                <td>
+    			<td>{{ row.email }}
                     <a class="pull-right" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/users/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>

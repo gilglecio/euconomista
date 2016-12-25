@@ -3,7 +3,7 @@
 {% block pageTitle title %}
 
 {% block app %}
-    <div class="row hidden-print">
+    <div class="row hidden-print" style="margin-bottom:20px">
         <div class="col-xs-12">
             <a class="btn btn-primary" href="/app/categories/form">Adicionar</a>
             <a class="btn btn-default pull-right" href onclick="print()"><i class="glyphicon glyphicon-print"></i></a>
@@ -11,12 +11,10 @@
     </div>
 
     <h5 class="visible-print">{{ report_title }}</h5>
-    <hr class="visible-print no-margin-top">
-    <hr class="hidden-print">
 
     {% include 'macro.twig' with {messages: messages} %}
 
-    <table class="table table-striped">
+    <table class="table table-striped no-margin-bottom table-bordered">
     	<thead>
     		<tr>
                 <th>Nome</th>
@@ -41,5 +39,5 @@
     	</tbody>
     </table>
 
-    <p class="visible-print pull-right">{{ report_footer }}</p>
+    <p class="visible-print pull-right" style="margin-top:10px">{{ report_footer }}</p>
 {% endblock %}

@@ -46,6 +46,8 @@ final class LogsController extends Controller
             'title' => $this->title,
             'messages' => $this->getMessages(),
             'success' => $this->getSuccessMessages(),
+            'report_footer' => $this->getReportFooter(),
+            'report_title' => 'Relatório dos logs dos usuários',
             'rows' => array_map(function ($r) {
                 return [
                     'id' => $r->id,

@@ -20,6 +20,9 @@ final class Release extends Model
     const STATUS_EM_ATRASO = 3;
     const STATUS_GROUPED = 4;
 
+    const RECEITA = 1;
+    const DESPESA = 2;
+
     /**
      * Registra os relacionamentos 1:1.
      *
@@ -599,6 +602,111 @@ final class Release extends Model
         return true;
     }
 
+    public function getProrrogarDate()
+    {
+        $now = new \Datetime(date('Y-m-d'));
+
+        if ($this->data_vencimento < $now) {
+            return $now->format('Y-m-d');
+        }
+
+        return $this->data_vencimento->add(new \Dateinterval('P1D'))->format('Y-m-d');
+    }
+
+    /**
+     * Prorroga um lançamento.
+     *
+     * @param array $fields
+     * @throws \Exception Mensagem de erro do model.
+     * @throws \Exception Lançamento não localizado.
+     * @return boolean
+     */
+    public static function prorrogar($fields)
+    {
+        try {
+            $connection = static::connection();
+            $connection->transaction();
+
+            /**
+             * @var Release
+             */
+            if (! $release = self::find($fields['release_id'])) {
+                throw new \Exception('Lançamento não localizado.');
+            }
+
+            if ($fields['value'] < $release->value) {
+                throw new \Exception('Favor informar um valor maior ou igual ao valor do lançamento.');
+            }
+
+            $date = new \Datetime($fields['date']);
+
+            if ($date <= $release->data_vencimento) {
+                throw new \Exception('Favor informar uma data de vencimento maior que a data de vencimento atual.');
+            }
+            
+            /**
+             * Todo o registro do lançamento em formato JSON.
+             * @var string
+             */
+            $backup = $release->to_json();
+
+            /**
+             * Valor dos encargos, quando o valor é alterado.
+             * @var float
+             */
+            $encargos = $fields['value'] - $release->value;
+
+            $log_encargo = null;
+
+            if ($encargos > 0) {
+                $log_encargo = ReleaseLog::create([
+                    'action' => ReleaseLog::ACTION_ENCARGO,
+                    'release_id' => $release->id,
+                    'date' => date('Y-m-d'),
+                    'value' => $encargos,
+                    'backup' => $backup,
+                ]);
+
+                if ($log_encargo->is_invalid()) {
+                    throw new \Exception($log_encargo->getFisrtError());
+                }
+            }
+
+            $release->data_vencimento = $fields['date'];
+            $release->value = $fields['value'];
+
+            $release->save();
+
+            if ($release->is_invalid()) {
+                throw new \Exception($release->getFisrtError());
+            }
+
+            $log = ReleaseLog::create([
+                'action' => ReleaseLog::ACTION_PRORROGAR,
+                'release_id' => $release->id,
+                'date' => date('Y-m-d'),
+                'value' => $fields['value'],
+                'backup' => $backup,
+            ]);
+
+            if ($log->is_invalid()) {
+                throw new \Exception($log->getFisrtError());
+            }
+
+            if ($log_encargo) {
+                $log_encargo->parent_id = $log->id;
+                $log->save();
+            }
+
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw $e;
+        }
+
+        return true;
+    }
+
     /**
      * Cancela o ultimo log do lançamento.
      *
@@ -952,14 +1060,21 @@ final class Release extends Model
         return array_map(function ($r) use ($include_data_emissao) {
             $row = $r->to_array();
 
+            $valor_liquidado = $r->getSumLiquidacoes();
+            $valor_aberto = $r->status == self::STATUS_ABERTO ? $r->value : 0;
+
             $row['people'] = $r->people->name;
             $row['category'] = $r->category->name;
             $row['natureza'] = $r->getNaturezaName();
             $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
             $row['value'] = $r->getFormatValue();
-            $row['_value'] = $r->value;
+            $row['valor_aberto'] = Toolkit::showMoney($valor_aberto);
+            $row['valor_liquidado'] = Toolkit::showMoney($valor_liquidado);
+            $row['_valor_aberto'] = $valor_aberto;
+            $row['_valor_liquidado'] = $valor_liquidado;
             $row['status'] = $r->getStatusName();
             $row['color'] = $r->getColor();
+            $row['signal'] = $r->natureza == self::RECEITA ? '+' : '-';
             $row['desc'] = $r->description;
 
             if ($include_data_emissao) {

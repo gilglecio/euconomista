@@ -20,6 +20,7 @@ final class ReleaseLog extends Model
     const ACTION_ENCARGO = 3;
     const ACTION_DESCONTO = 4;
     const ACTION_GROUPED = 5;
+    const ACTION_PRORROGAR = 6;
 
     /**
      * Define os relacionamentos 1:1.
@@ -65,6 +66,7 @@ final class ReleaseLog extends Model
             self::ACTION_ENCARGO => 'Encargos',
             self::ACTION_GROUPED => 'Agrupamento',
             self::ACTION_DESCONTO => 'Desconto',
+            self::ACTION_PRORROGAR => 'Prorrogação',
             self::ACTION_LIQUIDACAO => $this->release->natureza == 1 ? 'Recebimento' : 'Pagamento'
         ][$this->action];
     }

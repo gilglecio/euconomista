@@ -4,6 +4,12 @@
 
 {% block app %}
 
+    <style type="text/css">
+    body {
+        min-width: 750px
+    }
+    </style>
+
     <ol class="breadcrumb">
         <li>Lançamento nº <strong>{{ release.number }}</strong></li>
         
@@ -13,6 +19,7 @@
 
         {% if canLiquidar %}
         <li><a href="/app/releases/{{ release.id }}/liquidar">Liquidar</a></li>
+        <li><a href="/app/releases/{{ release.id }}/prorrogar">Prorrogar</a></li>
         {% endif %}
 
         {% if canDesfazer and not release.parent_id %}
@@ -25,14 +32,14 @@
 
         {% if canEditar and not isGroup %}
         <li><a href="/app/releases/{{ release.id }}/form">Editar</a></li>
-        <li><a onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar este lançamento</a></li>
-        <li><a onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos os lançamentos deste documento</a></li>
+        <li><a onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar</a></li>
+        <li><a onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos</a></li>
         {% endif %}
     </ol>
 
     {% include 'macro.twig' with {messages: messages} %}
 
-    <table class="table">
+    <table class="table table-bordered no-margin-bottom">
     	<thead>
     		<tr>
                 <th>Ação</th>

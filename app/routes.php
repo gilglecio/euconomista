@@ -76,12 +76,6 @@ $app->group('/app', function () {
 			->setName('peoples.edit');
 	});
 
-	# REPORTS
-	$this->group('/reports', function () {
-		$this->get('', 'App\Controller\ReportsController:index')
-			->setName('reports');
-	});
-
 	# MY
 	$this->group('/me', function () {
 		$this->get('', 'App\Controller\MeController:index')
@@ -170,9 +164,15 @@ $app->group('/app', function () {
 		
 		$this->get('/{release_id}/liquidar', 'App\Controller\ReleasesController:liquidarForm')
 			->setName('releases.liquidar.form');
+
+		$this->get('/{release_id}/prorrogar', 'App\Controller\ReleasesController:prorrogarForm')
+			->setName('releases.prorrogar.form');
 		
 		$this->post('/{release_id}/liquidar', 'App\Controller\ReleasesController:liquidar')
 			->setName('releases.liquidar');
+
+		$this->post('/{release_id}/prorrogar', 'App\Controller\ReleasesController:prorrogar')
+			->setName('releases.prorrogar');
 
 		$this->get('/{release_id}/desfazer', 'App\Controller\ReleasesController:desfazer')
 			->setName('releases.desfazer');

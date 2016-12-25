@@ -1,3 +1,8 @@
+.jumbotron {
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
 .nav > li > a {
     padding: 15px 8px;
 }

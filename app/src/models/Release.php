@@ -1098,7 +1098,7 @@ final class Release extends Model
             'conditions' => [
                 'status = ? and data_vencimento < ?',
                 self::STATUS_ABERTO,
-                (new \Datetime(date('Y-m-d')))->add(new \Dateinterval('P1M'))->format('Y-m-d')
+                (new \Datetime(date('Y-m-d')))->add(new \Dateinterval('P2M'))->format('Y-m-d')
             ]
         ]);
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB_LOCAL="hmgestor"
+DB_LOCAL="euconomista"
 DB_USER='root'
 DB_PASS='123'
 DOMAIN='gilglecio@gilglecio.com.br'

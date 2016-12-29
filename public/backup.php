@@ -75,7 +75,7 @@ foreach ($data as $pessoa_id => $pessoa) {
 // exit;
 
 try {
-    $hm = new \PDO('mysql:host=localhost;dbname=hmgestor', 'root', '123', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    $hm = new \PDO('mysql:host=localhost;dbname=euconomista', 'root', '123', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     $hm->beginTransaction();
 
     $hm->query('insert into categories set name = \'Importados\', entity = 1, user_id = 1, created_at = now(), updated_at = now()');

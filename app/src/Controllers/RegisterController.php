@@ -95,7 +95,6 @@ final class RegisterController extends Controller
                 'password' => $request->getParsedBodyParam('password'),
                 'confirm_password' => $request->getParsedBodyParam('confirm_password')
             ]);
-
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/register');
         }
@@ -105,20 +104,19 @@ final class RegisterController extends Controller
              * Faz o envio do e-mail de confirmação.
              */
             $this->mailer->send(
-                'emails/confirm_email.twig', 
+                'emails/confirm_email.twig',
                 [
                     'confirm_url' => APP_URL . '/register/confirm_email?token=' . $user->confirm_email_token
-                ], 
+                ],
                 function ($m) use ($user) {
                     $m->to($user->email, $user->name);
-                    $m->subject('HmGestor Confirmação de E-Mail');
-                    $m->from('no-replay@hmgestor.com');
-                    $m->fromName('HmGestor');
+                    $m->subject('EuConomista Confirmação de E-Mail');
+                    $m->from('no-replay@euconomista.com');
+                    $m->fromName('EuConomista');
                 }
             );
 
             $this->success('Sucesso! Email de confirmação enviado.');
-
         } catch (\Exception $e) {
             $this->success('Sucesso! Mas o envio do email de confirmação falhou.');
             $this->logger->error('Register: ' . $e->getMessage());

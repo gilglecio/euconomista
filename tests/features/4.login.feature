@@ -40,7 +40,7 @@ Feature: Página de login
 
 		When I follow "Usuários"
 		Then I should be on "/app/users"
-		Then I should see "test@hmgestor.com"
+		Then I should see "test@euconomista.com"
 
 		When I follow "Extrato"
 		Then I should be on "/app/extract"

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-phpdoc -d app/src/Auth -d app/src/Controllers -d app/src/Interfaces -d app/src/Mail -d app/src/Util -d app/src/models -t ../hmphpdoc --template responsive-twig --title HmGestor
+phpdoc -d app/src/Auth -d app/src/Controllers -d app/src/Interfaces -d app/src/Mail -d app/src/Util -d app/src/models -t ../hmphpdoc --template responsive-twig --title EuConomista

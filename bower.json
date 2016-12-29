@@ -1,22 +1,25 @@
 {
-    "name": "gilglecio/slim3-skeleton",
-    "authors": [
-        "gilglecio <gilglecio_765@hotmail.com>"
-    ],
-    "description": "",
-    "main": "",
-    "license": "MIT",
-    "homepage": "",
-    "private": true,
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "src/bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "bootstrap": "^3.3.7"
-    }
+  "name": "gilglecio/slim3-skeleton",
+  "authors": [
+    "gilglecio <gilglecio_765@hotmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "magnific-popup": "^1.1.0",
+    "font-awesome": "fontawesome#^4.7.0",
+    "scrollreveal": "^3.3.2"
+  }
 }

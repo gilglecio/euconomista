@@ -16,68 +16,74 @@
                 <h1>Funcionalidades</h1>
 
                 <ul>
-                    <li><a href="#receitas">Lançamentos de Receitas</a></li>
-                    <li><a href="#despesas">Lançamentos de Despesas</a></li>
+                    <li><a href="#lancamentos">Lançamento de Receitas e Despesas</a></li>
                     <li><a href="#grupos">Agrupamento de lançamentos</a></li>
+                    <li><a href="#liquidacao">Liquidação de lançamento</a></li>
+                    <li><a href="#liquidacao-total">Liquidação total</a></li>
                     <li><a href="#liquidacao-parcial">Liquidação parcial</a></li>
                     <li><a href="#liquidacao-com-desconto">Liquidação com desconto</a></li>
                     <li><a href="#liquidacao-com-encargos">Liquidação com encargos</a></li>
                     <li><a href="#pessoas">Cadastro de Pessoas</a></li>
                     <li><a href="#categorias">Cadastro de Categorias</a></li>
                     <li><a href="#usuarios">Cadastro de Usuários</a></li>
-                    <li><a href="#extrato">Extrato financeiro de entradas e saídas</a></li>
-                    <li><a href="#logs">Log das ações dos usuários, com restauração</a></li>
-                    <li><a href="#relatorios">Relatórios</a></li>
-                    <li><a href="#backup">Backup dos dados</a></li>
                 </ul>
 
                 <hr>
 
-                <h3>Lançamentos</h3>
+                <a name="lancamentos"></a>
+                <h3>Lançamento de Receitas e Despesas</h3>
 
                 <p>Um lançamento pode ser da natureza <b>Receita</b> ou <b>Despesa</b>.</p>
                 <p>Para adicionar um novo lançamento é necessário ter pelo menos uma <a href="#pessoas">pessoa</a> e uma <a href="#categorias">categoria</a> cadastradas.</p>
                 <p>Além da pessoa e categoria, os campos data de emissão, data de vencimento e quantidade são obrigatórios.</p>
                 <p>O campo data de pagamento é opcional, funciona como um atalho para liquidação do lançamento, o sistema executa automaticamente uma liquidação da data informada com o valor total do documento.</p>
                 
+                <a name="grupos"></a>
                 <h3>Agrupamento de lançamentos</h3>
 
                 <p>É a segunda forma de realizar lançamentos, aqui o suusário pode selecionar outros lançamentos, desde que sejam da mesma natureza e estejam abertos. Os lançamentos selecionados são marcados como "Agrupado" e não aparecem mais na lista de lançamentos do mês.</p>
 
+                <a name="liquidacao"></a>
                 <h3>Liquidação de lançamento</h3>
 
                 <p>Para realizar uma liquidação no lançamento basta clicar sobre no número do lançamento e clicar no link Liquida, na lista de logs do lançamento.</p>
-
                 <p>Quatro tipos de liquidações podem ser realizadas no lançamento: liquidação total, liquidação parcial, liquidação com desconto e liquidação com encargos.</p>
 
+                <a name="liquidacao-total"></a>
                 <h3>Liquidação total</h3>
 
                 <p>A liquidação total ocorre quando todo o valor aberto do lançamento é liquidado.</p>
 
+                <a name="liquidacao-parcial"></a>
                 <h3>Liquidação parcial</h3>
 
                 <p>Um lançamento é liquidado parcialmente quando o valor pago é menor que o valor em aberto, e o checkbox <i>(Lançar diferença como desconto)</i> não é checado.</p>
 
+                <a name="liquidacao-com-desconto"></a>
                 <h3>Liquidação com desconto</h3>
 
                 <p>Um lançamento é liquidado com desconto quando o valor liquidado é menor que o valor em aberto, e o checkbox <i>(Lançar diferença como desconto)</i> é checado.</p>
 
+                <a name="liquidacao-com-encargos"></a>
                 <h3>Liquidação com encargos</h3>
 
                 <p>Ao liquidar um lançamento com o valor maior que o valor em aberto, a diferença é lançada como encargos.</p>
                 
+                <a name="pessoas"></a>
                 <h3>Cadastro de Pessoas</h3>
 
                 <p>Para se cadastrar uma pessoa é necessário acessar a grade de pessoas clicar em Adicionar, informar o nome da pessoa e clicar em Salvar.</p>
 
                 <p>O sistema não permite que tenha duas pessoas com o mesmo nome.</p>
                 
+                <a name="categorias"></a>
                 <h3>Cadastro de Categorias</h3>
 
                 <p>Para se cadastrar uma categoria é necessário acessar a grade de categorias clicar em Adicionar, informar o nome da categoria, e clicar em Salvar.</p>
 
                 <p>Não é permitido no Sitema a existencia de duas categorias com o nome.</p>
                 
+                <a name="usuarios"></a>
                 <h3>Cadastro de Usuários</h3>
 
                 <p>Caso você queira dar acesso a outra pessoa para utilizar e manipular o sistema, você pode adicionar outros usuários.</p>

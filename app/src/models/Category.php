@@ -86,6 +86,29 @@ final class Category extends Model
     }
 
     /**
+     * Cria uma categoria se a mesma não existir.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @param  string $name Nome da categoria
+     * @return Category
+     */
+    public static function saveIfNotExists($name)
+    {
+        if (! $find = self::find_by_name($name)) {
+            $create = self::create(['name' => $name]);
+
+            if ($create->is_invalid()) {
+                throw new \Exception($create->getFisrtError());
+            }
+
+            return $create;
+        }
+
+        return $find;
+    }
+
+    /**
      * Apaga uma categoria pelo ID.
      *
      * @param integer $category_id

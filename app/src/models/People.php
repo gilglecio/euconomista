@@ -86,6 +86,29 @@ final class People extends Model
     }
 
     /**
+     * Cria uma pessoa se a mesma não existir.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @param  string $name Nome da pessoa
+     * @return Category
+     */
+    public static function saveIfNotExists($name)
+    {
+        if (! $find = self::find_by_name($name)) {
+            $create = self::create(['name' => $name]);
+
+            if ($create->is_invalid()) {
+                throw new \Exception($create->getFisrtError());
+            }
+
+            return $create;
+        }
+
+        return $find;
+    }
+
+    /**
      * Apaga uma pessoa pelo ID.
      *
      * @param integer $people_id

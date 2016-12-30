@@ -65,8 +65,8 @@ final class ReleasesController extends Controller
         $rows = Release::find('all', [
             'order' => 'status asc, data_vencimento asc',
             'conditions' => [
-                $condition, 
-                $current->format('Y-m-01'), 
+                $condition,
+                $current->format('Y-m-01'),
                 $current->format('Y-m-t'),
                 $current->format('Y-m-01')
             ]
@@ -107,11 +107,11 @@ final class ReleasesController extends Controller
             'current_month' => $current->format('M Y'),
 
             'prev' => [
-                'link' => $prev_month->format('Y-m'), 
+                'link' => $prev_month->format('Y-m'),
                 'month' => $prev_month->format('M Y')
             ],
             'next' => [
-                'link' => $next_month->format('Y-m'), 
+                'link' => $next_month->format('Y-m'),
                 'month' => $next_month->format('M Y')
             ],
         ]);
@@ -207,10 +207,12 @@ final class ReleasesController extends Controller
     public function save(Request $request, Response $response, array $args)
     {
         try {
-            Release::generate([
+            $fields = [
                 'id' => $request->getParsedBodyParam('id'),
+                
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),
                 'people_id' => (int) $request->getParsedBodyParam('people_id'),
+
                 'quantity' => (int) $request->getParsedBodyParam('quantity'),
                 'natureza' => (int) $request->getParsedBodyParam('natureza'),
                 'value' => (float) $request->getParsedBodyParam('value'),
@@ -218,7 +220,19 @@ final class ReleasesController extends Controller
                 'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
                 'data_liquidacao' => $request->getParsedBodyParam('data_liquidacao'),
                 'description' => $request->getParsedBodyParam('description'),
-            ]);
+            ];
+
+            if ($category = $request->getParsedBodyParam('category')) {
+                $fields['category_id'] = Category::saveIfNotExists($category)->id;
+            }
+
+            if ($people = $request->getParsedBodyParam('people')) {
+                $fields['people_id'] = People::saveIfNotExists($people)->id;
+            }
+
+            dd($fields);
+
+            Release::generate($fields);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');
         }

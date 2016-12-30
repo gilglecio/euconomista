@@ -310,6 +310,8 @@ final class Release extends Model
          * @var \Datetime
          */
         $vencimento = new \Datetime($fields['data_vencimento']);
+        $dia_vencimento = $vencimento->format('d');
+        $vencimento = new \Datetime(date($vencimento->format('Y-m-15')));
         
         /**
          * @var string
@@ -399,6 +401,14 @@ final class Release extends Model
                     $value += $diff;
                 }
 
+                $dia = $dia_vencimento;
+                $day_of_month = $vencimento->format('t');
+
+                if ($dia_vencimento > $day_of_month) {
+                    $dia = $day_of_month;
+                }
+
+
                 /**
                  * @var Release
                  */
@@ -406,7 +416,7 @@ final class Release extends Model
                     'number' => $number,
                     'value' => $value,
                     'natureza' => $fields['natureza'],
-                    'data_vencimento' => clone $vencimento,
+                    'data_vencimento' => new \Datetime(date($vencimento->format('Y-m-' . $dia))),
                     'people_id' => $fields['people_id'],
                     'category_id' => $fields['category_id'],
                     'description' => $fields['description'],

@@ -3,7 +3,7 @@ Feature: Página de login
 
 	Background:
 		Given I am on "/" visit
-		When I follow "Login"
+		When I follow "Entrar"
 		Then I should be on "/login"
 	
 	@javascript

@@ -3,7 +3,7 @@ Feature: Página de cadastro
 
 	Background:
 		Given I am on "/" visit
-		When I follow "Cadastro"
+		When I follow "Fazer meu cadastro"
 		Then I should be on "/register"
 	
 	@javascript

@@ -101,6 +101,9 @@ final class HomeController extends Controller
             $data[1]['data'][] = $sum->despesa;
         }
 
+        $user = $user->to_array();
+        $user['first_name'] = explode(' ', $user['name'])[0];
+
         $this->view->render($response, 'app/home.twig', [
             'title' => $this->title,
             'user' => $user,

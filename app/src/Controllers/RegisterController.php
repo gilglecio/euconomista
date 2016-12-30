@@ -146,7 +146,7 @@ final class RegisterController extends Controller
                 ],
                 function ($m) use ($user) {
                     $m->to($user->email, $user->name);
-                    $m->subject('EuConomista Confirmação de E-Mail');
+                    $m->subject('Confirmação de cadastro');
                     $m->from('no-replay@euconomista.com');
                     $m->fromName('EuConomista');
                 }

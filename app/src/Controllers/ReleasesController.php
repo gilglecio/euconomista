@@ -230,8 +230,6 @@ final class ReleasesController extends Controller
                 $fields['people_id'] = People::saveIfNotExists($people)->id;
             }
 
-            dd($fields);
-
             Release::generate($fields);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/form');

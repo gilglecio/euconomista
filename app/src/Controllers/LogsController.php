@@ -57,7 +57,7 @@ final class LogsController extends Controller
                     'action' => $r->action,
                     'restored_at' => $r->restored_at ? $r->restored_at->format('d/m/Y à\s H\hi\m') : null
                 ];
-            }, UserLog::find('all', ['order' => 'created_at desc']))
+            }, UserLog::find('all', ['order' => 'created_at desc', 'limit' => 100]))
         ]);
         
         return $response;

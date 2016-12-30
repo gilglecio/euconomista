@@ -47,7 +47,7 @@ final class CategoriesController extends Controller
             'messages' => $this->getMessages(),
             'report_footer' => $this->getReportFooter(),
             'report_title' => 'Relatório das categorias cadastradas',
-            'rows' => Category::find('all')
+            'rows' => Category::find('all', ['order' => 'name asc'])
         ]);
         
         return $response;

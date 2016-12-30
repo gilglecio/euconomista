@@ -18,7 +18,6 @@ $container = $app->getContainer();
 
 // Twig
 $container['view'] = function ($c) {
-    
     $settings = $c->get('settings');
 
     $view = new Twig($settings['view']['template_path'], $settings['view']['twig']);
@@ -48,6 +47,7 @@ $container['mailer'] = function ($c) {
     $mailer->SMTPSecure = $settings['mailer']->secure;
 
     $mailer->SMTPAuth = true;
+    $mailer->SMTPDebug = true;
     $mailer->isHTML(true);
     $mailer->IsSMTP(true);
 
@@ -56,7 +56,6 @@ $container['mailer'] = function ($c) {
 
 // Monolog
 $container['logger'] = function ($c) {
-    
     $settings = $c->get('settings');
     
     $logger = new Logger($settings['logger']['name']);

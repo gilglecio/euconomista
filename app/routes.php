@@ -49,6 +49,12 @@ $app->get('/register/confirm_email/{token}', 'App\Controller\RegisterController:
 $app->post('/register', 'App\Controller\RegisterController:post')
     ->setName('register.post');
 
+$app->get('/policy', 'App\Controller\RegisterController:policy')
+    ->setName('policy');
+
+$app->get('/terms', 'App\Controller\RegisterController:terms')
+    ->setName('terms');
+
 # PRIVATE ROUTES
 $app->group('/app', function () {
 

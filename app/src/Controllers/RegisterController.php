@@ -54,6 +54,42 @@ final class RegisterController extends Controller
     }
 
     /**
+     * Renderiza a política de privacidade do site
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function policy(Request $request, Response $response, array $args)
+    {
+        $data['title'] = 'Política de privacidade';
+
+        $this->view->render($response, 'policy.twig', $data);
+
+        return $response;
+    }
+
+    /**
+     * Renderiza os termos de uso do site
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function terms(Request $request, Response $response, array $args)
+    {
+        $data['title'] = 'Termos de uso';
+
+        $this->view->render($response, 'terms.twig', $data);
+
+        return $response;
+    }
+
+    /**
      * Confirma o email do usuário pelo token.
      * Os tokens de confirmação de email duram 24 horas.
      *

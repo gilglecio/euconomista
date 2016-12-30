@@ -54,55 +54,116 @@ final class HomeController extends Controller
         }
 
         $start_date = new \Datetime(date('Y-m-15'));
-        $start_date->sub(new \Dateinterval('P6M'));
-        $end_date = new \Datetime(date('Y-m-15'));
-        $end_date->add(new \Dateinterval('P6M'));
+        $start_date->sub(new \Dateinterval('P3M'));
+        
+        $months = [];
 
-        $rows = Release::find_by_sql(
-            "select count(*) as rows, sum(value) as value, natureza, date from (
-                select value, natureza, date_format(data_vencimento, '%Y-%m') as date from releases
-                where data_vencimento >= '" . $start_date->format('Y-m-d') . "'
-                and data_vencimento <= '" . $end_date->format('Y-m-d') . "'
-                and entity = " . AuthSession::getEntity() . "
-            ) as tmp group by date, natureza order by date asc"
-        );
-
-        $data = [];
-
-        for ($i=0; $i < 13; $i++) {
+        /**
+         * Monta os meses.
+         */
+        for ($i=0; $i < 7; $i++) {
             $date = clone $start_date;
             $date->add(new \Dateinterval("P{$i}M"));
 
-            $data[$date->format('Y-m')] = [
-                'receita' => ['value' => 0, 'rows' => 0, 'percentual' => 0],
-                'despesa' => ['value' => 0, 'rows' => 0, 'percentual' => 0],
+            $months[$date->format('Y-m')] = [
+                'receita' => 0,
+                'despesa' => 0,
             ];
         }
 
-        $max = 0;
+        /**
+         * Configuração do gráfico
+         * @var array
+         */
+        $data = [
+            [
+                'label' => 'Receitas',
+                'lineTension' => 0,
+                'borderColor' => 'blue',
+                'fill' => false,
+                'data' => [],
+            ],
+            [
+                'label' => 'Despesas',
+                'lineTension' => 0,
+                'fill' => false,
+                'borderColor' => 'red',
+                'data' => [],
+            ],
+        ];
 
-        foreach ($rows as $key => $value) {
-            if ($value->value > $max) {
-                $max = $value->value;
-            }
-
-            $n = [1 => 'receita', 2 => 'despesa'][$value->natureza];
-
-            $data[$value->date][$n]['value'] = $value->value;
-            $data[$value->date][$n]['rows'] = $value->rows;
-        }
-
-        foreach ($data as $key => $value) {
-            $data[$key]['receita']['percentual'] = ($data[$key]['receita']['value'] * 100) / $max;
-            $data[$key]['despesa']['percentual'] = ($data[$key]['despesa']['value'] * 100) / $max;
+        /**
+         * Adiciona a soma mês a mês de receitas e despesas.
+         */
+        foreach ($months as $month => $fields) {
+            $sum = $this->getSumDataForMonth(date($month . '-01'));
+            $data[0]['data'][] = $sum->receita;
+            $data[1]['data'][] = $sum->despesa;
         }
 
         $this->view->render($response, 'app/home.twig', [
             'title' => $this->title,
             'user' => $user,
-            'data' => $data
+            'receitas_despesas' => json_encode($data)
         ]);
         
         return $response;
+    }
+
+    /**
+     * Retorna a soma total dos lançamentos de receita e despesa por mês.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @param  string $date
+     * @return \stdClass
+     */
+    private function getSumDataForMonth($date)
+    {
+        $current = new \Datetime($date);
+
+        $conditions = [
+            'order' => 'status asc, data_vencimento asc',
+            'conditions' => [
+                '((status in (1,2) and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))',
+                $current->format('Y-m-01'),
+                $current->format('Y-m-t'),
+                $current->format('Y-m-01')
+            ]
+        ];
+
+        /**
+         * @var array
+         */
+        $rows = Release::find('all', $conditions);
+
+        /**
+         * Saldo do mês, receitas menos despesas.
+         * @var float
+         */
+        $sum_receita = $sum_despesa = 0.00;
+
+        if ($rows) {
+
+            /**
+             * @var array
+             */
+            $rows = Release::gridFormat($rows);
+            
+            foreach ($rows as $key => $row) {
+                $sum = $row['_valor_aberto'] + $row['_valor_liquidado'];
+
+                if ($row['natureza'] == 'Receita') {
+                    $sum_receita += $sum;
+                } else {
+                    $sum_despesa += $sum;
+                }
+            }
+        }
+
+        return (object) [
+            'receita' => $sum_receita,
+            'despesa' => $sum_despesa,
+        ];
     }
 }

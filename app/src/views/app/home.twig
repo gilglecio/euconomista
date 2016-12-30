@@ -1,37 +1,50 @@
 {% extends 'app/base.twig' %}
 
 {% block app %}
-	<div class="chart">
-    {% for k, v in data %}
-	<div class="chart-mes" data-mes="{{ k }}">
-		<div title="{{ k }}" class="chart-mes-bar receita" style="height:{{ v.receita.percentual }}px" data-value="{{ v.receita.value }}" data-rows="{{ v.receita.rows }}"></div>
-		<div title="{{ k }}" class="chart-mes-bar despesa" style="height:{{ v.despesa.percentual }}px" data-value="{{ v.despesa.value }}" data-rows="{{ v.despesa.rows }}"></div>
-	</div>
-    {% endfor %}
-    </div>
+    
+    <script type="text/javascript" src="/assets/chart.js/dist/Chart.min.js"></script>
 
-    <style>
-    .chart {
-    	width: 100%;
-    	height: 200px;
-    	background: #f4f4f4;
-    	overflow: hidden;
-    }
-    .chart .chart-mes {
-    	float: left;
-    	margin-right: 2px;
-    	width: 7.5%;
-    	height: 100%;
-    }
-    .chart .chart-mes .chart-mes-bar {
-    	float: left;
-    	width: 50%;
-    }
-    .chart-mes-bar.receita {
-    	background-color: blue;
-    }
-    .chart-mes-bar.despesa {
-    	background-color: red;
-    }
-    </style>
+    <canvas id="receitasVsDespesas" width="100" height="25"></canvas>
+
+    <script>
+
+    Chart.defaults.global.legend.display = false;
+
+    /**
+     * Number.prototype.format(n, x, s, c)
+     * 
+     * @param integer n: length of decimal
+     * @param integer x: length of whole part
+     * @param mixed   s: sections delimiter
+     * @param mixed   c: decimal delimiter
+     */
+    Number.prototype.format = function(n, x, s, c) {
+        var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+            num = this.toFixed(Math.max(0, ~~n));
+
+        return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+    };
+
+    Chart.Line('receitasVsDespesas', {
+        options: {
+            title: {
+                display: true,
+                text: 'Receitas X Despesas'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return 'R$ ' + value.format(2, 3, '', ',');
+                        }
+                    }
+                }]
+            }
+        },
+        data: {
+            labels: ['Set/2016', 'Out/2016', 'Nov/2016', 'Dez/2016', 'Jan/2017', 'Fev/2017', 'Mar/2017'],
+            datasets: {{ receitas_despesas|raw }}
+        },
+    });
+    </script>
 {% endblock %}

@@ -93,3 +93,11 @@
     }
 
 }
+
+table tr .table-row-btn {
+    visibility: hidden;
+}
+
+table tr:hover .table-row-btn {
+    visibility: visible;
+}

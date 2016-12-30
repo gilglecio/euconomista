@@ -26,7 +26,7 @@
     		<tr>
     			<td>
                     <a href="/app/peoples/{{ row.id }}/edit">{{ row.name }}</a>
-                    <a id="delete-person-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/peoples/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a id="delete-person-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print table-row-btn" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/peoples/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>
     		{% endfor %}

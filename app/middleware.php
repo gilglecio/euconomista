@@ -12,6 +12,10 @@ $app->add(function (Request $request, Response $response, $next) {
      */
     $private_route = substr_count($request->getRequestTarget(), '/app/');
 
+    if ($request->getRequestTarget() == '/app') {
+        $private_route = true;
+    }
+
     /**
      * Não permite que um usuário acesse uma
      * rota privada sem autenticação.

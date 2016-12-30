@@ -142,7 +142,7 @@ final class RegisterController extends Controller
             $this->mailer->send(
                 'emails/confirm_email.twig',
                 [
-                    'confirm_url' => APP_URL . '/register/confirm_email?token=' . $user->confirm_email_token
+                    'confirm_url' => APP_URL . '/register/confirm_email/' . $user->confirm_email_token
                 ],
                 function ($m) use ($user) {
                     $m->to($user->email, $user->name);

@@ -7,10 +7,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 $app->get('/', 'App\Controller\IndexController:index')
     ->setName('index');
 
-# INDEX
-$app->get('/email', 'App\Controller\RegisterController:email')
-    ->setName('email');
-
 # RESET
 $app->get('/reset', function () {
     $pdo = new \PDO('mysql:host=localhost;dbname=euconomista_test', 'root', '123', [

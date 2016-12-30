@@ -163,29 +163,4 @@ final class RegisterController extends Controller
 
         return $response->withRedirect('/login');
     }
-
-    public function email()
-    {
-        try {
-            /**
-             * Faz o envio do e-mail de confirmação.
-             */
-            $this->mailer->send(
-                'emails/confirm_email.twig',
-                [
-                    'confirm_url' => 'URL'
-                ],
-                function ($m) use ($user) {
-                    $m->to('gilglecio_765@hotmail.com', 'Gilglécio');
-                    $m->subject('EuConomista Confirmação de E-Mail');
-                    $m->from('euconomista@gmail.com');
-                    $m->fromName('EuConomista');
-                }
-            );
-        } catch (\Exception $e) {
-            die($e->getMessage());
-        }
-
-        die('ok');
-    }
 }

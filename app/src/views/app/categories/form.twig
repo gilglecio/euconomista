@@ -21,9 +21,21 @@
 	    		<input type="hidden" name="id" value="{{ data.id }}">
 
 		    	<div class="form-group">
-		    		<label for="name" class="control-label col-xs-3">Nome</label>
+		    		<label for="name" class="control-label no-padding-right col-xs-3">Nome</label>
 		    		<div class="col-xs-9">
 		    			<input type="text" minlength="3" value="{{ data.name }}" maxlength="25" id="name" autofocus required name="name" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="hexcolor" class="control-label no-padding-right col-xs-3">Cor no gráfico</label>
+		    		<div class="col-xs-9">
+		    			<select name="hexcolor" id="hexcolor" class="form-control">
+		    				<option value="">Não exibir no gráfico</option>
+		    				{% for hex, color in colors %}
+		    				<option {{ data.hexcolor == hex ? 'selected' : '' }} value="{{ hex }}">{{ color }}</option>
+		    				{% endfor %}
+		    			</select>
 		    		</div>
 		    	</div>
 	    	</fieldset>

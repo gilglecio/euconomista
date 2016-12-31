@@ -5,8 +5,14 @@
 {% block app %}
     
     <script type="text/javascript" src="/assets/chart.js/dist/Chart.min.js"></script>
-
-    <canvas id="receitasVsDespesas" width="100" height="25"></canvas>
+    <div class="row">
+        <div class="col-xs-12 jumbotron">
+            <canvas id="receitasVsDespesas" width="100" height="30"></canvas>
+        </div>
+        <div class="col-xs-12 jumbotron">
+        <canvas id="categorias" width="100" height="30"></canvas>
+        </div>
+    </div>
 
     <script>
 
@@ -47,6 +53,25 @@
             labels: ['Set/2016', 'Out/2016', 'Nov/2016', 'Dez/2016', 'Jan/2017', 'Fev/2017', 'Mar/2017'],
             datasets: {{ receitas_despesas|raw }}
         },
-    });
+    })
+
+    Chart.Line('categorias', {
+        options: {
+            title: {
+                display: true,
+                text: 'Categorias'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return 'R$ ' + value.format(2, 3, '', ',');
+                        }
+                    }
+                }]
+            }
+        },
+        data: {{ categorias|raw }},
+    })
     </script>
 {% endblock %}

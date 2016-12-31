@@ -25,7 +25,10 @@
     		{% for row in rows %}
     		<tr>
                 <td>
-                    <a href="/app/categories/{{ row.id }}/edit">{{ row.name }}</a>
+                    <a class="pull-left" href="/app/categories/{{ row.id }}/edit">{{ row.name }}</a>
+
+                    <span title="{{ row.hexcolor ? 'Aparece no gráfico' : 'Não aparece no gráfico' }}" style="background-color:{{ '#' ~ row.hexcolor }}; display:block; width:10px; height:10px; float:left; border-radius: 100px; margin-left: 10px; margin-top:6px"></span>
+                    
                     <a id="delete-category-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print table-row-btn" onbsclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>

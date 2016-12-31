@@ -75,6 +75,7 @@ final class CategoriesController extends Controller
         }
 
         $data['title'] = $this->title;
+        $data['colors'] = Category::$colors;
 
         $this->view->render($response, 'app/categories/form.twig', $data);
         
@@ -96,6 +97,7 @@ final class CategoriesController extends Controller
             Category::generate([
                 'id' => $request->getParsedBodyParam('id'),
                 'name' => $request->getParsedBodyParam('name'),
+                'hexcolor' => $request->getParsedBodyParam('hexcolor'),
             ]);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/categories/form');

@@ -164,7 +164,9 @@ abstract class Model extends ActiveRecord\Model
      */
     public function getFisrtError()
     {
-        $errors = $this->errors->full_messages();
+        $errors = $this->errors->get_raw_errors();
+
+        dd($errors);
 
         return $errors ? $errors[0] : 'Error';
     }

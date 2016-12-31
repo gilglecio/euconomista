@@ -27,7 +27,7 @@ final class MeController extends Controller
      *
      * @var string
      */
-    protected $title = 'Meu Cadastro';
+    protected $title = 'Minha Conta';
 
     /**
      * Renderiza a pagina dos relatórios.

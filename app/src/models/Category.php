@@ -11,6 +11,13 @@
  */
 final class Category extends Model
 {
+    public static $colors = [
+        '000000' => 'Preto', 
+        'ff0000' => 'Vermelho', 
+        '00ff00' => 'Verde', 
+        '0000ff' => 'Azul'
+    ];
+
     /**
      * Validação dos campos obrigatórios.
      *
@@ -35,7 +42,8 @@ final class Category extends Model
      * @var array
      */
     public static $validates_length_of = [
-        ['name', 'within' => [3, 25]]
+        ['name', 'within' => [3, 25]],
+        ['hexcolor', 'is' => 6, 'allow_blank' => true]
     ];
 
     /**
@@ -67,6 +75,7 @@ final class Category extends Model
             }
 
             $row->name = $fields['name'];
+            $row->hexcolor = $fields['hexcolor'];
             $row->save();
         } else {
 
@@ -74,7 +83,8 @@ final class Category extends Model
              * @var Category
              */
             $row = self::create([
-                'name' => $fields['name']
+                'name' => $fields['name'],
+                'hexcolor' => $fields['hexcolor'],
             ]);
         }
 
@@ -106,6 +116,11 @@ final class Category extends Model
         }
 
         return $find;
+    }
+
+    public function getColor()
+    {
+        return $this->hexcolor ? '#' . $this->hexcolor : '#cccccc';
     }
 
     /**

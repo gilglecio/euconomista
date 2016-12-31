@@ -2,6 +2,18 @@
 
 {% block pageTitle title %}
 
+{% block jsBottom %}
+	<script>
+	$('.btn-select').on('click', function (e) {
+		e.preventDefault();
+		var el = $('#input-' + $(this).attr('data-target'));
+    	el.show();
+    	el.find('input').attr('required', 'required');
+    	$(this).closest('.form-group').remove();
+    })
+	</script>
+{% endblock %}
+
 {% block app %}
 
 	<style type="text/css">
@@ -31,49 +43,8 @@
 		    		</div>
 		    	</div>
 
-		    	<div class="form-group">
-		    		<label for="people_id" class="control-label no-padding-right col-xs-3">Pessoa</label>
-		    		<div class="col-xs-6 col-md-5">
-		    			<select class="form-control" id="people_id" name="people_id" required>
-		    				<option></option>
-		    				{% for r in peoples %}
-		    				<option {% if r.id == data.people_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
-		    				{% endfor %}
-		    			</select>
-		    		</div>
-		    		<div class="col-xs-3 no-padding-left">
-		    			<a class="btn-select btn btn-link no-padding-left" data-target="people" href="javascript:void(0)">Cadastrar</a>
-		    		</div>
-		    	</div>
-
-		    	<div class="form-group" style="display:none" id="input-people">
-		    		<label for="people" class="control-label no-padding-right col-xs-3">Pessoa</label>
-		    		<div class="col-xs-9 col-md-5">
-		    			<input type="text" maxlength="45" id="people" name="people" placeholder="Nova" class="form-control">
-		    		</div>
-		    	</div>
-
-		    	<div class="form-group">
-		    		<label for="category_id" class="control-label no-padding-right col-xs-3">Categoria</label>
-		    		<div class="col-xs-6 col-md-5">
-		    			<select class="form-control" id="category_id" name="category_id" required>
-		    				<option></option>
-		    				{% for r in categories %}
-		    				<option {% if r.id == data.category_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
-		    				{% endfor %}
-		    			</select>
-		    		</div>
-		    		<div class="col-xs-3 no-padding-left">
-		    			<a class="btn-select btn btn-link no-padding-left" data-target="category" href="javascript:void(0)">Cadastrar</a>
-		    		</div>
-		    	</div>
-
-		    	<div class="form-group" style="display:none" id="input-category">
-		    		<label for="category" class="control-label no-padding-right col-xs-3">Categoria</label>
-		    		<div class="col-xs-9 col-md-5">
-		    			<input type="text" maxlength="45" id="category" name="category" placeholder="Nova" class="form-control">
-		    		</div>
-		    	</div>
+		    	{% include 'partials/people-input.twig' with {data: data, peoples: peoples} %}
+		    	{% include 'partials/category-input.twig' with {data: data, categories: categories} %}
 
 		    	<div class="form-group">
 		    		<label for="quantity" class="control-label no-padding-right col-xs-3">Dividir</label>
@@ -112,7 +83,7 @@
 
 		    	<div class="form-group">
 		    		<label for="description" class="control-label no-padding-right col-xs-3">Descrição</label>
-		    		<div class="col-xs-9">
+		    		<div class="col-xs-9 col-md-5">
 		    			<input type="text" value="{{ data.description }}" placeholder="(Opcional)" maxlength="255" id="description" name="description" class="form-control">
 		    		</div>
 		    	</div>
@@ -128,16 +99,4 @@
 	    </form>
     </div>
 
-{% endblock %}
-
-{% block jsBottom %}
-	<script>
-	$('.btn-select').on('click', function (e) {
-		e.preventDefault();
-		var el = $('#input-' + $(this).attr('data-target'));
-    	el.show();
-    	el.find('input').attr('required', 'required');
-    	$(this).closest('.form-group').remove();
-    })
-	</script>
 {% endblock %}

@@ -68,20 +68,11 @@ final class Release extends Model
      * @var array
      */
     public static $validates_presence_of = [
-        ['category_id'],
-        ['people_id'],
-        ['value'],
-        ['natureza'],
-        ['data_vencimento']
-    ];
-
-    /**
-     * Validação para definir a quantidade de caracteres campo a campo.
-     *
-     * @var array
-     */
-    public static $validates_length_of = [
-        ['number', 'within' => [3, 15]]
+        ['category_id', 'message' => 'Favor informar a categoria'],
+        ['people_id', 'message' => 'Favor informar a pessoa'],
+        ['value', 'message' => 'Favor informar um valor'],
+        ['natureza', 'message' => 'Favor informar a natureza'],
+        ['data_vencimento', 'Favor informar a data de vencimento']
     ];
 
     /**
@@ -136,9 +127,18 @@ final class Release extends Model
      */
     public static function generateGroup($fields)
     {
+        if (! isset($fields['releases'])) {
+            $fields['releases'] = [];
+        }
+
+        if (count($fields['releases']) < 2) {
+            throw new \Exception('Favor selecionar pelo menos dois lançamentos.');
+        }
+
         try {
             $connection = static::connection();
             $connection->transaction();
+
 
             /**
              * Sum release values
@@ -384,7 +384,7 @@ final class Release extends Model
                  * Numero sequencial / quantidade de parcelas.
                  * @var string
                  */
-                $number = ($i + 1) . '/' . $quantity;
+                $number = str_pad(($i + 1) . '/' . $quantity, 5, '0', STR_PAD_LEFT);
 
                 /**
                  * Se for uma edição na qual o usuário não redividiu o lançamento,

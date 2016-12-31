@@ -16,14 +16,17 @@ $app->get('/reset', function () {
     try {
         $pdo->beginTransaction();
 
-        foreach (['release_logs', 'releases', 'peoples', 'categories', 'user_logs', 'users'] as $table) {
+        foreach (['release_logs', 'releases', 'peoples', 'categories', 'user_logs'] as $table) {
             $pdo->query('delete from `' . $table . '`');
         }
+
+        $pdo->query('delete from users where user_id is not null');
+        $pdo->query('delete from users');
 
         $pdo->commit();
     } catch (\Exception $e) {
         $pdo->rollback();
-        die($e->getMessge());
+        die($e->getMessage());
     }
 
     die('OK');
@@ -62,6 +65,13 @@ $app->group('/app', function () {
     $this->get('', 'App\Controller\HomeController:index')
         ->setName('app.home');
 
+    # SUPORT
+    $this->get('/support', 'App\Controller\SupportController:form')
+        ->setName('app.support');
+
+    $this->post('/support', 'App\Controller\SupportController:send')
+        ->setName('app.support.send');
+
     # PEOPLES
     $this->group('/peoples', function () {
         $this->get('', 'App\Controller\PeoplesController:index')
@@ -80,12 +90,12 @@ $app->group('/app', function () {
             ->setName('peoples.edit');
     });
 
-    # MY
-    $this->group('/me', function () {
-        $this->get('', 'App\Controller\MeController:index')
-            ->setName('me');
-        $this->get('/backup', 'App\Controller\MeController:backup')
-            ->setName('me.backup');
+    # ACCOUNT
+    $this->group('/account', function () {
+        $this->get('', 'App\Controller\AccountController:index')
+            ->setName('app.account');
+        $this->get('/backup', 'App\Controller\AccountController:backup')
+            ->setName('app.account.backup');
     });
 
     # USER LOGS

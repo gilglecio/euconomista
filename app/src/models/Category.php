@@ -24,7 +24,7 @@ final class Category extends Model
      * @var array
      */
     public static $validates_presence_of = [
-        ['name']
+        ['name', 'message' => 'Favor informar o nome da categoria']
     ];
 
     /**
@@ -33,7 +33,7 @@ final class Category extends Model
      * @var array
      */
     public static $validates_uniqueness_of = [
-        ['name', 'entity']
+        ['name', 'entity', 'message' => 'Já existe uma categoria com este nome']
     ];
 
     /**
@@ -42,7 +42,7 @@ final class Category extends Model
      * @var array
      */
     public static $validates_length_of = [
-        ['name', 'within' => [3, 25]],
+        ['name', 'within' => [3, 25], 'message' => 'O nome da categoria deve está entre 03 e 25 caracteres'],
         ['hexcolor', 'is' => 6, 'allow_blank' => true]
     ];
 

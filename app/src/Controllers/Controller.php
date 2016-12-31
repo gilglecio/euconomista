@@ -62,21 +62,25 @@ abstract class Controller
         $this->flash = $app->get('flash');
         $this->mailer = $app->get('mailer');
 
-        /**
-         * @var User
-         */
-        if (! $user = User::find(AuthSession::getUserId())) {
-            header('Location: /logout');
+        if (AuthSession::isAuthenticated()) {
+            
+            /**
+             * @var User
+             */
+            if (! $user = User::find(AuthSession::getUserId())) {
+                AuthSession::clear();
+                header('Location: /');
+            }
+
+            /**
+             * Recupera os dados do usuário.
+             * @var array
+             */
+            $user_data = $user->to_array();
+            $user_data['first_name'] = $user->getFirstName();        
+
+            $this->view->offsetSet('user', $user_data);
         }
-
-        /**
-         * Recupera os dados do usuário.
-         * @var array
-         */
-        $user_data = $user->to_array();
-        $user_data['first_name'] = $user->first_name;        
-
-        $this->view->offsetSet('user', $user_data);
     } 
 
     public function getReportFooter()

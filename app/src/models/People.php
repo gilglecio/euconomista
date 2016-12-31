@@ -17,7 +17,7 @@ final class People extends Model
      * @var array
      */
     public static $validates_presence_of = [
-        ['name']
+        ['name', 'message' => 'Favor informar o nome da pessoa']
     ];
 
     /**
@@ -26,7 +26,7 @@ final class People extends Model
      * @var array
      */
     public static $validates_uniqueness_of = [
-        ['name', 'entity']
+        ['name', 'entity', 'message' => 'Já existe uma pessoa com este nome']
     ];
 
     /**
@@ -35,7 +35,7 @@ final class People extends Model
      * @var array
      */
     public static $validates_length_of = [
-        ['name', 'within' => [3, 60]]
+        ['name', 'within' => [3, 60], 'message' => 'O nome da categoria deve está entre 03 e 60 caracteres']
     ];
 
     /**

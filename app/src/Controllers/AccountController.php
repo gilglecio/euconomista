@@ -1,7 +1,7 @@
 <?php
 
 /**
- * MeController class
+ * AccountController class
  *
  * @package App\Controller
  * @version v1.0
@@ -14,13 +14,14 @@ namespace App\Controller;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use ReleaseLog;
+use App\Util\Toolkit;
 
 /**
  * Relatórios
  *
  * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
  */
-final class MeController extends Controller
+final class AccountController extends Controller
 {
     /**
      * Título da página
@@ -72,8 +73,8 @@ final class MeController extends Controller
                 'data_vencimento' => $log->release->data_vencimento->format('d/m/Y'),
                 'data_pagamento' => $log->date->format('d/m/Y'),
                 'description' => $log->release->description,
-                'value' => $log->release->value,
-                'value_pago' => $log->action == ReleaseLog::ACTION_LIQUIDACAO ? $log->value : null,
+                'value' => $log->release->getFormatValue(),
+                'value_pago' => $log->action == ReleaseLog::ACTION_LIQUIDACAO ? Toolkit::showMoney($log->value) : null,
                 'number' => $log->release->number,
                 'status' => $log->release->getStatusName()
             ];

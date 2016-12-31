@@ -30,7 +30,7 @@ Feature: Página de lançamentos
 
 		Then I should see "Pessoa 001"
 		Then I should see "Categoria 001"
-		Then I should see "1/1"
+		Then I should see "001/1"
 		Then I should see "1.000,00"
 		Then I should see "Receita de R$ 1.000,00 em 1x"
 
@@ -54,8 +54,9 @@ Feature: Página de lançamentos
 
 		Then I should see "Pessoa 001"
 		Then I should see "Categoria 001"
-		Then I should see "1/2"
-		Then I should see "2/2"
+		Then I should see "001/2"
+		When I follow "next-month"
+		Then I should see "002/2"
 		Then I should see "50,00"
 		Then I should see "Receita de R$ 100,00 em 2x"
 
@@ -79,13 +80,13 @@ Feature: Página de lançamentos
 
 		Then I should see "Pessoa 001"
 		Then I should see "Categoria 001"
-		Then I should see "1/3"
+		Then I should see "001/3"
 		Then I should see "166,67"
 		When I follow "next-month"
-		Then I should see "2/3"
+		Then I should see "002/3"
 		Then I should see "166,67"
 		When I follow "next-month"
-		Then I should see "3/3"
+		Then I should see "003/3"
 		Then I should see "166,66"
 		Then I should see "Receita de R$ 500,00 em 3x"
 
@@ -95,14 +96,14 @@ Feature: Página de lançamentos
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		
-		Then I should see "Emissão receita nº 1/1 'Pessoa 001' R$ 1.000,00"
+		Then I should see "Emissão receita nº 001/1 'Pessoa 001' R$ 1.000,00"
 		
-		Then I should see "Emissão despesa nº 1/2 'Pessoa 001' R$ 50,00"
-		Then I should see "Emissão despesa nº 2/2 'Pessoa 001' R$ 50,00"
+		Then I should see "Emissão despesa nº 001/2 'Pessoa 001' R$ 50,00"
+		Then I should see "Emissão despesa nº 002/2 'Pessoa 001' R$ 50,00"
 
-		Then I should see "Emissão despesa nº 1/3 'Pessoa 001' R$ 166,67"
-		Then I should see "Emissão despesa nº 2/3 'Pessoa 001' R$ 166,67"
-		Then I should see "Emissão despesa nº 3/3 'Pessoa 001' R$ 166,66"
+		Then I should see "Emissão despesa nº 001/3 'Pessoa 001' R$ 166,67"
+		Then I should see "Emissão despesa nº 002/3 'Pessoa 001' R$ 166,67"
+		Then I should see "Emissão despesa nº 003/3 'Pessoa 001' R$ 166,66"
 
 		Then I should not see "Restaurar"
 
@@ -157,9 +158,9 @@ Feature: Página de lançamentos
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		
-		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 350,00"
-		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 712,00"
-		Then I should see "Encargos receita nº 1/1 'Pessoa 001' R$ 62,00"
+		Then I should see "Recebimento receita nº 001/1 'Pessoa 001' R$ 350,00"
+		Then I should see "Recebimento receita nº 001/1 'Pessoa 001' R$ 712,00"
+		Then I should see "Encargos receita nº 001/1 'Pessoa 001' R$ 62,00"
 
 	@javascript
 	Scenario: Desfazendo liquidação com encargos
@@ -198,7 +199,7 @@ Feature: Página de lançamentos
 		Then I should see "585,00"
 
 		Then I follow "Lançamentos"
-		Then I should see "1/1"
+		Then I should see "001/1"
 		Then I should see "Pago"
 		Then I should see "935,00"
 
@@ -208,8 +209,8 @@ Feature: Página de lançamentos
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		
-		Then I should see "Recebimento receita nº 1/1 'Pessoa 001' R$ 585,00"
-		Then I should see "Desconto receita nº 1/1 'Pessoa 001' R$ 65,00"
+		Then I should see "Recebimento receita nº 001/1 'Pessoa 001' R$ 585,00"
+		Then I should see "Desconto receita nº 001/1 'Pessoa 001' R$ 65,00"
 
 	@javascript
 	Scenario: Desfazendo liquidação com desconto
@@ -247,7 +248,7 @@ Feature: Página de lançamentos
 		Then I should not see "350,00"
 		Then I should see "Editar"
 		Then I follow "Lançamentos"
-		Then I should see "1/1"
+		Then I should see "001/1"
 		Then I should see "1.000,00"
 
 	@javascript
@@ -272,14 +273,14 @@ Feature: Página de lançamentos
 		Then I follow "1/1"
 		Then I follow "Apagar"
 		Then I should see "Sucesso!"
-		Then I should not see "1/1"
+		Then I should not see "001/1"
 
-		Then I should not see "1/1"
+		Then I should not see "001/1"
 
-		Then I should see "1/2"
-		Then I should see "2/2"
-		Then I should see "1/3"
+		Then I should see "001/2"
+		Then I should see "001/3"
 		When I follow "next-month"
-		Then I should see "2/3"
+		Then I should see "002/2"
+		Then I should see "002/3"
 		When I follow "next-month"
-		Then I should see "3/3"
+		Then I should see "003/3"

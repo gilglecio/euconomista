@@ -252,7 +252,8 @@ final class ReleasesController extends Controller
     public function saveGroup(Request $request, Response $response, array $args)
     {
         try {
-            Release::generateGroup([
+
+            $fields = [
                 'releases' => $request->getParsedBodyParam('releases'),
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),
                 'people_id' => (int) $request->getParsedBodyParam('people_id'),
@@ -261,7 +262,17 @@ final class ReleasesController extends Controller
                 'data_vencimento' => $request->getParsedBodyParam('data_vencimento'),
                 'data_liquidacao' => $request->getParsedBodyParam('data_liquidacao'),
                 'description' => $request->getParsedBodyParam('description'),
-            ]);
+            ];
+
+            if ($category = $request->getParsedBodyParam('category')) {
+                $fields['category_id'] = Category::saveIfNotExists($category)->id;
+            }
+
+            if ($people = $request->getParsedBodyParam('people')) {
+                $fields['people_id'] = People::saveIfNotExists($people)->id;
+            }
+
+            Release::generateGroup($fields);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/releases/group');
         }

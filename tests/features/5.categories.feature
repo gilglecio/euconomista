@@ -26,4 +26,4 @@ Feature: Página de categorias
 
 		When I register the category "Categoria 001"
 		Then I should be on "/app/categories/form"
-		Then I should see "Name must be unique"
+		Then I should see "Já existe uma categoria com este nome"

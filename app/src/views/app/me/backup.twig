@@ -12,8 +12,8 @@
     			<th>Vencimento</th>
     			<th>Pagamento</th>
     			<th>Descrição</th>
-    			<th>Valor</th>
-    			<th>Valor Pago</th>
+    			<th class="text-right">Valor</th>
+    			<th class="text-right">Valor Pago</th>
                 <th>Número</th>
                 <th>Status</th>
     		</tr>
@@ -28,8 +28,8 @@
                 <td>{{ row.data_vencimento }}</td>
                 <td>{{ row.data_pagamento }}</td>
                 <td>{{ row.description }}</td>
-                <td>{{ row.value }}</td>
-                <td>{{ row.value_pago }}</td>
+                <td class="text-right">{{ row.value }}</td>
+                <td class="text-right">{{ row.value_pago }}</td>
                 <td>{{ row.number }}</td>
                 <td>{{ row.status }}</td>
             </tr>

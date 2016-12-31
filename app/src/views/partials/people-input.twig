@@ -1,0 +1,21 @@
+<div class="form-group">
+	<label for="people_id" class="control-label no-padding-right col-xs-3">Pessoa</label>
+	<div class="col-xs-6 col-md-5">
+		<select class="form-control" id="people_id" name="people_id" required>
+			<option></option>
+			{% for r in peoples %}
+			<option {% if r.id == data.people_id %}selected{% endif %} value="{{ r.id }}">{{ r.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-xs-3 no-padding-left">
+		<a class="btn-select btn btn-link no-padding-left" data-target="people" href="javascript:void(0)">Cadastrar</a>
+	</div>
+</div>
+
+<div class="form-group" style="display:none" id="input-people">
+	<label for="people" class="control-label no-padding-right col-xs-3">Pessoa</label>
+	<div class="col-xs-9 col-md-5">
+		<input type="text" maxlength="45" id="people" name="people" placeholder="Nova" class="form-control">
+	</div>
+</div>

@@ -73,6 +73,10 @@ class AuthSession
      */
     public static function getUserId()
     {
+        if (! self::isAuthenticated()) {
+            return;
+        }
+
         return $_SESSION[self::AUTH_SESSION_NAME]['id'];
     }
 

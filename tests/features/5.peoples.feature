@@ -33,4 +33,4 @@ Feature: Página de pessoas
 
 		When I add the person "Pessoa 001"
 		Then I should be on "/app/peoples/form"
-		Then I should see "Name must be unique"
+		Then I should see "Já existe uma pessoa com este nome"

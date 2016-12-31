@@ -17,6 +17,7 @@ Feature: Página de login
 
 		When I log in I should be inside the application
 		Then I should see "Tester"
+		When I follow "btn-profile"
 		Then I should see "Sair"
 
 	@javascript
@@ -51,7 +52,8 @@ Feature: Página de login
 		Then I should see "Conectou-se"
 		Then I should see "Tester"
 
-		When I follow "Me"
-		Then I should be on "/app/me"
+		When I follow "btn-profile"
+		When I follow "Minha Conta"
+		Then I should be on "/app/account"
 		Then I should see "Baixar backup"
 		Then I should see "Desativar minha conta"

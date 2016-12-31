@@ -1,9 +1,54 @@
-<h1>EuConomista</h1>
-
-{% block title %}
-    
-{% endblock %}
-
-{% block body %}
-    
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	.logo span {
+		color: #f05f40;
+	}
+	.logo {
+		border-bottom: 1px dotted #f05f40;
+		margin-top: 0;
+	}
+	body{
+		font-family: arial;
+		background: #f05f40;
+	}
+	table {
+		border-radius: 10px;
+		background: #fff;
+		padding: 50px 50px 20px 50px;
+	}
+	</style>
+</head>
+<body>
+	<table style="width:500px; margin: 0 auto">
+		<tbody>
+			<tr>
+				<td><h2 style="text-align:center" class="logo">Eu<span>Conomista</span></h2></td>
+			</tr>
+			<tr>
+				<td>
+					{% block title %}<strong>{{ title }}</strong>{% endblock %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+				{% block body %}
+					{{ body }}    
+				{% endblock %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p style="margin-bottom:0;font-size:12px;text-align:center;border-top: 1px dotted #f05f40; padding-top:15px">
+						&copy; <strong>EuConomista</strong> - Todos os direitos reservados<br>
+						<a href="https://euconomista.com.br/terms">Termo de privacidade</a>
+						<a href="https://euconomista.com.br/policy">Política de privacidade</a>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

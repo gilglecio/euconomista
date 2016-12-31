@@ -1,7 +1,9 @@
 {% extends 'layouts/email.twig' %}
 
-{% block title 'Confirmação de email' %}
+{% set title = 'Confirmação de email' %}
 
 {% block body %}
-<a href="{{ confirm_url }}">Confirmar cadastro no EuConomista</a>
+<p>Seja bem vindo ao sistema!</p>
+<p><a style="text-decoration:none;display:block;padding:10px;width:100%;background:#f05f40; color:#fff;text-align:center;border-radius:10px" href="{{ confirm_url }}">Confirmar cadastro no Eu<strong>Conomista</strong></a></p>
+
 {% endblock %}

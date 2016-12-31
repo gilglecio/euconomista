@@ -146,7 +146,7 @@ class User extends Model implements UserAuthInterface
         return $row;
     }
 
-    public function getFirstName()
+    public function get_first_name()
     {
         return explode(' ', $this->name)[0];
     }

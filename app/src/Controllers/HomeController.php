@@ -47,19 +47,8 @@ final class HomeController extends Controller
      */
     public function index(Request $request, Response $response, array $args)
     {
-        /**
-         * @var User
-         */
-        if (! $user = User::find(AuthSession::getUserId())) {
-            return $this->redirectWithError($response, 'Usuário não localizado.', '/logout');
-        }
-        
-        $user = $user->to_array();
-        $user['first_name'] = explode(' ', $user['name'])[0];
-
         $this->view->render($response, 'app/home.twig', [
             'title' => $this->title,
-            'user' => $user,
             'chart' => [
                 'categories' => json_encode($this->chartCategorias()),
                 'releases' => json_encode($this->chartReleases())

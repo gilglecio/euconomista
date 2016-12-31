@@ -11,6 +11,8 @@
 namespace App\Controller;
 
 use Slim\Container;
+use User;
+use App\Auth\AuthSession;
 
 /**
  * Classe abstrata para ser extendida pelos contrllers.
@@ -59,7 +61,23 @@ abstract class Controller
         $this->logger = $app->get('logger');
         $this->flash = $app->get('flash');
         $this->mailer = $app->get('mailer');
-    }
+
+        /**
+         * @var User
+         */
+        if (! $user = User::find(AuthSession::getUserId())) {
+            header('Location: /logout');
+        }
+
+        /**
+         * Recupera os dados do usuário.
+         * @var array
+         */
+        $user_data = $user->to_array();
+        $user_data['first_name'] = $user->first_name;        
+
+        $this->view->offsetSet('user', $user_data);
+    } 
 
     public function getReportFooter()
     {

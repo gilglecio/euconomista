@@ -86,6 +86,17 @@
     	</tbody>
     </table>
 
+    <table class="table table-bordered" style="margin-top:20px">
+        <tbody>
+            {% for k, v in sumall %}
+            <tr>
+                <td>{{ k }}</td>
+                <td style="width:8%;min-width:120px" class="text-right"><span class="pull-left">R$</span> {{ v }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     <p class="visible-print pull-right" style="margin-top:10px">{{ report_footer }}</p>
 
 {% endblock %}

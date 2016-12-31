@@ -83,9 +83,44 @@ final class ReleasesController extends Controller
          */
         $sum_aberto = $sum_liquidado = 0.00;
 
+        $sumall = [
+            'Despesas em Aberto' => 0,
+            'Despesas em Atraso' => 0,
+            'Despesas Liquidadas' => 0,
+
+            'Receitas em Aberto' => 0,
+            'Receitas em Atraso' => 0,
+            'Receitas Liquidadas' => 0,
+        ];
+
         foreach ($rows as $key => $row) {
             $sum_aberto += $row['_valor_aberto'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
             $sum_liquidado += $row['_valor_liquidado'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
+
+            if ($row['natureza'] == 'Despesa' && $row['status'] == 'Aberto') {
+                $sumall['Despesas em Aberto'] += $row['_valor_aberto'];   
+            } elseif ($row['natureza'] == 'Despesa' && $row['status'] == 'Vencido') {
+                $sumall['Despesas em Atraso'] += $row['_valor_aberto'];   
+            } elseif ($row['natureza'] == 'Receita' && $row['status'] == 'Aberto') {
+                $sumall['Receitas em Aberto'] += $row['_valor_aberto'];   
+            } elseif ($row['natureza'] == 'Receita' && $row['status'] == 'Vencido') {
+                $sumall['Receitas em Atraso'] += $row['_valor_aberto'];
+            }
+
+            if ($row['natureza'] == 'Receita') {
+                $sumall['Receitas Liquidadas'] += $row['_valor_liquidado'];
+            } else {
+                $sumall['Despesas Liquidadas'] += $row['_valor_liquidado'];
+            }
+        }
+
+        foreach ($sumall as $key => $value) {
+
+            if (substr_count($key, 'Despesa')) {
+                $value *= -1;
+            }
+
+            $sumall[$key] = Toolkit::showMoney($value);
         }
 
         $sum = $sum_aberto + $sum_liquidado;
@@ -103,6 +138,7 @@ final class ReleasesController extends Controller
             'report_title' => 'Relatório de lançamentos',
             'rows' => $rows,
             'sum' => $sum,
+            'sumall' => $sumall,
 
             'current_month' => $current->format('M Y'),
 

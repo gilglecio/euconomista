@@ -7,10 +7,10 @@
     <script type="text/javascript" src="/assets/chart.js/dist/Chart.min.js"></script>
     <div class="row">
         <div class="col-xs-12 jumbotron">
-            <canvas id="receitasVsDespesas" width="100" height="30"></canvas>
+            <canvas id="releases" width="100" height="30"></canvas>
         </div>
         <div class="col-xs-12 jumbotron">
-        <canvas id="categorias" width="100" height="30"></canvas>
+        <canvas id="categories" width="100" height="30"></canvas>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
         return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
     };
 
-    Chart.Line('receitasVsDespesas', {
+    Chart.Line('releases', {
         options: {
             title: {
                 display: true,
@@ -51,11 +51,11 @@
         },
         data: {
             labels: ['Set/2016', 'Out/2016', 'Nov/2016', 'Dez/2016', 'Jan/2017', 'Fev/2017', 'Mar/2017'],
-            datasets: {{ receitas_despesas|raw }}
+            datasets: {{ chart.releases|raw }}
         },
     })
 
-    Chart.Line('categorias', {
+    Chart.Line('categories', {
         options: {
             title: {
                 display: true,
@@ -71,7 +71,7 @@
                 }]
             }
         },
-        data: {{ categorias|raw }},
+        data: {{ chart.categories|raw }},
     })
     </script>
 {% endblock %}

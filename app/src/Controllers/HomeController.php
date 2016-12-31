@@ -53,7 +53,114 @@ final class HomeController extends Controller
         if (! $user = User::find(AuthSession::getUserId())) {
             return $this->redirectWithError($response, 'Usuário não localizado.', '/logout');
         }
+        
+        $user = $user->to_array();
+        $user['first_name'] = explode(' ', $user['name'])[0];
 
+        $this->view->render($response, 'app/home.twig', [
+            'title' => $this->title,
+            'user' => $user,
+            'chart' => [
+                'categories' => json_encode($this->chartCategorias()),
+                'releases' => json_encode($this->chartReleases())
+            ]
+        ]);
+        
+        return $response;
+    }
+
+    private function chartCategorias()
+    {
+        $data = [
+            'labels' => [],
+            'datasets' => []
+        ];
+
+        $months = [];
+
+        $colors = ['red', 'blue', 'green', 'yellow', 'black', 'purple', '#9c27b0'];
+        $k = 0;
+
+        foreach ($this->getSumPorCategoria() as $key => $value) {
+
+            $months[] = $value['date'];
+
+            if (! isset($colors[$k])) {
+                $k = 0;
+            }
+
+            if (! isset($data['datasets'][$value['category_id']])) {
+                $data['datasets'][$value['category_id']] = [
+                    'label' => $value['category'],
+                    'lineTension' => 0,
+                    'borderColor' => Category::find($value['category_id'])->getColor(),
+                    'fill' => false,
+                    'data' => [],
+                ];
+            }
+
+            $k++;
+
+            $data['datasets'][$value['category_id']]['data'][$value['date']] = $value['sum'];
+        }
+
+        $months = array_flip(array_flip($months));
+
+        foreach ($months as $key => $value) {
+            $months[strtotime(date($value) . '-15')] = date($value . '-15');
+            unset($months[$key]);
+        }
+
+        ksort($months);
+        $values = array_values($months);
+
+        $start = new \Datetime($values[0]);
+        $last = new \Datetime($values[count($values)-1]);
+
+        while ($start < $last) {
+            $time = $start->getTimestamp();
+
+            if (! isset($months[$time])) {
+                $months[$time] = $start->format('Y-m-15');
+            }
+
+            $start->add(new \Dateinterval('P1M'));
+        }
+
+        sort($months);
+
+        $months = array_map(function ($m) {
+            return substr($m, 0, 7);
+        }, $months);
+
+
+        foreach ($data['datasets'] as $key => $dataset) {
+            foreach ($months as $month) {
+                if (! in_array($month, array_keys($dataset['data']))) {
+                    $data['datasets'][$key]['data'][strtotime(date($month . '-15'))] = 0;
+                } else {
+                    $data['datasets'][$key]['data'][strtotime(date($month . '-15'))] = $dataset['data'][$month];
+                    unset($data['datasets'][$key]['data'][$month]);
+                }
+            }
+
+            $data['datasets'][$key]['data'] = array_values($data['datasets'][$key]['data']);
+        }
+
+        $data['labels'] = array_values($months);
+
+
+        $data['datasets'] = array_values($data['datasets']);
+
+        foreach ($data['labels'] as $key => $value) {
+            $data['labels'][$key] = (new \Datetime(date($value . '-15')))->format('M/Y');
+        }
+
+        return $data;
+    }
+
+    private function chartReleases()
+    {
         $start_date = new \Datetime(date('Y-m-15'));
         $start_date->sub(new \Dateinterval('P3M'));
         
@@ -102,103 +209,7 @@ final class HomeController extends Controller
             $data[1]['data'][] = $sum->despesa;
         }
 
-        $categorias = [
-            'labels' => [],
-            'datasets' => []
-        ];
-
-        $months = [];
-
-        $colors = ['red', 'blue', 'green', 'yellow', 'black', 'purple', '#9c27b0'];
-        $k = 0;
-
-        foreach ($this->getSumPorCategoria() as $key => $value) {
-
-            $months[] = $value['date'];
-
-            if (! isset($colors[$k])) {
-                $k = 0;
-            }
-
-            if (! isset($categorias['datasets'][$value['category_id']])) {
-                $categorias['datasets'][$value['category_id']] = [
-                    'label' => $value['category'],
-                    'lineTension' => 0,
-                    'borderColor' => Category::find($value['category_id'])->getColor(),
-                    'fill' => false,
-                    'data' => [],
-                ];
-            }
-
-            $k++;
-
-            $categorias['datasets'][$value['category_id']]['data'][$value['date']] = $value['sum'];
-        }
-
-        $months = array_flip(array_flip($months));
-
-        foreach ($months as $key => $value) {
-            $months[strtotime(date($value) . '-15')] = date($value . '-15');
-            unset($months[$key]);
-        }
-
-        ksort($months);
-        $values = array_values($months);
-
-        $start = new \Datetime($values[0]);
-        $last = new \Datetime($values[count($values)-1]);
-
-        while ($start < $last) {
-            $time = $start->getTimestamp();
-
-            if (! isset($months[$time])) {
-                $months[$time] = $start->format('Y-m-15');
-            }
-
-            $start->add(new \Dateinterval('P1M'));
-        }
-
-        sort($months);
-
-        $months = array_map(function ($m) {
-            return substr($m, 0, 7);
-        }, $months);
-
-
-        foreach ($categorias['datasets'] as $key => $dataset) {
-            foreach ($months as $month) {
-                if (! in_array($month, array_keys($dataset['data']))) {
-                    $categorias['datasets'][$key]['data'][strtotime(date($month . '-15'))] = 0;
-                } else {
-                    $categorias['datasets'][$key]['data'][strtotime(date($month . '-15'))] = $dataset['data'][$month];
-                    unset($categorias['datasets'][$key]['data'][$month]);
-                }
-            }
-
-            $categorias['datasets'][$key]['data'] = array_values($categorias['datasets'][$key]['data']);
-        }
-
-        $categorias['labels'] = array_values($months);
-
-        $user = $user->to_array();
-        $user['first_name'] = explode(' ', $user['name'])[0];
-
-        $categorias['datasets'] = array_values($categorias['datasets']);
-
-        foreach ($categorias['labels'] as $key => $value) {
-            $categorias['labels'][$key] = (new \Datetime(date($value . '-15')))->format('M/Y');
-        }
-
-        // dd($categorias);
-
-        $this->view->render($response, 'app/home.twig', [
-            'title' => $this->title,
-            'user' => $user,
-            'categorias' => json_encode($categorias),
-            'receitas_despesas' => json_encode($data)
-        ]);
-        
-        return $response;
+        return $data;
     }
 
     /**

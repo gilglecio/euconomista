@@ -1113,7 +1113,7 @@ final class Release extends Model
         ]);
 
         $filtered = array_filter($releases, function ($r) {
-            return ! $r->isGroup();
+            return true;// ! $r->isGroup();
         });
 
         if ($return_qtd_rows) {

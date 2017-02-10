@@ -29,7 +29,7 @@ final class Release extends Model
     // onde os lançamentos gerados recebem o id do lançamento de origem.
 
     // Column [child_id]
-    // O utilizado pelos lançamentos que foram agrupados, 
+    // O utilizado pelos lançamentos que foram agrupados,
     // onde os lançamentos agrupados recebe o id do lançamento resultante.
 
     /**
@@ -505,7 +505,6 @@ final class Release extends Model
             if ($inner_connection) {
                 $connection->commit();
             }
-
         } catch (\Exception $e) {
             if ($inner_connection) {
                 $connection->rollback();
@@ -1203,7 +1202,6 @@ final class Release extends Model
         ];
 
         if ($year_month) {
-
             $month = new \Datetime(date($year_month . '-15'));
 
             $conditions[0] .= ' and date >= ? and date <= ?';
@@ -1380,6 +1378,10 @@ final class Release extends Model
      */
     public function canEditar()
     {
+        if ($this->isParcelamento()) {
+            return false;
+        }
+
         $count = ReleaseLog::count([
             'conditions' => [
                 'release_id = ?',

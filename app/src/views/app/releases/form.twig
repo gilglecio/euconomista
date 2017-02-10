@@ -49,7 +49,7 @@
 		    	<div class="form-group">
 		    		<label for="quantity" class="control-label no-padding-right col-xs-3">Dividir</label>
 		    		<div class="col-xs-9 col-md-5">
-		    			<input type="number" min="1" max="99" id="quantity" required name="quantity" value="1" class="form-control">
+		    			<input {% if data.id %}disabled{% endif %} type="number" min="1" max="99" id="quantity" required name="quantity" value="1" class="form-control">
 		    		</div>
 		    	</div>
 

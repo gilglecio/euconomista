@@ -67,7 +67,7 @@ class Message
      */
     public function body($body)
     {
-        $this->mailer->Body = str_replace("\n", '<br>', utf8_decode($body));
+        $this->mailer->Body = utf8_decode($body);
     }
 
     /**

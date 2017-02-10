@@ -71,7 +71,7 @@ final class SupportController extends Controller
 
             $vm = [
                 'title' => $subject,
-                'text' => $message
+                'text' => str_replace("\n", '<br>', $message)
             ];
 
             /**

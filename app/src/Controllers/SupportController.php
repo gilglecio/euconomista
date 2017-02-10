@@ -62,7 +62,7 @@ final class SupportController extends Controller
     {
         try {
 
-            $subject = $request->getParsedBodyParam('message');
+            $subject = $request->getParsedBodyParam('subject');
 
             if (! $user = User::find(AuthSession::getUserId())) {
                 return $response->withRedirect('/logout');

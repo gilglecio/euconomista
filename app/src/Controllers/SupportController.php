@@ -62,22 +62,23 @@ final class SupportController extends Controller
     {
         try {
 
-            $subject = $request->getParsedBodyParam('subject');
-
             if (! $user = User::find(AuthSession::getUserId())) {
                 return $response->withRedirect('/logout');
             }
+
+            $subject = $request->getParsedBodyParam('subject');
+            $message = $request->getParsedBodyParam('message');
+
+            $vm = [
+                'title' => $subject,
+                'text' => $message
+            ];
 
             /**
              * Faz o envio do e-mail de confirmação.
              */
             $this->mailer->send(
-                'emails/generic.twig',
-                [
-                    'title' => $subject,
-                    'text' => $request->getParsedBodyParam('message')
-                ],
-                function ($m) use ($subject, $user) {
+                'emails/generic.twig', $vm, function ($m) use ($subject, $user) {
                     $m->to($user->email, $user->name);
                     $m->subject($subject);
                     $m->from('euconomista@gmail.com');

@@ -180,12 +180,18 @@ $app->group('/app', function () {
 
         $this->get('/{release_id}/prorrogar', 'App\Controller\ReleasesController:prorrogarForm')
             ->setName('releases.prorrogar.form');
+
+        $this->get('/{release_id}/parcelar', 'App\Controller\ReleasesController:parcelarForm')
+            ->setName('releases.parcelar.form');
         
         $this->post('/{release_id}/liquidar', 'App\Controller\ReleasesController:liquidar')
             ->setName('releases.liquidar');
 
         $this->post('/{release_id}/prorrogar', 'App\Controller\ReleasesController:prorrogar')
             ->setName('releases.prorrogar');
+
+        $this->post('/{release_id}/parcelar', 'App\Controller\ReleasesController:parcelar')
+            ->setName('releases.parcelar');
 
         $this->get('/{release_id}/desfazer', 'App\Controller\ReleasesController:desfazer')
             ->setName('releases.desfazer');

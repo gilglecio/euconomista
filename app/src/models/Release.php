@@ -19,9 +19,18 @@ final class Release extends Model
     const STATUS_LIQUIDADO = 2;
     const STATUS_EM_ATRASO = 3;
     const STATUS_GROUPED = 4;
+    const STATUS_PARCELADO = 5;
 
     const RECEITA = 1;
     const DESPESA = 2;
+
+    // Column [parent_id]
+    // É preenchida com o id do lançamento que foi parcaldo,
+    // onde os lançamentos gerados recebem o id do lançamento de origem.
+
+    // Column [child_id]
+    // O utilizado pelos lançamentos que foram agrupados, 
+    // onde os lançamentos agrupados recebe o id do lançamento resultante.
 
     /**
      * Registra os relacionamentos 1:1.
@@ -30,6 +39,7 @@ final class Release extends Model
      */
     public static $belongs_to = [
         ['user'],
+        ['parcelado', 'class_name' => 'Release', 'foreign_key' => 'parent_id'],
         ['people'],
         ['category']
     ];
@@ -41,7 +51,7 @@ final class Release extends Model
      */
     public static $has_many = [
         ['logs', 'class_name' => 'ReleaseLog'],
-        ['releases', 'foreign_key' => 'parent_id']
+        ['releases', 'foreign_key' => 'child_id']
     ];
 
     /**
@@ -233,7 +243,7 @@ final class Release extends Model
                  */
                 $backup = json_encode($release->to_array());
 
-                $release->parent_id = $row->id;
+                $release->child_id = $row->id;
                 $release->status = self::STATUS_GROUPED;
                 $release->save();
 
@@ -270,7 +280,7 @@ final class Release extends Model
      * @throws \Exception Lançamento não localizado.
      * @return array Lançamentos gerados
      */
-    public static function generate($fields)
+    public static function generate($fields, $connection = null)
     {
         /**
          * Se a quantidade não for infromada, o padrão é 1.
@@ -325,9 +335,23 @@ final class Release extends Model
          */
         $releases = [];
 
+        /**
+         * Este método aceita transação externa.
+         * Flag para indicar que a transação foi iniciada neste método.
+         * @var boolean
+         */
+        $inner_connection = false;
+
         try {
-            $connection = static::connection();
-            $connection->transaction();
+
+            /**
+             * Se a conexão não foi passada, ela é devidamente criada.
+             */
+            if (! $connection) {
+                $inner_connection = true;
+                $connection = static::connection();
+                $connection->transaction();
+            }
 
             $isEdit = isset($fields['id']) && is_numeric($fields['id']);
 
@@ -420,6 +444,7 @@ final class Release extends Model
                     'people_id' => $fields['people_id'],
                     'category_id' => $fields['category_id'],
                     'description' => $fields['description'],
+                    'parent_id' => isset($fields['parent_id']) ? $fields['parent_id'] : null,
                     'process' => $process
                 ]);
                 
@@ -476,10 +501,15 @@ final class Release extends Model
                 $vencimento->add(new \DateInterval('P1M'));
             }
 
+            if ($inner_connection) {
+                $connection->commit();
+            }
 
-            $connection->commit();
         } catch (\Exception $e) {
-            $connection->rollback();
+            if ($inner_connection) {
+                $connection->rollback();
+            }
+
             throw $e;
         }
 
@@ -629,6 +659,8 @@ final class Release extends Model
      * @param array $fields
      * @throws \Exception Mensagem de erro do model.
      * @throws \Exception Lançamento não localizado.
+     * @throws \Exception Favor informar um valor maior ou igual ao valor do lançamento.
+     * @throws \Exception Favor informar uma data de vencimento maior que a data de vencimento atual.
      * @return boolean
      */
     public static function prorrogar($fields)
@@ -708,6 +740,139 @@ final class Release extends Model
                 $log->save();
             }
 
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw $e;
+        }
+
+        return true;
+    }
+
+    /**
+     * Parcela um lançamento.
+     *
+     * @param array $fields
+     * @throws \Exception Mensagem de erro do model.
+     * @throws \Exception Lançamento não localizado.
+     * @throws \Exception Favor informar uma quantidade menor ou igual a 2.
+     * @return boolean
+     */
+    public static function parcelar($fields)
+    {
+        try {
+            $connection = static::connection();
+            $connection->transaction();
+
+            /**
+             * Data de emissão do parcelamento do documento.
+             * @var string
+             */
+            $data_emissao = date('Y-m-d');
+
+            /**
+             * @var Release
+             */
+            if (! $release = self::find($fields['release_id'])) {
+                throw new \Exception('Lançamento não localizado.');
+            }
+
+            /**
+             * A quantidade de parcela não pode ser menor que 2.
+             * Caso a quantidade de parcelas for 1, a melhor opção para o usuário é a prorrogação.
+             */
+            if ($fields['quantity'] < 2) {
+                throw new \Exception('Favor informar uma quantidade menor ou igual a 2.');
+            }
+
+            /**
+             * Salva o lançamento com  status parcelado.
+             * @var integer
+             */
+            $release->status = self::STATUS_PARCELADO;
+            $release->save();
+
+            if ($release->is_invalid()) {
+                throw new \Exception($release->getFisrtError());
+            }
+
+            /**
+             * @var float Encargos do parcelamento
+             */
+            $encargos = $fields['encargos'];
+
+            /**
+             * Todo o registro do lançamento em formato JSON.
+             * @var string
+             */
+            $backup = $release->to_json();
+
+            if ($encargos > 0) {
+
+                /**
+                 * Caso o parcelamento seja com encargos, o log de encargos é gerado.
+                 * @var ReleaseLog
+                 */
+                $log_encargo = ReleaseLog::create([
+                    'action' => ReleaseLog::ACTION_ENCARGO,
+                    'release_id' => $release->id,
+                    'date' => $data_emissao,
+                    'value' => $encargos,
+                    'backup' => $backup,
+                ]);
+
+                if ($log_encargo->is_invalid()) {
+                    throw new \Exception($log_encargo->getFisrtError());
+                }
+            }
+            
+            /**
+             * Valor total do documento mais s encargos
+             * @var float
+             */
+            $total = $encargos + $release->value;
+
+            /**
+             * Adiciona o log de parcelamento com o valor do documento + encargos
+             * @var ReleaseLog
+             */
+            $log = ReleaseLog::create([
+                'action' => ReleaseLog::ACTION_PARCELAR,
+                'release_id' => $release->id,
+                'date' => $data_emissao,
+                'value' => $total,
+                'backup' => $backup,
+            ]);
+
+            if ($log->is_invalid()) {
+                throw new \Exception($log->getFisrtError());
+            }
+
+            if ($log_encargo) {
+                $log->parent_id = $log_encargo->id;
+                $log->save();
+            }
+
+            /**
+             * @var array Campos obrigatórios para geração do documento parcelado.
+             */
+            $generate = [
+                'category_id' => $release->category_id,
+                'people_id' => $release->people_id,
+                'quantity' => $fields['quantity'],
+                'natureza' => $release->natureza,
+                'value' => $total,
+                'data_emissao' => $data_emissao,
+                'data_vencimento' => $fields['primeiro_vencimento'],
+                'description' => 'Parcelamento',
+                'parent_id' => $release->id
+            ];
+
+            /**
+             * @var array Lançamentos gerados
+             */
+            $lancamentos = self::generate($generate, $connection);
+            
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollback();
@@ -804,7 +969,7 @@ final class Release extends Model
                  * Limpa o id do lançamento.
                  * @var null
                  */
-                $row->parent_id = null;
+                $row->child_id = null;
                 $row->save();
             }
 
@@ -966,6 +1131,17 @@ final class Release extends Model
         }
     }
 
+    public function isParcelamento()
+    {
+        if ($parcelado = $this->parcelado) {
+            if ($parcelado->status == self::STATUS_PARCELADO) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Verifica se o lançamento foi agrupado.
      *
@@ -973,7 +1149,7 @@ final class Release extends Model
      */
     public function isGrouped()
     {
-        return $this->status == self::STATUS_GROUPED;
+        return !! $this->child_id;
     }
 
     /**

@@ -21,6 +21,7 @@ final class ReleaseLog extends Model
     const ACTION_DESCONTO = 4;
     const ACTION_GROUPED = 5;
     const ACTION_PRORROGAR = 6;
+    const ACTION_PARCELAR = 7;
 
     /**
      * Define os relacionamentos 1:1.
@@ -64,6 +65,7 @@ final class ReleaseLog extends Model
         return [
             self::ACTION_EMISSAO => 'Emissão',
             self::ACTION_ENCARGO => 'Encargos',
+            self::ACTION_PARCELAR => 'Parcelamento',
             self::ACTION_GROUPED => 'Agrupamento',
             self::ACTION_DESCONTO => 'Desconto',
             self::ACTION_PRORROGAR => 'Prorrogação',

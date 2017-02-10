@@ -1,0 +1,54 @@
+{% extends 'app/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block app %}
+
+    {% include 'macro.twig' with {messages: messages} %}
+
+    <div class="jumbotron no-margin-bottom">
+	    <form class="form-horizontal" method="post" action="/app/releases/{{ release_id }}/parcelar">
+
+	    	<fieldset>
+	    		<legend>Parcelamento</legend>
+
+		    	<div class="form-group">
+		    		<label for="value" class="control-label no-padding-right col-xs-4 col-md-2">Valor</label>
+		    		<div class="col-md-3 col-xs-8">
+		    			<input disabled type="number" step="0.01" min="1" value="{{ value }}" max="99999999" id="value" required name="value" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="encargos" class="control-label no-padding-right col-xs-4 col-md-2">Encargos</label>
+		    		<div class="col-md-3 col-xs-8">
+		    			<input autofocus type="number" step="0.01" min="1" value="{{ encargos }}" max="99999999" id="encargos" required name="encargos" class="form-control">
+		    		</div>
+		    	</div>
+
+		    	<div class="form-group">
+		    		<label for="quantity" class="control-label no-padding-right col-xs-4 col-md-2">Quantidade</label>
+		    		<div class="col-md-3 col-xs-8">
+		    			<input type="number" min="2" max="99" id="quantity" required name="quantity" value="2" class="form-control">
+		    		</div>
+		    	</div>
+
+	    		<div class="form-group">
+		    		<label for="primeiro_vencimento" class="control-label no-padding-right col-md-2 col-xs-4">1º Vencimento</label>
+		    		<div class="col-md-3 col-xs-8">
+		    			<input type="date" id="primeiro_vencimento" value="{{ primeiro_vencimento }}" required name="primeiro_vencimento" class="form-control">
+		    		</div>
+		    	</div>
+
+	    	</fieldset>
+
+	    	<div class="form-group no-margin-bottom">
+	    		<div class="col-md-3 col-md-offset-2 col-xs-offset-4">
+	    			<button class="btn btn-primary" type="submit">Parcelar</button>
+	    			<a class="btn btn-link" href onclick="history.back()">Voltar</a>
+	    		</div>
+	    	</div>
+	    </form>
+    </div>
+
+{% endblock %}

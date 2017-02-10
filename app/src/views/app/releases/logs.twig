@@ -19,6 +19,7 @@
         {% if canLiquidar %}
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/liquidar">Liquidar</a>
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/prorrogar">Prorrogar</a>
+        <a class="btn btn-default" href="/app/releases/{{ release.id }}/parcelar">Parcelar</a>
         {% endif %}
 
         {% if canDesfazer and not release.parent_id %}
@@ -66,6 +67,36 @@
             {% endif %}
     	</tbody>
     </table>
+
+    {% if parent and isParcelamento %}
+    <ol class="breadcrumb">
+        <li><a onclick="$('.table-releases').toggle(); return false;" href>Lançamento que foi parcelado</a></li>
+    </ol>
+
+    <table class="table table-releases table-striped" style="display:none">
+        <thead>
+            <tr>
+                <th>Vencimento</th>
+                <th>Número</th>
+                <th class="hidden-sm hidden-xs">Categoria</th>
+                <th>Pessoa</th>
+                <th class="hidden-sm hidden-xs">Descrição</th>
+                <th style="min-width:80px" class="text-right">Valor R$</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{ parent.vencimento }}</td>
+                <td><a href="/app/releases/{{ parent.id }}/logs">{{ parent.number }}</a></td>
+                <td>{{ parent.category }}</td>
+                <td>{{ parent.people }}</td>
+                <td>{{ parent.desc }}</td>
+                <td class="text-right">{{ parent.value }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
 
     {% if releases|length %}
     <ol class="breadcrumb">

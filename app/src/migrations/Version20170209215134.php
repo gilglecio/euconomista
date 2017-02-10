@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20161214211146 extends AbstractMigration
+class Version20170209215134 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -17,17 +17,17 @@ class Version20161214211146 extends AbstractMigration
     {
         $table = $schema->getTable('releases');
         
-        $table->addColumn('parent_id', 'integer', [
+        $table->addColumn('child_id', 'integer', [
             'unsigned' => true,
             'notnull' => false
         ]);
         
-        $table->addIndex(['parent_id'], 'fk_parent_idx');
+        $table->addIndex(['child_id'], 'fk_child_idx');
 
-        $table->addForeignKeyConstraint($table, ['parent_id'], ['id'], [
+        $table->addForeignKeyConstraint($table, ['child_id'], ['id'], [
             'onDelete' => 'NO ACTION',
             'onUpdate' => 'NO ACTION'
-        ], 'fk_releases_parent_id');
+        ], 'fk_releases_child_id');
     }
 
     /**
@@ -37,7 +37,7 @@ class Version20161214211146 extends AbstractMigration
     {
         $table = $schema->getTable('releases');
 
-        $table->dropForeignKey('fk_releases_parent_id');
-        $table->dropColumn('parent_id');
+        $table->dropForeignKey('fk_releases_child_id');
+        $table->dropColumn('child_id');
     }
 }

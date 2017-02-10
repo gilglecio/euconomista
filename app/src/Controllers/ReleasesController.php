@@ -356,17 +356,23 @@ final class ReleasesController extends Controller
             return $row;
         }, $rows);
 
+        $parent = $release->parcelado ? Release::gridFormat([$release->parcelado], true)[0] : null;
+
         $this->view->render($response, 'app/releases/logs.twig', [
             'title' => 'Extrato de lançamento',
             'release' => $release,
             'rows' => $rows,
             'releases' => Release::gridFormat($release->releases, true),
             'messages' => $this->getMessages(),
+            
             'canLiquidar' => $release->canLiquidar(),
             'canDesfazer' => $release->canDesfazer(),
             'canEditar' => $release->canEditar(),
             'canUngroup' => $release->canUngroup(),
-            'isGroup' => $release->isGroup()
+            
+            'isGroup' => $release->isGroup(),
+            'isParcelamento' => $release->isParcelamento(),
+            'parent' => $parent
         ]);
     }
 
@@ -430,6 +436,73 @@ final class ReleasesController extends Controller
         $this->view->render($response, 'app/releases/prorrogar.twig', $data);
         
         return $response;
+    }
+
+    /**
+     * Renderiza o formulário para parcelamento de lançamentos.
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     * @throws \Exception Lançamento não localizado.
+     * @return Response
+     */
+    public function parcelarForm(Request $request, Response $response, array $args)
+    {
+        if (! $release = Release::find($args['release_id'])) {
+            throw new \Exception('Lançamento não localizado.');
+        }
+
+        if ($release->isLiquidado()) {
+            return $response->withRedirect('/app/releases/' . $release->id . '/logs');
+        }
+
+        $data = [
+            'messages' => $this->getMessages()
+        ];
+
+        $data['title'] = 'Parcelamento de Parcela';
+
+        $data['value'] = $release->value;
+        $data['primeiro_vencimento'] = date('Y-m-d');
+        $data['encargos'] = 0;
+        $data['release_id'] = $release->id;
+
+        $this->view->render($response, 'app/releases/parcelar.twig', $data);
+        
+        return $response;
+    }
+
+    /**
+     * Recebe o post do formulário de prorrogacao e envia as informações passados
+     * da view para o model salvar no banco de dados.
+     *
+     * @param Request  $request
+     * @param Response $response
+     * @param array    $args
+     *
+     * @return Response
+     */
+    public function parcelar(Request $request, Response $response, array $args)
+    {
+        try {
+            Release::parcelar([
+                'encargos' => $request->getParsedBodyParam('encargos'),
+                'quantity' => $request->getParsedBodyParam('quantity'),
+                'primeiro_vencimento' => $request->getParsedBodyParam('primeiro_vencimento'),
+                'release_id' => $args['release_id']
+            ]);
+        } catch (\Exception $e) {
+            return $this->redirectWithError(
+                $response,
+                $e->getMessage(),
+                '/app/releases/' . $args['release_id'] . '/parcelar'
+            );
+        }
+
+        $this->success('Sucesso!');
+
+        return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
     /**

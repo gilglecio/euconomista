@@ -23,7 +23,7 @@
             <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
             <td style="color:{{ row.color_saldo }}" class="text-right">
                 {% if key + 1 == rows|length %}
-                <big>{{ row.saldo }}</big>
+                <big><b>{{ row.saldo }}</b></big>
                 {% else %}
                 {{ row.saldo }}
                 {% endif %}

@@ -65,6 +65,10 @@ a.btn-link:hover {
 }
 
 @media print {
+    .print-with-50-percent {
+        width: 50%;
+        float: left;
+    }
     body {
         font-size: 7pt;
     }

@@ -1299,16 +1299,12 @@ final class Release extends Model
                 (new \Datetime(date('Y-m-d')))->add(new \Dateinterval('P1M'))->format('Y-m-d')
             ]
         ]);
-
-        $filtered = array_filter($releases, function ($r) {
-            return true;// ! $r->isGroup();
-        });
-
+        
         if ($return_qtd_rows) {
-            return count($filtered);
+            return count($releases);
         }
 
-        return self::gridFormat($filtered, true);
+        return self::gridFormat($releases, true);
     }
 
     /**

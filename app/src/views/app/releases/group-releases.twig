@@ -1,0 +1,38 @@
+<div style="max-height:500px;overflow-y:scroll">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th width="20px">#</th>
+				<th>Emissão</th>
+				<th>Vencimento</th>
+				<th>Número</th>
+	            <th>Pessoa</th>
+				<th style="min-width:80px" class="text-right">Valor R$</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for row in releases %}
+			<tr>
+	            <td>
+	            	<input type="checkbox" name="releases[]" value="{{ row.id }}">
+	            </td>
+	            <td>{{ row.emissao }}</td>
+	            <td>{{ row.vencimento }}</td>
+	            <td>
+	            	<a class="btn-link" href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
+	            </td>
+	            
+	            <td>
+	                {{ row.people }}
+	                {% if row.desc %}
+	                <br><small style="color:#bbb">{{ row.desc }}</small>
+	                {% endif %}
+	            </td>
+
+	            <td style="color:{{ row.color }}" class="text-right">{{ row.signal ~ row.valor }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

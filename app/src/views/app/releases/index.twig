@@ -37,11 +37,11 @@
     {% include 'macro.twig' with {messages: messages} %}
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-md-6 print-with-50-percent">
             <h4>Lançamentos</h4>
             {% include 'app/releases/table.twig' with {rows: rows, sum: sum} %}
         </div>
-        <div class="col-xs-6">
+        <div class="col-md-6 print-with-50-percent">
             <h4>Extrato</h4>
             {% include 'app/extract/table.twig' with {rows: extract} %}
         </div>

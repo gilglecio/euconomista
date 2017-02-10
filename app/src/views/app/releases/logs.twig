@@ -12,8 +12,8 @@
 
     <div class="row hidden-print" style="margin-bottom:20px">
         <div class="col-xs-12">
-        {% if release.parent_id %}
-        <a class="btn btn-default" href="/app/releases/{{ release.parent_id }}/logs">Lançamento</a>
+        {% if release.child_id %}
+        <a class="btn btn-default" href="/app/releases/{{ release.child_id }}/logs">Lançamento</a>
         {% endif %}
 
         {% if canLiquidar %}
@@ -22,7 +22,7 @@
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/parcelar">Parcelar</a>
         {% endif %}
 
-        {% if canDesfazer and not release.parent_id %}
+        {% if canDesfazer and not release.child_id %}
         <a class="btn btn-default" onbsclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer" style="color:red">Desfazer</a>
         {% endif %}
 

@@ -114,6 +114,16 @@ final class ReleaseLog extends Model
             throw new \Exception("Falha ao apagar o log #{$this->id}.", 1);
         }
 
+        /**
+         * Se a ação a ser cancelada é uma ação de parcelamento de lançamento,
+         * além derestaurar o lançamento, os lançamentos/parcelas emitidos devem ser apagados.
+         */
+        if ($this->action == self::ACTION_PARCELAR) {
+            foreach ($this->release->parcelamento_parcelas as $release) {
+                Release::remove($release->id);
+            }
+        }
+
         return true;
     }
 

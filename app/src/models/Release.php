@@ -51,7 +51,8 @@ final class Release extends Model
      */
     public static $has_many = [
         ['logs', 'class_name' => 'ReleaseLog'],
-        ['releases', 'foreign_key' => 'child_id']
+        ['releases', 'foreign_key' => 'child_id'],
+        ['parcelamento_parcelas', 'class_name' => 'Release', 'foreign_key' => 'parent_id']
     ];
 
     /**
@@ -786,6 +787,12 @@ final class Release extends Model
             }
 
             /**
+             * Todo o registro do lançamento em formato JSON.
+             * @var string
+             */
+            $backup = $release->to_json();
+            
+            /**
              * Salva o lançamento com  status parcelado.
              * @var integer
              */
@@ -801,11 +808,6 @@ final class Release extends Model
              */
             $encargos = $fields['encargos'];
 
-            /**
-             * Todo o registro do lançamento em formato JSON.
-             * @var string
-             */
-            $backup = $release->to_json();
 
             if ($encargos > 0) {
 
@@ -849,8 +851,8 @@ final class Release extends Model
             }
 
             if ($log_encargo) {
-                $log->parent_id = $log_encargo->id;
-                $log->save();
+                $log_encargo->parent_id = $log->id;
+                $log_encargo->save();
             }
 
             /**
@@ -913,21 +915,22 @@ final class Release extends Model
                 throw new \Exception('A ação do log que será cancelado é diferente da ação especificada.');
             }
 
-            $begin = false;
+            $inner_connection = false;
 
             if (! $connection) {
                 $connection = static::connection();
                 $connection->transaction();
-                $begin = true;
+
+                $inner_connection = true;
             }
             
             $last->rollback();
 
-            if ($begin) {
+            if ($inner_connection) {
                 $connection->commit();
             }
         } catch (\Exception $e) {
-            if ($begin) {
+            if ($inner_connection) {
                 $connection->rollback();
             }
             throw $e;
@@ -1342,6 +1345,18 @@ final class Release extends Model
     {
         if (! $last = $this->getLastLog()) {
             return false;
+        }
+
+        /**
+         * Se for um lançamento que foi parcelado.
+         * É verificado se alguma das parcelas geradas foi movimentada.
+         */
+        if ($this->status == self::STATUS_PARCELADO) {
+            foreach ($this->parcelamento_parcelas as $release) {
+                if ($release->getLastLog()) {
+                    return false;
+                }
+            }
         }
 
         return $last->action != ReleaseLog::ACTION_EMISSAO;

@@ -80,12 +80,13 @@ abstract class Controller
             $user_data['first_name'] = $user->getFirstName();        
 
             $this->view->offsetSet('user', $user_data);
+            $this->view->offsetSet('release_month', date('Y-m'));
         }
     } 
 
     public function getReportFooter()
     {
-        return 'Relatório obtido em ' . date('d \d\e M \d\e Y à\s H\hi\m');
+        return 'EuConomista - Relatório obtido em ' . date('d \d\e M \d\e Y à\s H\hi\m');
     }
 
     /**

@@ -791,7 +791,7 @@ final class Release extends Model
              * @var string
              */
             $backup = $release->to_json();
-            
+
             /**
              * Salva o lançamento com  status parcelado.
              * @var integer
@@ -1186,7 +1186,7 @@ final class Release extends Model
             self::STATUS_ABERTO => 'Aberto',
             self::STATUS_EM_ATRASO => 'Vencido',
             self::STATUS_GROUPED => 'Agrupada',
-            self::STATUS_LIQUIDADO => 'Pago',
+            self::STATUS_LIQUIDADO => 'Liquidado',
         ][$status];
     }
 
@@ -1195,14 +1195,25 @@ final class Release extends Model
      *
      * @return array
      */
-    public static function extract()
+    public static function extract($year_month = null)
     {
+        $conditions = [
+            'action = ?',
+            ReleaseLog::ACTION_LIQUIDACAO
+        ];
+
+        if ($year_month) {
+
+            $month = new \Datetime(date($year_month . '-15'));
+
+            $conditions[0] .= ' and date >= ? and date <= ?';
+            $conditions[2] = $month->format('Y-m-01');
+            $conditions[3] = $month->format('Y-m-t');
+        }
+
         $rows = ReleaseLog::find('all', [
             'order' => 'date asc',
-            'conditions' => [
-                'action = ?',
-                ReleaseLog::ACTION_LIQUIDACAO
-            ]
+            'conditions' => $conditions
         ]);
 
         $saldo = 0;
@@ -1217,11 +1228,13 @@ final class Release extends Model
             $saldo += $value;
 
             return [
+                'release_id' => $r->release_id,
                 'date' => $r->date->format('d/m/Y'),
                 'saldo' => Toolkit::showMoney($saldo),
                 'people' => $r->release->people->name,
                 'desc' => $r->release->description,
                 'value' => Toolkit::showMoney($value),
+                'color_saldo' => $saldo < 0 ? 'red' : 'blue',
                 'color' => $value < 0 ? 'red' : 'blue'
             ];
         }, $rows);
@@ -1249,22 +1262,20 @@ final class Release extends Model
         return array_map(function ($r) use ($include_data_emissao) {
             $row = $r->to_array();
 
-            $valor_liquidado = $r->getSumLiquidacoes();
-            $valor_aberto = $r->status == self::STATUS_ABERTO ? $r->value : 0;
-
             $row['people'] = $r->people->name;
             $row['category'] = $r->category->name;
             $row['natureza'] = $r->getNaturezaName();
             $row['vencimento'] = $r->data_vencimento->format('d/m/Y');
-            $row['value'] = $r->getFormatValue();
-            $row['valor_aberto'] = Toolkit::showMoney($valor_aberto);
-            $row['valor_liquidado'] = Toolkit::showMoney($valor_liquidado);
-            $row['_valor_aberto'] = $valor_aberto;
-            $row['_valor_liquidado'] = $valor_liquidado;
             $row['status'] = $r->getStatusName();
             $row['color'] = $r->getColor();
             $row['signal'] = $r->natureza == self::RECEITA ? '+' : '-';
             $row['desc'] = $r->description;
+            $row['_value'] = $row['value'];
+            $row['valor'] = $r->getFormatValue();
+
+            if ($r->natureza == self::DESPESA) {
+                $row['_value'] *= -1;
+            }
 
             if ($include_data_emissao) {
                 $row['emissao'] = $r->log_emissao->date->format('d/m/Y');

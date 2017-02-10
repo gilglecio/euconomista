@@ -1,0 +1,40 @@
+<table class="table table-striped table-condensed table-bordered no-margin-bottom">
+	<thead>
+		<tr>
+            <th>Data</th>
+            <th>Pessoa</th>
+            <th class="text-right">Valor R$</th>
+            <th class="text-right">Saldo R$</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{% for key, row in rows %}
+		<tr>
+            <td>
+                <a class="btn-link" href="/app/releases/{{ row.release_id }}/logs">{{ row.date }}</a>
+            </td>
+            <td>
+                {{ row.people }}
+                {% if row.desc %}
+                <br><small style="color:#bbb">{{ row.desc }}</small>
+                {% endif %}
+            </td>
+            <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>
+            <td style="color:{{ row.color_saldo }}" class="text-right">
+                {% if key + 1 == rows|length %}
+                <big>{{ row.saldo }}</big>
+                {% else %}
+                {{ row.saldo }}
+                {% endif %}
+            </td>
+		</tr>
+		{% endfor %}
+
+        {% if not rows|length %}
+        <tr>
+            <td colspan="5">Sem movimentação.</td>
+        </tr>
+        {% endif %}
+	</tbody>
+</table>

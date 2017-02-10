@@ -1,13 +1,11 @@
 {% extends 'layouts/base.twig' %}
 
 {% block navbar %}
-    <li><a href="/app/releases">Lançamentos</a></li>
+    <li><a href="/app/releases/in/{{ release_month }}">Lançamentos</a></li>
     <li><a href="/app/peoples">Pessoas</a></li>
     <li><a href="/app/categories">Categorias</a></li>
     <li><a href="/app/users">Usuários</a></li>
-    <li><a href="/app/extract">Extrato</a></li>
-    <li><a href="/app/logs">Logs</a></li>
-
+    
     {% if user %}
     <li class="dropdown">
         <a href class="dropdown-toggle" id="btn-profile" data-toggle="dropdown">
@@ -18,6 +16,7 @@
         <ul class="dropdown-menu">
             <li><a href="/app/account">Minha Conta</a></li>
             <li><a href="/app/support">Suporte</a></li>
+            <li><a href="/app/logs">Logs</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Sair</a></li>
         </ul>

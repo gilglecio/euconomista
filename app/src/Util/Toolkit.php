@@ -38,4 +38,16 @@ final class Toolkit
     {
         return number_format((float) $value, $precision, ',', '.');
     }
+
+    /**
+     * Recebe um valor formatado e remove a formatação.
+     * Se o valor já extiver sem formatação, nada é feito.
+     *
+     * @param float   $value     Valor para remover a ser formatado.
+     * @return string Valor sem formatado.
+     */
+    public static function dbMoney($value)
+    {
+        return substr_count($value, ',') ? str_replace(',', '.', str_replace('.', '', $value)) : $value;
+    }
 }

@@ -62,7 +62,7 @@ $app->get('/terms', 'App\Controller\RegisterController:terms')
 $app->group('/app', function () {
 
     # HOME
-    $this->get('', 'App\Controller\HomeController:index')
+    $this->get('', 'redirectToReleases')
         ->setName('app.home');
 
     # SUPORT
@@ -109,12 +109,6 @@ $app->group('/app', function () {
             ->setName('logs.restore');
     });
 
-    # REPORTS
-    $this->group('/extract', function () {
-        $this->get('', 'App\Controller\ExtractController:index')
-            ->setName('extract');
-    });
-
     # USERS
     $this->group('/users', function () {
         $this->get('', 'App\Controller\UsersController:index')
@@ -150,9 +144,7 @@ $app->group('/app', function () {
 
     # RELEASES
     $this->group('/releases', function () {
-        $this->get('', function (Request $request, Response $response, array $args) {
-            return $response->withRedirect('/app/releases/in/' . date('Y-m'));
-        });
+        $this->get('', 'redirectToReleases');
 
         $this->get('/in/{date}', 'App\Controller\ReleasesController:index')
             ->setName('releases');
@@ -206,3 +198,7 @@ $app->group('/app', function () {
             ->setName('releases.ungroup');
     });
 });
+
+function redirectToReleases (Request $request, Response $response, array $args) {
+    return $response->withRedirect('/app/releases/in/' . date('Y-m'));
+}

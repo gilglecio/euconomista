@@ -1,0 +1,59 @@
+<table class="table table-striped table-condensed table-bordered no-margin-bottom">
+    <thead>
+        <tr>
+            <th>Vencimento</th>
+            <th>Número</th>
+            <th>Pessoa</th>
+            <th class="text-right">Valor R$</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        
+        {% set before_status = null %}
+
+        {% for row in rows %}
+        
+            {% if before_status != row.status  %}
+                {% set before_status = row.status %}
+                <tr>
+                    <td class="text-center" colspan="7">
+                        <p class="no-margin"><strong>{{ row.status }}</strong></p>
+                    </td>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <td>{{ row.vencimento }}</td>
+                <td>
+                    <a class="btn-link" href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
+                </td>
+                
+                <td>
+                    {{ row.people }}
+                    {% if row.desc %}
+                    <br><small style="color:#bbb">{{ row.desc }}</small>
+                    {% endif %}
+                </td>
+                
+                <td class="text-right" style="color:{{ row.color }}">{{ row.signal ~ row.valor }}</td>
+            </tr>
+
+
+        {% endfor %}
+        
+        {% if rows|length %}
+        <tr>
+            <td colspan="4" class="text-right" style="color:{{ sum.color }}">
+                <p class="no-margin"><big>{{ sum.value }}</big></p>
+            </td>
+        </tr>
+        {% endif %}
+
+        {% if not rows|length %}
+        <tr>
+            <td colspan="8">Não há lançamentos abertos ou vencidos.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>

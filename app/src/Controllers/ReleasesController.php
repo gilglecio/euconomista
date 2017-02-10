@@ -57,7 +57,7 @@ final class ReleasesController extends Controller
         $prev_month->sub(new \Dateinterval('P1M'));
         $next_month->add(new \Dateinterval('P1M'));
 
-        $condition = '((status in (1,2) and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))';
+        $condition = '((status = 1 and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))';
 
         /**
          * @var array
@@ -77,70 +77,53 @@ final class ReleasesController extends Controller
          */
         $rows = Release::gridFormat($rows);
 
-        /**
-         * Saldo do mês, receitas menos despesas.
-         * @var float
-         */
-        $sum_aberto = $sum_liquidado = 0.00;
+        $extract = Release::extract($current->format('Y-m'));
 
-        $sumall = [
-            'Despesas em Aberto' => 0,
-            'Despesas em Atraso' => 0,
-            'Despesas Liquidadas' => 0,
-
-            'Receitas em Aberto' => 0,
-            'Receitas em Atraso' => 0,
-            'Receitas Liquidadas' => 0,
+        $balance = [
+            'value' => 0,
+            'color' => null,
         ];
 
-        foreach ($rows as $key => $row) {
-            $sum_aberto += $row['_valor_aberto'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
-            $sum_liquidado += $row['_valor_liquidado'] * ($row['natureza'] == 'Despesa' ? -1 : 1);
 
-            if ($row['natureza'] == 'Despesa' && $row['status'] == 'Aberto') {
-                $sumall['Despesas em Aberto'] += $row['_valor_aberto'];   
-            } elseif ($row['natureza'] == 'Despesa' && $row['status'] == 'Vencido') {
-                $sumall['Despesas em Atraso'] += $row['_valor_aberto'];   
-            } elseif ($row['natureza'] == 'Receita' && $row['status'] == 'Aberto') {
-                $sumall['Receitas em Aberto'] += $row['_valor_aberto'];   
-            } elseif ($row['natureza'] == 'Receita' && $row['status'] == 'Vencido') {
-                $sumall['Receitas em Atraso'] += $row['_valor_aberto'];
-            }
-
-            if ($row['natureza'] == 'Receita') {
-                $sumall['Receitas Liquidadas'] += $row['_valor_liquidado'];
-            } else {
-                $sumall['Despesas Liquidadas'] += $row['_valor_liquidado'];
-            }
+        foreach ($rows as $row) {
+            $balance['value'] += $row['_value']; 
         }
 
-        foreach ($sumall as $key => $value) {
+        $extract_saldo = 0; 
 
-            if (substr_count($key, 'Despesa')) {
-                $value *= -1;
-            }
-
-            $sumall[$key] = Toolkit::showMoney($value);
+        if (count($extract)) {
+            $extract_last_index = count($extract)-1;
+            $extract_saldo =  $extract[$extract_last_index]['saldo'];
+            $extract_saldo = Toolkit::dbMoney($extract_saldo);
         }
-
-        $sum = $sum_aberto + $sum_liquidado;
 
         $sum = [
-            'color' => $sum < 0 ? 'red' : ($sum == 0 ? '#666' : 'blue'),
-            'sum' => Toolkit::showMoney($sum),
-        ];
+            'value' => Toolkit::showMoney($balance['value']),
+            'color' => $balance['value'] < 0 ? 'red' : 'blue'
+        ]; 
+
+        $balance['value'] += $extract_saldo;
+
+        $balance['color'] = $balance['value'] < 0 ? 'red' : 'blue';
+        $balance['value'] = Toolkit::showMoney($balance['value']);
 
         $this->view->render($response, 'app/releases/index.twig', [
             'title' => $this->title,
+
             'hasReleasesForGroup' => !! Release::gridGroupFormat(true),
+
             'messages' => $this->getMessages(),
+
             'report_footer' => $this->getReportFooter(),
             'report_title' => 'Relatório de lançamentos',
+
             'rows' => $rows,
+            'extract' => $extract,
             'sum' => $sum,
-            'sumall' => $sumall,
 
             'current_month' => $current->format('M Y'),
+
+            'balance' => $balance,
 
             'prev' => [
                 'link' => $prev_month->format('Y-m'),
@@ -362,6 +345,7 @@ final class ReleasesController extends Controller
             'title' => 'Extrato de lançamento',
             'release' => $release,
             'rows' => $rows,
+            'extract' => Release::extract(),
             'releases' => Release::gridFormat($release->releases, true),
             'messages' => $this->getMessages(),
             

@@ -45,7 +45,7 @@ class Message
      */
     public function to($address, $name = null)
     {
-        $this->mailer->addAddress($address, $name);
+        $this->mailer->addAddress($address, utf8_decode($name));
     }
 
     /**
@@ -89,6 +89,6 @@ class Message
      */
     public function fromName($fromName)
     {
-        $this->mailer->FromName = $fromName;
+        $this->mailer->FromName = utf8_decode($fromName);
     }
 }

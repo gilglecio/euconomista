@@ -35,9 +35,7 @@
 			<tr>
 				<td>
 				{% block body %}
-					{% autoescape false %}
-						{{ body|raw }}
-					{% endautoescape %}
+					{{ body|raw }}
 				{% endblock %}
 				</td>
 			</tr>

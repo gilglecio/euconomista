@@ -9,13 +9,12 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Verificando a grid de lançamentos
 		
-		Then I should see "Adicionar"
 		Then I should see "Não há lançamentos abertos ou vencidos."
 
 	@javascript
 	Scenario: Lançando uma receita
 
-		When I follow "Adicionar"
+		When I follow "add-release"
 		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
@@ -36,7 +35,7 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Lançando duas despesas
 
-		When I follow "Adicionar"
+		When I follow "add-release"
 		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
@@ -61,7 +60,7 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Lançando três despesas
 
-		When I follow "Adicionar"
+		When I follow "add-release"
 		Then I should be on "/app/releases/form"
 		Then I should see "Salvar"
 
@@ -112,9 +111,6 @@ Feature: Página de lançamentos
 		Then I should see "Extrato de lançamento"
 		Then I should see "Emissão"
 		Then I should see "Liquidar"
-		Then I should see "Editar"
-		Then I should see "Apagar"
-		Then I should see "Apagar todos"
 		Then I should see "1.000,00"
 
 		Then I follow "Liquidar"
@@ -127,7 +123,6 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 		Then I should see "Recebimento"
 		Then I should see "350,00"
-		Then I should not see "Editar"
 
 	@javascript
 	Scenario: Liquidação de um lançamento com encargos
@@ -233,9 +228,6 @@ Feature: Página de lançamentos
 
 		Then I follow "1/1"
 		
-		Then I should not see "Apagar"
-		Then I should not see "Apagar todos"
-
 	@javascript
 	Scenario: Desfazendo a liquidação parcial
 		
@@ -245,7 +237,6 @@ Feature: Página de lançamentos
 
 		Then I should not see "Recebimento"
 		Then I should not see "350,00"
-		Then I should see "Editar"
 		Then I follow "Lançamentos"
 		Then I should see "001/1"
 		Then I should see "1.000,00"
@@ -270,7 +261,7 @@ Feature: Página de lançamentos
 	Scenario: Apagando o lançamento de mil reais
 		
 		Then I follow "1/1"
-		Then I follow "Apagar"
+		Then I follow "delete-release"
 		Then I should see "Sucesso!"
 		Then I should not see "001/1"
 

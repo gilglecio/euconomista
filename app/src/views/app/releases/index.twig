@@ -12,7 +12,9 @@
 
     <div class="row hidden-print" style="margin-bottom:20px">
         <div class="col-xs-12">
-            <a class="btn btn-default" href="/app/releases/form">Adicionar</a>
+            <a id="add-release" class="btn btn-default" href="/app/releases/form">
+                <i class="glyphicon glyphicon-plus"></i>
+            </a>
 
             {% if hasReleasesForGroup %}
             <a class="btn btn-default" href="/app/releases/group">Agrupar</a>
@@ -37,15 +39,19 @@
     {% include 'macro.twig' with {messages: messages} %}
 
     <div class="row">
-        <div class="col-md-6 print-with-50-percent">
-            <h4>Lançamentos</h4>
+        <div class="col-md-12">
             {% include 'app/releases/table.twig' with {rows: rows, sum: sum} %}
         </div>
-        <div class="col-md-6 print-with-50-percent">
-            <h4>Extrato</h4>
+    </div>
+    
+
+    {% if extract|length %}
+    <div class="row" style="margin-top:25px">
+        <div class="col-md-12">
             {% include 'app/extract/table.twig' with {rows: extract} %}
         </div>
     </div>
+    {% endif %}
 
     <p class="visible-print pull-right" style="margin-top:10px">{{ report_footer }}</p>
 

@@ -127,11 +127,11 @@ final class ReleasesController extends Controller
 
             'prev' => [
                 'link' => $prev_month->format('Y-m'),
-                'month' => $prev_month->format('M Y')
+                'month' => $prev_month->format('M')
             ],
             'next' => [
                 'link' => $next_month->format('Y-m'),
-                'month' => $next_month->format('M Y')
+                'month' => $next_month->format('M')
             ],
         ]);
         

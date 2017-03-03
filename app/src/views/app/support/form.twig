@@ -6,35 +6,29 @@
     
     {% include 'macro.twig' with {error: error} %}
 
-    <div class="jumbotron no-margin-bottom">
-	    <form class="form-horizontal" method="post" action="/app/support">
+    <form class="form-horizontal" method="post" action="/app/support">
 
-	    	<fieldset>
-	    		<legend>Suporte</legend>
+    	<div class="form-group">
+    		<label for="subject" class="control-label col-xs-3">Assunto</label>
+    		<div class="col-md-6 col-xs-9">
+    			<input type="text" minlength="3" maxlength="60" id="subject" autofocus required name="subject" class="form-control">
+    		</div>
+    	</div>
 
-		    	<div class="form-group">
-		    		<label for="subject" class="control-label col-xs-3">Assunto</label>
-		    		<div class="col-md-5 col-xs-9">
-		    			<input type="text" minlength="3" maxlength="60" id="subject" autofocus required name="subject" class="form-control">
-		    		</div>
-		    	</div>
+    	<div class="form-group">
+    		<label for="message" class="control-label col-xs-3">Mensagem</label>
+    		<div class="col-md-6 col-xs-9">
+    			<textarea rows="5" name="message" class="form-control"></textarea>
+    		</div>
+    	</div>
 
-		    	<div class="form-group">
-		    		<label for="message" class="control-label col-xs-3">Mensagem</label>
-		    		<div class="col-md-5 col-xs-9">
-		    			<textarea rows="5" name="message" class="form-control"></textarea>
-		    		</div>
-		    	</div>
-	    	</fieldset>
+    	<div class="form-group no-margin-bottom">
+    		<div class="col-xs-9 col-xs-offset-3">
+    			<button class="btn btn-primary" type="submit">Enviar</button>
 
-	    	<div class="form-group no-margin-bottom">
-	    		<div class="col-xs-9 col-xs-offset-3">
-	    			<button class="btn btn-primary" type="submit">Enviar</button>
-
-	    			<a class="btn btn-link" href onclick="history.back()">Voltar</a>
-	    		</div>
-	    	</div>
-	    </form>
-    </div>
+    			<a class="btn btn-link" href onclick="history.back()">Voltar</a>
+    		</div>
+    	</div>
+    </form>
 
 {% endblock %}

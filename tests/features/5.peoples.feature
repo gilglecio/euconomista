@@ -9,7 +9,6 @@ Feature: Página de pessoas
 	@javascript
 	Scenario: Verificando a grid de pessoas
 		
-		Then I should see "Adicionar"
 		Then I should see "Nome"
 		Then I should see "Sem registros."
 

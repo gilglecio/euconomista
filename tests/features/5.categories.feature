@@ -9,7 +9,6 @@ Feature: Página de categorias
 	@javascript
 	Scenario: A grid de categorias deve está vazia
 		
-		Then I should see "Adicionar"
 		Then I should see "Nome"
 		Then I should see "Sem registros."
 

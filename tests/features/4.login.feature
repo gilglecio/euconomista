@@ -26,17 +26,14 @@ Feature: Página de login
 		When I log in I should be inside the application
 		When I follow "Lançamentos"
 		Then I should be on current month releases
-		Then I should see "Adicionar"
 		Then I should see "Não há lançamentos abertos ou vencidos."
 
 		When I follow "Pessoas"
 		Then I should be on "/app/peoples"
-		Then I should see "Adicionar"
 		Then I should see "Sem registros."
 
 		When I follow "Categorias"
 		Then I should be on "/app/categories"
-		Then I should see "Adicionar"
 		Then I should see "Sem registros."
 
 		When I follow "Usuários"

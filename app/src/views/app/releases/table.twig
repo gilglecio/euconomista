@@ -1,4 +1,4 @@
-<table class="table table-striped table-condensed table-bordered no-margin-bottom">
+<table class="table table-striped table-bordered no-margin-bottom">
     <thead>
         <tr>
             <th>Vencimento</th>
@@ -17,8 +17,8 @@
             {% if before_status != row.status  %}
                 {% set before_status = row.status %}
                 <tr>
-                    <td class="text-center" colspan="7">
-                        <p class="no-margin"><strong>{{ row.status }}</strong></p>
+                    <td class="text-center" colspan="7" style="padding:15px 0;background:#fff">
+                        <h3 class="table-title no-margin">{{ row.status }}</h3>
                     </td>
                 </tr>
             {% endif %}

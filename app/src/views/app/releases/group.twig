@@ -27,17 +27,14 @@
     <form class="form-horizontal" method="post" action="/app/releases/group">
 			
 		<div class="row">
-			<div class="col-md-6">
-				<h4>Lançamentos</h4>
-				<hr>
-
-			    {% include 'app/releases/group-releases.twig' %}
-
+			<div class="col-md-12 no-padding">
+				{% include 'app/releases/group-form.twig' %}
 			</div>
-			<div class="col-md-6">
-				<div class="jumbotron" style="margin-top:30px">
-					{% include 'app/releases/group-form.twig' %}
-				</div>
+		</div>
+
+		<div class="row" style="margin:25px 0">
+			<div class="col-md-12 no-padding">
+			    {% include 'app/releases/group-releases.twig' %}
 			</div>
 		</div>
 

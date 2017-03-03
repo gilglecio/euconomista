@@ -31,9 +31,20 @@
         {% endif %}
 
         {% if canEditar and not isGroup %}
-        <a class="btn btn-default" href="/app/releases/{{ release.id }}/form">Editar</a>
-        <a class="btn btn-default" onnoclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar</a>
-        <a class="btn btn-default" onnoclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos</a>
+        
+
+
+        <a id="delete-releases" class="btn btn-default pull-right" onnoclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red;margin-left:4px" href="/app/releases/{{ release.id }}/delete_all">
+            <i class="glyphicon glyphicon-trash"></i> Todos
+        </a>
+        
+        <a id="delete-release" class="btn btn-default pull-right" onnoclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red;margin-left:4px" href="/app/releases/{{ release.id }}/delete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+        
+        <a id="edit-release" class="btn btn-default pull-right" href="/app/releases/{{ release.id }}/form">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </a>
         {% endif %}
         </div>
     </div>

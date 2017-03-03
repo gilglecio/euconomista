@@ -12,7 +12,7 @@ trait PeopleContext
     {
         $this->clickLink('Pessoas');
         $this->assertPageAddress('/app/peoples');
-        $this->clickLink('Adicionar');
+        $this->clickLink('add-people');
         $this->assertPageAddress('/app/peoples/form');
         $this->getSession()->getPage()->fillField('name', $name);
         $this->getSession()->getPage()->find('named', ['button', "\"Salvar\""])->click();

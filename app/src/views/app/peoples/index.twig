@@ -5,8 +5,13 @@
 {% block app %}
     <div class="row hidden-print" style="margin-bottom:20px">
         <div class="col-xs-12">
-            <a class="btn btn-default" href="/app/peoples/form">Adicionar</a>
-            <a class="btn btn-default pull-right" href onclick="print()"><i class="glyphicon glyphicon-print"></i></a>
+            <a id="add-people" class="btn btn-default" href="/app/peoples/form">
+                <i class="glyphicon glyphicon-plus"></i>
+            </a>
+
+            <a class="btn btn-default pull-right" href onclick="print()">
+                <i class="glyphicon glyphicon-print"></i>
+            </a>
         </div>
     </div>
 

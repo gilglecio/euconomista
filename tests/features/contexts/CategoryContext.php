@@ -20,7 +20,7 @@ trait CategoryContext
 
         $this->clickLink('Categorias');
         $this->assertPageAddress('/app/categories');
-        $this->clickLink('Adicionar');
+        $this->clickLink('add-category');
         $this->assertPageAddress('/app/categories/form');
         $this->getSession()->getPage()->fillField('name', $name);
         $this->getSession()->getPage()->find('named', ['button', "\"Salvar\""])->click();

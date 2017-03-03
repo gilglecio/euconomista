@@ -10,7 +10,7 @@ Feature: Página de lançamentos
 	Scenario: Verificando a grid de lançamentos
 		
 		Then I should see "Adicionar"
-		Then I should see "Sem registros."
+		Then I should see "Não há lançamentos abertos ou vencidos."
 
 	@javascript
 	Scenario: Lançando uma receita
@@ -29,7 +29,6 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
-		Then I should see "Categoria 001"
 		Then I should see "001/1"
 		Then I should see "1.000,00"
 		Then I should see "Receita de R$ 1.000,00 em 1x"
@@ -53,7 +52,6 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
-		Then I should see "Categoria 001"
 		Then I should see "001/2"
 		When I follow "next-month"
 		Then I should see "002/2"
@@ -79,7 +77,6 @@ Feature: Página de lançamentos
 		Then I should see "Sucesso!"
 
 		Then I should see "Pessoa 001"
-		Then I should see "Categoria 001"
 		Then I should see "001/3"
 		Then I should see "166,67"
 		When I follow "next-month"
@@ -93,6 +90,7 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Verificando logs dos lançamentos emitidos
 	
+		Then I follow "btn-profile"
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		
@@ -155,6 +153,7 @@ Feature: Página de lançamentos
 	@javascript
 	Scenario: Verificando logs das liquidações
 
+		Then I follow "btn-profile"
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		
@@ -200,12 +199,12 @@ Feature: Página de lançamentos
 
 		Then I follow "Lançamentos"
 		Then I should see "001/1"
-		Then I should see "Pago"
 		Then I should see "935,00"
 
 	@javascript
 	Scenario: Verificando logs das liquidações
 
+		Then I follow "btn-profile"
 		Then I follow "Logs"
 		Then I should be on "/app/logs"
 		

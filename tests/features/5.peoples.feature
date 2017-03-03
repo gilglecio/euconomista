@@ -24,6 +24,7 @@ Feature: Página de pessoas
 	@javascript
 	Scenario: Verificando log
 
+		When I follow "btn-profile"
 		When I follow "Logs"
 		Then I should be on "/app/logs"
 		Then I should see "Adicionou 'Pessoa 001' em pessoas."

@@ -27,7 +27,7 @@ Feature: Página de login
 		When I follow "Lançamentos"
 		Then I should be on current month releases
 		Then I should see "Adicionar"
-		Then I should see "Sem registros."
+		Then I should see "Não há lançamentos abertos ou vencidos."
 
 		When I follow "Pessoas"
 		Then I should be on "/app/peoples"
@@ -43,10 +43,7 @@ Feature: Página de login
 		Then I should be on "/app/users"
 		Then I should see "test@euconomista.com"
 
-		When I follow "Extrato"
-		Then I should be on "/app/extract"
-		Then I should see "Sem registros."
-
+		When I follow "btn-profile"
 		When I follow "Logs"
 		Then I should be on "/app/logs"
 		Then I should see "Conectou-se"

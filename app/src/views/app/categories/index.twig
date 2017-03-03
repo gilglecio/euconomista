@@ -29,7 +29,7 @@
 
                     <span title="{{ row.hexcolor ? 'Aparece no gráfico' : 'Não aparece no gráfico' }}" style="background-color:{{ '#' ~ row.hexcolor }}; display:block; width:10px; height:10px; float:left; border-radius: 100px; margin-left: 10px; margin-top:6px"></span>
                     
-                    <a id="delete-category-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print table-row-btn" onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a id="delete-category-{{ loop.index }}" title="Apagar registro" class="pull-right hidden-print table-row-btn" onnoclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/categories/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>
     		{% endfor %}

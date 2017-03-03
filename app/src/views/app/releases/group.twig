@@ -43,7 +43,7 @@
 
     	<div class="form-group no-margin-bottom">
     		<div class="col-xs-12">
-    			<button {% if data.id %} onclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn pull-right btn-primary" type="submit">Salvar</button>
+    			<button {% if data.id %} onnoclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn pull-right btn-primary" type="submit">Salvar</button>
 
     			<a class="btn btn-link pull-right" href="/app/releases">Voltar</a>
     		</div>

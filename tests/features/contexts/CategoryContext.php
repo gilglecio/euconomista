@@ -49,6 +49,7 @@ trait CategoryContext
      */
     public function inTheUserLogMustBeRegisteredTheCreationOfThisCategory()
     {
+        $this->clickLink('btn-profile');
         $this->clickLink('Logs');
         $this->assertPageAddress('/app/logs');
         $this->assertPageContainsText('Criou a categotia \'' . $this->category_name . '\'.');

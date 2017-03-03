@@ -1230,6 +1230,7 @@ final class Release extends Model
 
             return [
                 'release_id' => $r->release_id,
+                'number' => $r->release->number,
                 'date' => $r->date->format('d/m/Y'),
                 'saldo' => Toolkit::showMoney($saldo),
                 'people' => $r->release->people->name,

@@ -22,7 +22,7 @@ class Version20161119210439 extends AbstractMigration
             entity = 1,
             created_at = now(),
             updated_at = now(),
-            password = '$2y$10$SWo0GUMhbLM6VBklCC01.esZgALq7M2SH7VfMqq72xcTWcjbgRN7i'
+            password = '\$2y\$10\$SWo0GUMhbLM6VBklCC01.esZgALq7M2SH7VfMqq72xcTWcjbgRN7i'
         ");
     }
 

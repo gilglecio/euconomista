@@ -24,7 +24,7 @@
     		<tr>
     			<td>{{ row.name }}</td>
     			<td>{{ row.email }}
-                    <a class="pull-right table-row-btn" onclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/users/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a class="pull-right table-row-btn" onnoclick="return confirm('Deseja realmente APAGAR \'{{ row.name }}\'?')" href="/app/users/{{ row.id }}/delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
     		</tr>
     		{% endfor %}

@@ -12,7 +12,8 @@
 		{% for key, row in rows %}
 		<tr>
             <td>
-                <a class="btn-link" href="/app/releases/{{ row.release_id }}/logs">{{ row.date }}</a>
+                {{ row.date }}
+                <br><small><a class="btn-link" href="/app/releases/{{ row.release_id }}/logs">{{ row.number }}</a></small>
             </td>
             <td>
                 {{ row.people }}

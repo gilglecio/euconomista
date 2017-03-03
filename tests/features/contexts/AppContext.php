@@ -186,7 +186,7 @@ JS;
         $this->getSession()->getPage()->fillField('email', $this->params['user_email']);
         $this->getSession()->getPage()->fillField('password', $this->params['user_password']);
         $this->getSession()->getPage()->find('named', array('button', "\"Entrar\""))->click();
-        $this->assertPageAddress('/app');
+        $this->assertPageAddress('/app/releases/in/' . date('Y-m'));
     }
 
     /**

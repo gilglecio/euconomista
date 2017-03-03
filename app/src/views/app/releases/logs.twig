@@ -23,17 +23,17 @@
         {% endif %}
 
         {% if canDesfazer and not release.child_id %}
-        <a class="btn btn-default" onbsclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer" style="color:red">Desfazer</a>
+        <a class="btn btn-default" onclick="return confirm('Deseja realmente DESFAZER a última ação?')" href="/app/releases/{{ release.id }}/desfazer" style="color:red">Desfazer</a>
         {% endif %}
 
         {% if canUngroup %}
-        <a class="btn btn-default" onbsclick="return confirm('Deseja realmente CANCELAR o agrupamento?')" href="/app/releases/{{ release.id }}/ungroup" style="color:red">Desfazer Agrupamento</a>
+        <a class="btn btn-default" onclick="return confirm('Deseja realmente CANCELAR o agrupamento?')" href="/app/releases/{{ release.id }}/ungroup" style="color:red">Desfazer Agrupamento</a>
         {% endif %}
 
         {% if canEditar and not isGroup %}
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/form">Editar</a>
-        <a class="btn btn-default" onbsclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar</a>
-        <a class="btn btn-default" onbsclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos</a>
+        <a class="btn btn-default" onclick="return confirm('Deseja realmente APAGAR este lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete">Apagar</a>
+        <a class="btn btn-default" onclick="return confirm('Deseja realmente APAGAR este + as outras parcelas deste lançamento?')" style="color:red" href="/app/releases/{{ release.id }}/delete_all">Apagar todos</a>
         {% endif %}
         </div>
     </div>

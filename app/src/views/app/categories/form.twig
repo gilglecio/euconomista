@@ -42,7 +42,7 @@
 
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-9 col-xs-offset-3">
-	    			<button {% if data.id %}onbsclick="return confirm('Confirma a edição de \'{{ data.name }}\'?')"{% endif %} class="btn btn-primary" type="submit">Salvar</button>
+	    			<button {% if data.id %}onclick="return confirm('Confirma a edição de \'{{ data.name }}\'?')"{% endif %} class="btn btn-primary" type="submit">Salvar</button>
 
 	    			<a class="btn btn-link" href onclick="history.back()">Voltar</a>
 	    		</div>

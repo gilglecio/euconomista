@@ -290,6 +290,10 @@ final class Release extends Model
          */
         $quantity = (isset($fields['quantity']) && is_numeric($fields['quantity'])) ? (int) $fields['quantity'] : 1;
 
+        if ($quantity < 1) {
+            throw new \Exception('A quantidade deve ser maior igual a 1');
+        }
+
         /**
          * @var float
          */
@@ -432,7 +436,6 @@ final class Release extends Model
                 if ($dia_vencimento > $day_of_month) {
                     $dia = $day_of_month;
                 }
-
 
                 /**
                  * @var Release

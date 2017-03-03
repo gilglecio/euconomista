@@ -86,10 +86,10 @@ final class ReleasesController extends Controller
 
 
         foreach ($rows as $row) {
-            $balance['value'] += $row['_value']; 
+            $balance['value'] += $row['_value'];
         }
 
-        $extract_saldo = 0; 
+        $extract_saldo = 0;
 
         if (count($extract)) {
             $extract_last_index = count($extract)-1;
@@ -100,7 +100,7 @@ final class ReleasesController extends Controller
         $sum = [
             'value' => Toolkit::showMoney($balance['value']),
             'color' => $balance['value'] < 0 ? 'red' : 'blue'
-        ]; 
+        ];
 
         $balance['value'] += $extract_saldo;
 
@@ -271,7 +271,6 @@ final class ReleasesController extends Controller
     public function saveGroup(Request $request, Response $response, array $args)
     {
         try {
-
             $fields = [
                 'releases' => $request->getParsedBodyParam('releases'),
                 'category_id' => (int) $request->getParsedBodyParam('category_id'),

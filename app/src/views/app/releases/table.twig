@@ -23,7 +23,7 @@
                 </tr>
             {% endif %}
 
-            <tr>
+            <tr class="tr-release-{{ row.id }}">
                 <td>{{ row.vencimento }}</td>
                 <td>
                     <a class="btn-link" href="/app/releases/{{ row.id }}/logs">{{ row.number }}</a>
@@ -45,7 +45,7 @@
         {% if rows|length %}
         <tr>
             <td colspan="4" class="text-right" style="color:{{ sum.color }}">
-                <p class="no-margin"><big><b>{{ sum.value }}</b></big></p>
+                <p class="no-margin"><span class="pull-left">Saldo</span> <big><b>{{ sum.value }}</b></big></p>
             </td>
         </tr>
         {% endif %}

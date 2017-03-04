@@ -46,6 +46,10 @@ final class LoginController extends Controller
      */
     public function index(Request $request, Response $response, array $args)
     {
+        if (AuthSession::isAuthenticated()) {
+            return $response->withRedirect('/app');
+        }
+
         $data = ['messages' => $this->getMessages()];
         $data['title'] = $this->title;
 

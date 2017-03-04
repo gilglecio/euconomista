@@ -27,9 +27,9 @@ $app->add(function (Request $request, Response $response, $next) {
         return $response->withRedirect('/login');
     }
 
-    if ($request->getRequestTarget() == '/' && AuthSession::isAuthenticated()) {
-        return $response->withRedirect('/app');
-    }
+    // if ($request->getRequestTarget() == '/' && AuthSession::isAuthenticated()) {
+    //     return $response->withRedirect('/app');
+    // }
 
     $response = $next($request, $response, $next);
 

@@ -4,12 +4,6 @@
 
 {% block app %}
     
-    {% if data.id %}
-    <ol class="breadcrumb">
-        <li>Editando o usuário <strong>{{ data.name }}</strong></li>
-    </ol>
-    {% endif %}
-
     {% include 'macro.twig' with {error: error} %}
 
 	    <form class="form-horizontal" method="post" action="/app/users">

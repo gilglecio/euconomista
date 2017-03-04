@@ -63,7 +63,7 @@ final class UsersController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
-        $data['title'] = $this->title;
+        $data['title'] = 'Novo Usuário';
 
         $this->view->render($response, 'app/users/form.twig', $data);
         

@@ -65,6 +65,7 @@ final class CategoriesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
+        $data['title'] = 'Nova Categoria';
 
         if (isset($args['category_id'])) {
             if (! $category = Category::find($args['category_id'])) {
@@ -72,9 +73,9 @@ final class CategoriesController extends Controller
             }
 
             $data['data'] = $category->to_array();
+            $data['title'] = 'Editando ' . $category->name;
         }
 
-        $data['title'] = $this->title;
         $data['colors'] = Category::$colors;
 
         $this->view->render($response, 'app/categories/form.twig', $data);

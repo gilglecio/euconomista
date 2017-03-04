@@ -65,6 +65,7 @@ final class PeoplesController extends Controller
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
+        $data['title'] = 'Nova Pessoa';
 
         if (isset($args['people_id'])) {
             if (! $people = People::find($args['people_id'])) {
@@ -72,9 +73,9 @@ final class PeoplesController extends Controller
             }
 
             $data['data'] = $people->to_array();
+            $data['title'] = 'Editando ' . $people->name;
         }
 
-        $data['title'] = $this->title;
 
         $this->view->render($response, 'app/peoples/form.twig', $data);
         

@@ -28,66 +28,62 @@
 
     <form class="form-horizontal" method="post" action="/app/releases">
 
-    	<fieldset>
-    		<legend>{% if data.id %}Lançamento nº {{ data.number }}{% else %}Novo Lançamento{% endif %}</legend>
+		<input type="hidden" name="id" value="{{ data.id }}">
 
-    		<input type="hidden" name="id" value="{{ data.id }}">
+    	<div class="form-group">
+    		<label for="natureza" class="control-label no-padding-right col-xs-3">Natureza</label>
+    		<div class="col-xs-9 col-md-5">
+    			<select autofocus class="form-control" id="natureza" name="natureza" required>
+    				<option {% if data.natureza == 1 %}selected{% endif %} value="1">Receita</option>
+    				<option {% if data.natureza == 2 %}selected{% endif %} value="2">Despesa</option>
+    			</select>
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="natureza" class="control-label no-padding-right col-xs-3">Natureza</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<select autofocus class="form-control" id="natureza" name="natureza" required>
-	    				<option {% if data.natureza == 1 %}selected{% endif %} value="1">Receita</option>
-	    				<option {% if data.natureza == 2 %}selected{% endif %} value="2">Despesa</option>
-	    			</select>
-	    		</div>
-	    	</div>
+    	{% include 'partials/people-input.twig' with {data: data, peoples: peoples} %}
+    	{% include 'partials/category-input.twig' with {data: data, categories: categories} %}
 
-	    	{% include 'partials/people-input.twig' with {data: data, peoples: peoples} %}
-	    	{% include 'partials/category-input.twig' with {data: data, categories: categories} %}
+    	<div class="form-group">
+    		<label for="quantity" class="control-label no-padding-right col-xs-3">Dividir</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input {% if data.id %}readonly{% endif %} type="number" min="1" max="99" id="quantity" required name="quantity" value="1" class="form-control">
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="quantity" class="control-label no-padding-right col-xs-3">Dividir</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input {% if data.id %}readonly{% endif %} type="number" min="1" max="99" id="quantity" required name="quantity" value="1" class="form-control">
-	    		</div>
-	    	</div>
+    	<div class="form-group">
+    		<label for="value" class="control-label no-padding-right col-xs-3">Valor</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input step="0.01" type="number" min="0.01" value="{{ data.value }}" max="99999999" id="value" required name="value" class="form-control">
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="value" class="control-label no-padding-right col-xs-3">Valor</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input step="0.01" type="number" min="0.01" value="{{ data.value }}" max="99999999" id="value" required name="value" class="form-control">
-	    		</div>
-	    	</div>
+    	<div class="form-group">
+    		<label for="data_vencimento" class="control-label no-padding-right col-xs-3">Vencimento</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input type="date" min="1" value="{{ data.data_vencimento }}" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="data_vencimento" class="control-label no-padding-right col-xs-3">Vencimento</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input type="date" min="1" value="{{ data.data_vencimento }}" max="99" id="data_vencimento" required name="data_vencimento" value="1" class="form-control">
-	    		</div>
-	    	</div>
+    	<div class="form-group">
+    		<label for="data_emissao" class="control-label no-padding-right col-xs-3">Emissão</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input type="date" min="1" value="{{ data.data_emissao }}" max="99" id="data_emissao" required name="data_emissao" value="1" class="form-control">
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="data_emissao" class="control-label no-padding-right col-xs-3">Emissão</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input type="date" min="1" value="{{ data.data_emissao }}" max="99" id="data_emissao" required name="data_emissao" value="1" class="form-control">
-	    		</div>
-	    	</div>
+    	<div class="form-group">
+    		<label for="data_liquidacao" class="control-label no-padding-right col-xs-3">Liquidação</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input type="date" min="1" value="{{ data.data_liquidacao }}" max="99" id="data_liquidacao" placeholder="(Opcional)" name="data_liquidacao" value="1" class="form-control">
+    		</div>
+    	</div>
 
-	    	<div class="form-group">
-	    		<label for="data_liquidacao" class="control-label no-padding-right col-xs-3">Liquidação</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input type="date" min="1" value="{{ data.data_liquidacao }}" max="99" id="data_liquidacao" placeholder="(Opcional)" name="data_liquidacao" value="1" class="form-control">
-	    		</div>
-	    	</div>
-
-	    	<div class="form-group">
-	    		<label for="description" class="control-label no-padding-right col-xs-3">Descrição</label>
-	    		<div class="col-xs-9 col-md-5">
-	    			<input type="text" value="{{ data.description }}" placeholder="(Opcional)" maxlength="255" id="description" name="description" class="form-control">
-	    		</div>
-	    	</div>
-    	</fieldset>
+    	<div class="form-group">
+    		<label for="description" class="control-label no-padding-right col-xs-3">Descrição</label>
+    		<div class="col-xs-9 col-md-5">
+    			<input type="text" value="{{ data.description }}" placeholder="(Opcional)" maxlength="255" id="description" name="description" class="form-control">
+    		</div>
+    	</div>
 
     	<div class="form-group no-margin-bottom">
     		<div class="col-xs-9 col-xs-offset-3">

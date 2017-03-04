@@ -174,7 +174,11 @@ final class ReleasesController extends Controller
             $data['data']['data_emissao'] = $release->log_emissao->date->format('Y-m-d');
         }
 
-        $data['title'] = $this->title;
+        $data['title'] = 'Novo Lançamento';
+
+        if ($args['release_id']) {
+            $data['title'] = 'Lançamento nº ' . $data['data']['number'];
+        }
 
         $data['categories'] = Category::find('all', ['order' => 'name asc']);
         $data['peoples'] = People::find('all', ['order' => 'name asc']);
@@ -199,7 +203,7 @@ final class ReleasesController extends Controller
         $data['data']['data_vencimento'] = date('Y-m-d');
         $data['data']['data_emissao'] = date('Y-m-d');
 
-        $data['title'] = 'Agrupamento de lançamentos';
+        $data['title'] = 'Agrupamento';
 
         $data['categories'] = Category::find('all', ['order' => 'name asc']);
         $data['peoples'] = People::find('all', ['order' => 'name asc']);
@@ -341,7 +345,7 @@ final class ReleasesController extends Controller
         $parent = $release->parcelado ? Release::gridFormat([$release->parcelado], true)[0] : null;
 
         $this->view->render($response, 'app/releases/logs.twig', [
-            'title' => 'Extrato de lançamento',
+            'title' => 'Extrato do Lançamento nº ' . $release->number,
             'release' => $release,
             'rows' => $rows,
             'extract' => Release::extract(),
@@ -379,7 +383,7 @@ final class ReleasesController extends Controller
         }
 
         $data = ['messages' => $this->getMessages()];
-        $data['title'] = 'Liquidação de Parcela';
+        $data['title'] = 'Liquidação do Lançamento nº ' . $release->number;
 
         $data['value'] = $release->value;
         $data['release_id'] = $release->id;
@@ -410,7 +414,7 @@ final class ReleasesController extends Controller
         }
 
         $data = ['messages' => $this->getMessages()];
-        $data['title'] = 'Prorrogação de Parcela';
+        $data['title'] = 'Prorrogação do Lançamento nº ' . $release->number;
 
         $data['value'] = $release->value;
         $data['date'] = $release->getProrrogarDate();
@@ -444,7 +448,7 @@ final class ReleasesController extends Controller
             'messages' => $this->getMessages()
         ];
 
-        $data['title'] = 'Parcelamento de Parcela';
+        $data['title'] = 'Parcelamento do Lançamento nº ' . $release->number;
 
         $data['value'] = $release->value;
         $data['primeiro_vencimento'] = date('Y-m-d');

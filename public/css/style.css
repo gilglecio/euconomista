@@ -1,3 +1,11 @@
+.navbar-nav a big {
+    cursor: normal;
+}
+
+.navbar-nav a:hover big {
+    color: #999999;
+}
+
 @media (min-width: 768px) {
   .container {
     width: 750px;

@@ -31,7 +31,7 @@ final class RegisterController extends Controller
      *
      * @var string
      */
-    protected $title = 'Cadastro';
+    protected $title = 'Cadastre-se';
 
     /**
      * Renderiza o formulário de cadastro de usuário.

@@ -24,7 +24,7 @@
 
             <a id="prev-month" style="margin-left:10px" title="Voltar 1 mês" class="btn btn-default" href="/app/releases/in/{{ prev.link }}"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;&nbsp;{{ prev.month }}</a>
 
-            <a class="btn disabled btn-primary" style="border-color:{{ balance.color }}; background-color:{{ balance.color }}" href="/app/releases/in/{{ prev.link }}"><strong>{{ current_month ~ ' R$ ' ~ balance.value }}</strong></a>
+            <a class="btn disabled btn-primary" style="border-color:{{ balance.color }}; background-color:{{ balance.color }}" href="/app/releases/in/{{ prev.link }}"><strong>{{ current_month ~ (balance.value != '0,00' ?  ' R$ ' ~ balance.value : '' ) }}</strong></a>
             
             <a id="next-month" title="Avançar 1 mês" class="btn btn-default" href="/app/releases/in/{{ next.link }}">{{ next.month }}&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-right"></i></a>
 

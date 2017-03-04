@@ -15,7 +15,7 @@
 			{% for row in releases %}
 			<tr>
 	            <td>
-	            	<input type="checkbox" name="releases[]" value="{{ row.id }}">
+	            	<input onchange="sumValue(event)" class="release-check" data-release-value="{{ row.value_abs }}" type="checkbox" name="releases[]" value="{{ row.id }}">
 	            </td>
 	            <td>{{ row.emissao }}</td>
 	            <td>{{ row.vencimento }}</td>
@@ -36,3 +36,15 @@
 		</tbody>
 	</table>
 </div>
+
+<script type="text/javascript">
+	function sumValue(e) {
+		var sum = 0;
+		var inputs = $('.release-check:checked').each(function (el) {
+			var value = $(this).attr('data-release-value');
+			sum += value * 1;
+		});
+
+		$('input#sum').attr('value', sum);
+	}
+</script>

@@ -16,6 +16,24 @@ namespace App\Util;
  */
 final class Toolkit
 {
+    public static function monthBr($month)
+    {
+        return [
+            'jan' => 'jan',
+            'feb' => 'fev',
+            'mar' => 'mar',
+            'apr' => 'abr',
+            'may' => 'mai',
+            'jun' => 'jun',
+            'jul' => 'jul',
+            'aug' => 'ago',
+            'sep' => 'set',
+            'oct' => 'out',
+            'nov' => 'nov',
+            'dec' => 'dez',
+        ][strtolower($month)];
+    }
+
     /**
      * Retorna uma hash única e confiável.
      *

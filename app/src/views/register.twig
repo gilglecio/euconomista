@@ -6,47 +6,42 @@
 <div class="content-wrapper">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
 
                 {% include 'macro.twig' with {messages: messages} %}
 
+                <form class="form-horizontal" method="post" action="/register">
 
-                <form class="form-horizontal jumbotron" method="post" action="/register">
-
-			    	<fieldset>
-                        <legend>Cadastre-se</legend>
-
-                        <div class="row" style="margin-bottom:15px">
-                            <div class="col-xs-12">
-                                <input autofocus required placeholder="Nome" type="text" name="name" class="form-control">
-                            </div>
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input autofocus required placeholder="Nome" type="text" name="name" class="form-control">
                         </div>
+                    </div>
 
-                        <div class="row" style="margin-bottom:15px">
-                            <div class="col-xs-12">
-                                <input placeholder="E-Mail" required type="email" name="email" class="form-control">
-                            </div>
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input placeholder="E-Mail" required type="email" name="email" class="form-control">
                         </div>
+                    </div>
 
-                        <div class="row" style="margin-bottom:15px">
-                            <div class="col-xs-12">
-                                <input placeholder="Senha" required type="password" name="password" class="form-control">
-                            </div>
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input placeholder="Senha" required type="password" name="password" class="form-control">
                         </div>
+                    </div>
 
-                        <div class="row" style="margin-bottom:15px">
-                            <div class="col-xs-12">
-                                <input placeholder="Confirmar Senha" required type="password" name="confirm_password" class="form-control">
-                            </div>
+                    <div class="row" style="margin-bottom:15px">
+                        <div class="col-xs-12">
+                            <input placeholder="Confirmar Senha" required type="password" name="confirm_password" class="form-control">
                         </div>
-                        
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <input name="accept_terms" required type="checkbox"> Li, concordo e aceitos os <a target="_blank" href="/terms">termos de uso</a>.
-                            </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input name="accept_terms" required type="checkbox"> Li, concordo e aceitos os <a target="_blank" href="/terms">termos de uso</a>.
                         </div>
-                    </fieldset>
-
+                    </div>
+                    
 			    	<div class="form-group">
                         <div class="col-xs-12">
                             <button type="submit" class="btn btn-primary pull-right btn-block">Cadastrar</button>

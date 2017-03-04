@@ -1273,6 +1273,7 @@ final class Release extends Model
             $row['signal'] = $r->natureza == self::RECEITA ? '+' : '-';
             $row['desc'] = $r->description;
             $row['_value'] = $row['value'];
+            $row['value_abs'] = $row['value'];
             $row['valor'] = $r->getFormatValue();
 
             if ($r->natureza == self::DESPESA) {

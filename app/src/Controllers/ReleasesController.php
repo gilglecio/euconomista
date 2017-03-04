@@ -121,17 +121,17 @@ final class ReleasesController extends Controller
             'extract' => $extract,
             'sum' => $sum,
 
-            'current_month' => $current->format('M Y'),
+            'current_month' => Toolkit::monthBr($current->format('M')) . ' ' . $current->format('Y'),
 
             'balance' => $balance,
 
             'prev' => [
                 'link' => $prev_month->format('Y-m'),
-                'month' => $prev_month->format('M')
+                'month' => Toolkit::monthBr($prev_month->format('M'))
             ],
             'next' => [
                 'link' => $next_month->format('Y-m'),
-                'month' => $next_month->format('M')
+                'month' => Toolkit::monthBr($next_month->format('M'))
             ],
         ]);
         

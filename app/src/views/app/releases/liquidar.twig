@@ -6,35 +6,30 @@
 
     {% include 'macro.twig' with {messages: messages} %}
 
-    <div class="jumbotron no-margin-bottom">
 	    <form class="form-horizontal" method="post" action="/app/releases/{{ release_id }}/liquidar">
 
-	    	<fieldset>
-	    		<legend>Liquidação</legend>
+    		<div class="form-group">
+	    		<label for="date" class="control-label no-padding-right col-md-2 col-xs-3">Data</label>
+	    		<div class="col-xs-9 col-md-4">
+	    			<input type="date" id="date" value="{{ date }}" autofocus required name="date" class="form-control">
+	    		</div>
+	    	</div>
 
-	    		<div class="form-group">
-		    		<label for="date" class="control-label no-padding-right col-md-2 col-xs-3">Data</label>
-		    		<div class="col-xs-9 col-md-3">
-		    			<input type="date" id="date" value="{{ date }}" autofocus required name="date" class="form-control">
-		    		</div>
-		    	</div>
+	    	<div class="form-group">
+	    		<label for="value" class="control-label no-padding-right col-md-2 col-xs-3">Valor</label>
+	    		<div class="col-xs-9 col-md-4">
+	    			<input type="number" step="0.01" min="1" value="{{ value }}" max="99999999" id="value" required name="value" class="form-control">
+	    		</div>
+	    	</div>
 
-		    	<div class="form-group">
-		    		<label for="value" class="control-label no-padding-right col-md-2 col-xs-3">Valor</label>
-		    		<div class="col-xs-9 col-md-3">
-		    			<input type="number" step="0.01" min="1" value="{{ value }}" max="99999999" id="value" required name="value" class="form-control">
-		    		</div>
-		    	</div>
-
-		    	<div class="form-group">
-		    		<div class="col-xs-9 col-md-10 col-xs-offset-3 col-md-offset-2">
-		    			<label>
-		    				<input type="checkbox" name="desconto" style="float: left;margin-right: 5px;"> 
-		    				Diferença como desconto
-		    			</label>
-		    		</div>
-		    	</div>
-	    	</fieldset>
+	    	<div class="form-group">
+	    		<div class="col-xs-9 col-md-10 col-xs-offset-3 col-md-offset-2">
+	    			<label>
+	    				<input type="checkbox" name="desconto" style="float: left;margin-right: 5px;"> 
+	    				Diferença como desconto
+	    			</label>
+	    		</div>
+	    	</div>
 
 	    	<div class="form-group no-margin-bottom">
 	    		<div class="col-xs-9 col-md-10 col-xs-offset-3 col-md-offset-2">

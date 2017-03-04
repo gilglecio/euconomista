@@ -17,6 +17,9 @@ $app->get('/reset', function () {
         $pdo->beginTransaction();
 
         foreach (['release_logs', 'releases', 'peoples', 'categories', 'user_logs'] as $table) {
+            if ($table == 'releases') {
+                $pdo->query('delete from `' . $table . '` where parent_id is not null');
+            }
             $pdo->query('delete from `' . $table . '`');
         }
 

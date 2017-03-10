@@ -1,0 +1,99 @@
+{% extends 'layouts/base.twig' %}
+
+{% block pageTitle title %}
+
+{% block content %}
+
+<style>
+    h4 {
+        margin-top: 25px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <ul class="list-group">
+                    <li class="list-group-item"><a class="btn-link" href="#lancamentos">Lançamento de Receitas e Despesas</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#grupos">Agrupamento de lançamentos</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#parcelamentos">Parcelamento de lançamento</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#liquidacao">Liquidação de lançamento</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#liquidacao-total">Liquidação total</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#liquidacao-parcial">Liquidação parcial</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#liquidacao-com-desconto">Liquidação com desconto</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#liquidacao-com-encargos">Liquidação com encargos</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#pessoas">Cadastro de Pessoas</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#categorias">Cadastro de Categorias</a></li>
+                    <li class="list-group-item"><a class="btn-link" href="#usuarios">Cadastro de Usuários</a></li>
+                </ul>
+
+                <a name="lancamentos"></a>
+                <h4>Lançamento de Receitas e Despesas</h4>
+
+                <p>Um lançamento pode ser da natureza <b>Receita</b> ou <b>Despesa</b>.</p>
+                <p>Para adicionar um novo lançamento é necessário ter pelo menos uma <a href="#pessoas">pessoa</a> e uma <a href="#categorias">categoria</a> cadastradas.</p>
+                <p>Além da pessoa e categoria, os campos data de emissão, data de vencimento e quantidade são obrigatórios.</p>
+                <p>O campo data de pagamento é opcional, funciona como um atalho para liquidação do lançamento, o sistema executa automaticamente uma liquidação da data informada com o valor total do documento.</p>
+                
+                <a name="grupos"></a>
+                <h4>Agrupamento de lançamentos</h4>
+
+                <p>É a segunda forma de realizar lançamentos, aqui o suusário pode selecionar outros lançamentos, desde que sejam da mesma natureza e estejam abertos. Os lançamentos selecionados são marcados como "Agrupado" e não aparecem mais na lista de lançamentos do mês.</p>
+
+                <a name="parcelamentos"></a>
+                <h4>Parcelamento de lançamento</h4>
+
+                <p>É possível dividir um lançamento em quantas vezes queira, esta função faz o contrário que a função de agrupamento de lançamento. Para isso basta acesar os logs do lançamento clicando em seu número, e clicar na opçao parcelar, informar encargos caso tenha, quantas vezes deseja dividir e a data de vencimento da primeira parcela.</p>
+
+                <a name="liquidacao"></a>
+                <h4>Liquidação de lançamento</h4>
+
+                <p>Para realizar uma liquidação no lançamento basta clicar sobre no número do lançamento e clicar no link Liquida, na lista de logs do lançamento.</p>
+                <p>Quatro tipos de liquidações podem ser realizadas no lançamento: liquidação total, liquidação parcial, liquidação com desconto e liquidação com encargos.</p>
+
+                <a name="liquidacao-total"></a>
+                <h4>Liquidação total</h4>
+
+                <p>A liquidação total ocorre quando todo o valor aberto do lançamento é liquidado.</p>
+
+                <a name="liquidacao-parcial"></a>
+                <h4>Liquidação parcial</h4>
+
+                <p>Um lançamento é liquidado parcialmente quando o valor pago é menor que o valor em aberto, e o checkbox <i>(Lançar diferença como desconto)</i> não é checado.</p>
+
+                <a name="liquidacao-com-desconto"></a>
+                <h4>Liquidação com desconto</h4>
+
+                <p>Um lançamento é liquidado com desconto quando o valor liquidado é menor que o valor em aberto, e o checkbox <i>(Lançar diferença como desconto)</i> é checado.</p>
+
+                <a name="liquidacao-com-encargos"></a>
+                <h4>Liquidação com encargos</h4>
+
+                <p>Ao liquidar um lançamento com o valor maior que o valor em aberto, a diferença é lançada como encargos.</p>
+                
+                <a name="pessoas"></a>
+                <h4>Cadastro de Pessoas</h4>
+
+                <p>Para se cadastrar uma pessoa é necessário acessar a grade de pessoas clicar em Adicionar, informar o nome da pessoa e clicar em Salvar.</p>
+
+                <p>O sistema não permite que tenha duas pessoas com o mesmo nome.</p>
+                
+                <a name="categorias"></a>
+                <h4>Cadastro de Categorias</h4>
+
+                <p>Para se cadastrar uma categoria é necessário acessar a grade de categorias clicar em Adicionar, informar o nome da categoria, e clicar em Salvar.</p>
+
+                <p>O sistema não permite que tenha duas categorias com o mesmo nome.</p>
+                
+                <a name="usuarios"></a>
+                <h4>Cadastro de Usuários</h4>
+
+                <p>Caso você queira dar acesso a outra pessoa para utilizar e manipular o sistema, você pode adicionar outros usuários.</p>
+                
+            </div>
+        </div>    
+    </div>
+</div>
+{% endblock %}

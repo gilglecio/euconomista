@@ -16,6 +16,14 @@ namespace App\Util;
  */
 final class Toolkit
 {
+    /**
+     * Traduz os meses de inglês para português
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @param  string $month Mês com 3 dígitos em inglês
+     * @return string        Mês com 3 dígitos em português
+     */
     public static function monthBr($month)
     {
         return [

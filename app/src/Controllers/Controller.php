@@ -77,13 +77,20 @@ abstract class Controller
              * @var array
              */
             $user_data = $user->to_array();
-            $user_data['first_name'] = $user->getFirstName();        
+            $user_data['first_name'] = $user->getFirstName();
 
             $this->view->offsetSet('user', $user_data);
             $this->view->offsetSet('release_month', date('Y-m'));
         }
-    } 
+    }
 
+    /**
+     * Retorna a descrição do rodapé do relatório.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @return string
+     */
     public function getReportFooter()
     {
         return 'EuConomista - Relatório obtido em ' . date('d \d\e M \d\e Y à\s H\hi\m');

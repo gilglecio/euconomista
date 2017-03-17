@@ -275,7 +275,8 @@ final class Release extends Model
     /**
      * Salva um lançamento no banco de dados.
      *
-     * @param array $fields
+     * @param array                     $fields
+     * @param \ActiveRecord\Connection   $connection
      * @throws \Exception A soma dos lançamentos não confere com o total do documento.
      * @throws \Exception Mensagem de erro do model.
      * @throws \Exception Lançamento não localizado.
@@ -645,6 +646,13 @@ final class Release extends Model
         return true;
     }
 
+    /**
+     * Retorna a data de prorrogação com base na data de vencimento do registro.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @return string Data no formato de banco de dados.
+     */
     public function getProrrogarDate()
     {
         $now = new \Datetime(date('Y-m-d'));
@@ -1136,6 +1144,13 @@ final class Release extends Model
         }
     }
 
+    /**
+     * Verifica se o lançamento foi parcelado.
+     *
+     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
+     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
+     * @return boolean
+     */
     public function isParcelamento()
     {
         if ($parcelado = $this->parcelado) {
@@ -1195,6 +1210,7 @@ final class Release extends Model
     /**
      * Formata os logs de quitação para exibição o extrato.
      *
+     * @param $year_month Ano e mês concatenados com um traço.
      * @return array
      */
     public static function extract($year_month = null)

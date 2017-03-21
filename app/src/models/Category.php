@@ -33,7 +33,7 @@ final class Category extends Model
      * @var array
      */
     public static $validates_uniqueness_of = [
-        ['name', 'entity', 'message' => 'Já existe uma categoria com este nome']
+        [['name', 'entity'], 'message' => 'Já existe uma categoria com este nome']
     ];
 
     /**
@@ -78,6 +78,10 @@ final class Category extends Model
             $row->hexcolor = $fields['hexcolor'];
             $row->save();
         } else {
+
+            if (self::find_by_name($fields['name'])) {
+                throw new \Exception('Já existe uma categoria com este nome');
+            }
 
             /**
              * @var Category

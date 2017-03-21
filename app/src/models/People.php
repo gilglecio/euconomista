@@ -26,7 +26,7 @@ final class People extends Model
      * @var array
      */
     public static $validates_uniqueness_of = [
-        ['name', 'entity', 'message' => 'Já existe uma pessoa com este nome']
+        [['name', 'entity'], 'message' => 'Já existe uma pessoa com este nome']
     ];
 
     /**
@@ -69,6 +69,10 @@ final class People extends Model
             $row->name = $fields['name'];
             $row->save();
         } else {
+
+            if (self::find_by_name($fields['name'])) {
+                throw new \Exception('Já existe uma pessoa com este nome');
+            }
 
             /**
              * @var People

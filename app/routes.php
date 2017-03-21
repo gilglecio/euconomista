@@ -61,6 +61,9 @@ $app->get('/policy', 'App\Controller\RegisterController:policy')
 $app->get('/terms', 'App\Controller\RegisterController:terms')
     ->setName('terms');
 
+$app->get('/features', 'App\Controller\FeaturesController:index')
+    ->setName('features');
+
 # PRIVATE ROUTES
 $app->group('/app', function () {
 
@@ -202,6 +205,7 @@ $app->group('/app', function () {
     });
 });
 
-function redirectToReleases (Request $request, Response $response, array $args) {
+function redirectToReleases(Request $request, Response $response, array $args)
+{
     return $response->withRedirect('/app/releases/in/' . date('Y-m'));
 }

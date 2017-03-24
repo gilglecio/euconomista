@@ -1,15 +1,15 @@
-# <IfModule mod_rewrite.c>
-#     RewriteEngine On
-# 
-#     RewriteCond %{REQUEST_FILENAME} -s [OR]
-#     RewriteCond %{REQUEST_FILENAME} -l [OR]
-#     RewriteCond %{REQUEST_FILENAME} -d
-#     RewriteRule ^.*$ - [NC,L]
-# 
-#     RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
-#     RewriteRule ^(.*) - [E=BASE:%1]
-#     RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
-# </IfModule>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
+    RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+</IfModule>
 
 # Apache Server Configs v2.14.0 | MIT License
 # https://github.com/h5bp/server-configs-apache

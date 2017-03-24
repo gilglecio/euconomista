@@ -1,6 +1,3 @@
-# For production, put your rewrite rules directly into your VirtualHost
-# directive and turn off AllowOverride.
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -13,4 +10,32 @@
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
     RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+</IfModule>
+
+AddType text/javascript .js
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 seconds"
+    # ExpiresByType image/x-icon "access plus 2692000 seconds"
+    # ExpiresByType image/jpeg "access plus 2692000 seconds"
+    # ExpiresByType image/png "access plus 2692000 seconds"
+    # ExpiresByType image/gif "access plus 2692000 seconds"
+    # ExpiresByType application/x-shockwave-flash "access plus 2692000 seconds"
+    ExpiresByType text/css "access plus 2692000 seconds"
+    ExpiresByType text/javascript "access plus 2692000 seconds"
+    ExpiresByType application/x-javascript "access plus 2692000 seconds"
+    # ExpiresByType text/html "access plus 600 seconds"
+    # ExpiresByType application/xhtml+xml "access plus 600 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\\.(ico|jpe?g|png|gif|swf|css|js)$">
+        Header set Cache-Control "max-age=2692000, public"
+    </FilesMatch>
+    <FilesMatch "\\.(x?html?|php)$">
+        Header set Cache-Control "max-age=600, private, must-revalidate"
+    </FilesMatch>
+    Header unset ETag
+    Header unset Last-Modified
 </IfModule>

@@ -18,6 +18,7 @@ session_start();
 
 $composer = __DIR__ . '/vendor/autoload.php';
 
+
 if (! file_exists($composer)) {
     die('Run composer install');
 }

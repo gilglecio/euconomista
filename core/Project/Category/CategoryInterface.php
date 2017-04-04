@@ -1,8 +1,8 @@
 <?php
 
-namespace EuConomista\Person;
+namespace Project\Category;
 
-interface PersonInterface
+interface CategoryInterface
 {
     /**
      * @var integer
@@ -15,32 +15,32 @@ interface PersonInterface
     private $name;
 
     /**
-     * Set person id.
+     * Set category id.
      *
-     * @param integer $id Person id
+     * @param integer $id Category id
      * @return void
      */
     public function setId($id);
 
     /**
-     * Get person id.
+     * Get category id.
      *
-     * @return integer Id of person
+     * @return integer Id of category
      */
     public function getId();
 
     /**
-     * Set person id.
+     * Set category id.
      *
-     * @param string $name Name of person
+     * @param string $name Name of category
      * @return void
      */
     public function setName($name);
 
     /**
-     * Set person id.
+     * Set category id.
      *
-     * @return string Name of person
+     * @return string Name of category
      */
     public function getName();
 }

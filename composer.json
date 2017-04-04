@@ -10,7 +10,7 @@
     }],
     "autoload": {
         "psr-4": {
-            "EuConomista\\": "core/EuConomista",
+            "Project\\": "core/Project",
             "App\\Controller\\": "app/src/Controllers",
             "App\\Mail\\": "app/src/Mail",
             "App\\Auth\\": "app/src/Auth",

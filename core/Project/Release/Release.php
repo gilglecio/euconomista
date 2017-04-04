@@ -1,14 +1,14 @@
 <?php
 
-namespace EuConomista\Release;
+namespace Project\Release;
 
-use EuConomista\Person\PersonInterface;
-use EuConomista\Category\CategoryInterface;
+use Project\Person\PersonInterface;
+use Project\Category\CategoryInterface;
 
 /**
  * Release class
  */
-class Release
+class Release implements ReleaseInterface
 {
     /**
      * @var integer

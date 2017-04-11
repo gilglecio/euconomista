@@ -11,14 +11,12 @@
 	<tbody>
 		{% for key, row in rows %}
 		<tr>
-            <td>
-                {{ row.date }}
-                <br><small><a class="btn-link" href="/app/releases/{{ row.release_id }}/logs">{{ row.number }}</a></small>
-            </td>
+            <td>{{ row.date }}</td>
+            <td><a class="btn-link" href="/app/releases/{{ row.release_id }}/logs">{{ row.number }}</a></td>
             <td>
                 {{ row.people }}
                 {% if row.desc %}
-                <br><small style="color:#bbb">{{ row.desc }}</small>
+                <span style="color:#999">({{ row.desc }})</span>
                 {% endif %}
             </td>
             <td style="color:{{ row.color }}" class="text-right">{{ row.value }}</td>

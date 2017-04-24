@@ -68,6 +68,9 @@ $app->get('/fb-callback', function () {
         'default_graph_version' => 'v2.2',
     ]);
 
+    print_r($fb->getUser());
+    exit;
+
     $helper = $fb->getRedirectLoginHelper();
 
     try {

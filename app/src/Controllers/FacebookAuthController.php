@@ -12,6 +12,7 @@ use Facebook\Facebook;
 use App\Auth\AuthSession;
 use User;
 use Anonimous;
+use UserLog;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 

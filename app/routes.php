@@ -110,6 +110,8 @@ $app->get('/fb-callback', function () {
 
     $me = $response->getGraphUser();
 
+    print_r($me);
+
     echo 'Logged in as ' . $me->getEmail();
 });
 

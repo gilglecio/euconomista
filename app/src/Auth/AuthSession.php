@@ -46,12 +46,12 @@ class AuthSession
             throw new \Exception('A senha fornecida não confere com o cadastro do usuário.');
         }
 
-        $this->createSession($user);
+        self::createSession($user);
 
         return true;
     }
 
-    private function createSession(UserAuthInterface $user)
+    static function createSession(UserAuthInterface $user)
     {
         $_SESSION[self::AUTH_SESSION_NAME] = [
             'id' => $user->id,
@@ -67,7 +67,7 @@ class AuthSession
             return false;
         }
 
-        $this->createSession($user);
+        self::createSession($user);
 
         return true;
     }

@@ -41,7 +41,7 @@ class FacebookAuthController
         $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', ['email']);
 
         return $response->withJson([
-            'fb_login_url' => htmlspecialchars($loginUrl)
+            'fb_login_url' => $loginUrl
         ]);
     }
 

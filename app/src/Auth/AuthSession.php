@@ -51,7 +51,7 @@ class AuthSession
         return true;
     }
 
-    static function createSession(UserAuthInterface $user)
+    static function createSession($user)
     {
         $_SESSION[self::AUTH_SESSION_NAME] = [
             'id' => $user->id,

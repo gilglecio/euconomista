@@ -46,12 +46,28 @@ class AuthSession
             throw new \Exception('A senha fornecida não confere com o cadastro do usuário.');
         }
 
+        $this->createSession($user);
+
+        return true;
+    }
+
+    private function createSession(UserAuthInterface $user)
+    {
         $_SESSION[self::AUTH_SESSION_NAME] = [
             'id' => $user->id,
             'name' => $user->name,
             'entity' => $user->entity,
             'email' => $user->email
         ];
+    }
+
+    public static function attempFb(UserAuthInterface $user, $email)
+    {
+        if (! $user = $user->getIdEntityPasswordStatusAndNameByEmail($email)) {
+            return false;
+        }
+
+        $this->createSession($user);
 
         return true;
     }

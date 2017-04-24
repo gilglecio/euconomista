@@ -45,75 +45,8 @@ $app->post('/login', 'App\Controller\LoginController:post')
 $app->get('/logout', 'App\Controller\LoginController:logout')
     ->setName('login.logout');
 
-$app->get('/fb-login', function () {
-    $fb = new \Facebook\Facebook([
-        'app_id' => '1308173232559152',
-        'app_secret' => 'db4945b1af458088ca290103ec836029',
-        'default_graph_version' => 'v2.2',
-    ]);
-
-    $helper = $fb->getRedirectLoginHelper();
-
-    $permissions = ['email']; // Optional permissions
-    $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', $permissions);
-
-    echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in com Facebook!</a>';
-});
-
-$app->get('/fb-callback', function () {
-    
-    $fb = new \Facebook\Facebook([
-        'app_id' => '1308173232559152',
-        'app_secret' => 'db4945b1af458088ca290103ec836029',
-        'default_graph_version' => 'v2.2',
-    ]);
-
-    try {
-        $helper = $fb->getRedirectLoginHelper();
-        $accessToken = $helper->getAccessToken();
-    } catch(Facebook\Exceptions\FacebookResponseException $e) {
-        die('Graph returned an error: ' . $e->getMessage());
-    } catch(Facebook\Exceptions\FacebookSDKException $e) {
-        die('Facebook SDK returned an error: ' . $e->getMessage());
-    }
-
-    if (! isset($accessToken)) {
-        if ($helper->getError()) {
-            header('HTTP/1.0 401 Unauthorized');
-            echo "Error: " . $helper->getError() . "\n";
-            echo "Error Code: " . $helper->getErrorCode() . "\n";
-            echo "Error Reason: " . $helper->getErrorReason() . "\n";
-            echo "Error Description: " . $helper->getErrorDescription() . "\n";
-        } else {
-            header('HTTP/1.0 400 Bad Request');
-            echo 'Bad request';
-        }
-        exit;
-    }
-
-    if (! $accessToken->isLongLived()) {
-        try {
-            $oAuth2Client = $fb->getOAuth2Client();
-            $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            die("<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n");
-        }
-    }
-
-    try {
-        $response = $fb->get('/me?fields=id,name,email', (string) $accessToken);
-    } catch(\Facebook\Exceptions\FacebookResponseException $e) {
-        die('Graph returned an error: ' . $e->getMessage());
-    } catch(\Facebook\Exceptions\FacebookSDKException $e) {
-        die('Facebook SDK returned an error: ' . $e->getMessage());
-    }
-
-    $me = $fb->getLastResponse()->getGraphUser();
-
-    print_r($me);
-
-    echo 'Logged in as ' . $me->getEmail();
-});
+$app->get('/fb-login', 'App\Controller\FacebookAuthController:getLink');
+$app->get('/fb-callback', 'App\Controller\FacebookAuthController:callback');
 
 # REGISTER
 $app->get('/register', 'App\Controller\RegisterController:index')

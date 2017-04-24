@@ -82,7 +82,15 @@ class FacebookAuthController
             }
         }
 
-        $me = $fb->getLastResponse()->getGraphUser();
+        try {
+            $me = $fb->get('/me?fields=id,name,email', (string) $accessToken);
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            die('Graph returned an error: ' . $e->getMessage());
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            die('Facebook SDK returned an error: ' . $e->getMessage());
+        }
+
+        $me = $me->getGraphUser();
 
         if (! $attemp = AuthSession::attempFb(new User, $me->getEmail())) {
             $user = Anonimous::generate([

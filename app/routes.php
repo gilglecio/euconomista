@@ -108,11 +108,11 @@ $app->get('/fb-callback', function () {
         die('Facebook SDK returned an error: ' . $e->getMessage());
     }
 
-    $me = $response->getGraphUser();
+    $me = $fb->getLastResponse()->getGraphUser();
 
     print_r($me);
 
-    echo 'Logged in as ' . $me->getEmail();
+    echo 'Logged in as ' . $me->getName();
 });
 
 # REGISTER

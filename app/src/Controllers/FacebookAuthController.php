@@ -93,7 +93,7 @@ class FacebookAuthController
         $me = $me->getGraphUser();
 
         if (! $attemp = AuthSession::attempFb(new User, $me->getEmail())) {
-            $user = Anonimous::generate([
+            $user = Anonimous::register([
                 'name' => $me->getName(),
                 'email' => $me->getEmail(),
                 'password' => sha1($accessToken),

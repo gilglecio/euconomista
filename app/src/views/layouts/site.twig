@@ -76,18 +76,18 @@
         {% block content %}{% endblock %}
 
         <!-- jQuery -->
-        <script async src="/assets/jquery/dist/jquery.min.js"></script>
+        <script src="/assets/jquery/dist/jquery.min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script async src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
 
         <!-- Plugin JavaScript -->
-        <script async src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script async src="/assets/scrollreveal/dist/scrollreveal.min.js"></script>
-        <script async src="/assets/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="/assets/scrollreveal/dist/scrollreveal.min.js"></script>
+        <script src="/assets/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 
         <!-- Theme JavaScript -->
-        <script async src="/site/js/creative.min.js"></script>
+        <script src="/site/js/creative.min.js"></script>
 
         <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -95,6 +95,14 @@
           })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
           ga('create', 'UA-96155796-1', 'auto');
           ga('send', 'pageview');</script>
+
+        <script>
+        $(document).ready(function () {
+            $.get('/fb-login', function (data) {
+                $('#register-link').attr('href', data.fb_login_url)
+            })
+        })
+    </script>
 
     </body>
 </html>

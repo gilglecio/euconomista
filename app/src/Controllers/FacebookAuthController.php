@@ -95,7 +95,7 @@ class FacebookAuthController
             $user = Anonimous::generate([
                 'name' => $me->getName(),
                 'email' => $me->getEmail(),
-                'password' => sha1($accessToken)
+                'password' => sha1($accessToken),
                 'confirm_password' => sha1($accessToken)
             ]);
 

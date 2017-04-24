@@ -101,6 +101,8 @@ class FacebookAuthController
             ]);
 
             $user->resetConfirmToken();
+            $user->status = 1;
+            $user->save();
         }
 
         if (! $attemp = AuthSession::attempFb(new User, $me->getEmail())) {

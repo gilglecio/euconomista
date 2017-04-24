@@ -24,7 +24,8 @@
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.17",
         "php-activerecord/php-activerecord": "^1.1",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+        "facebook/graph-sdk" : "~5.0"
     },
     "require-dev": {
         "doctrine/orm": "^2.5",

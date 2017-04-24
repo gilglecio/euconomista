@@ -10,9 +10,9 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-define('APP_URL', 'http://' . $_SERVER['HTTP_HOST']);
+define('APP_URL', 'https://' . $_SERVER['HTTP_HOST']);
 define('ENV_TEST', APP_URL == 'http://localhost:3002');
-define('ENV_PROD', APP_URL == 'http://fn.gilglecio.com.br');
+define('ENV_PROD', APP_URL == 'https://euconomista.com.br');
 
 session_start();
 

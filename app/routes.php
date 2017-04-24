@@ -101,7 +101,7 @@ $app->get('/fb-callback', function () {
     }
 
     try {
-        $response = $fb->get('/me', (string) $accessToken);
+        $response = $fb->get('/me?fields=id,name,email', (string) $accessToken);
     } catch(\Facebook\Exceptions\FacebookResponseException $e) {
         die('Graph returned an error: ' . $e->getMessage());
     } catch(\Facebook\Exceptions\FacebookSDKException $e) {

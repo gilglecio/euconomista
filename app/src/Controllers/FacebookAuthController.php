@@ -39,7 +39,7 @@ class FacebookAuthController
     {
         $fb = $this->getFB();
         $helper = $fb->getRedirectLoginHelper();
-        $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', ['email', 'name']);
+        $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', ['email']);
 
         return $response->withJson([
             'fb_login_url' => $loginUrl

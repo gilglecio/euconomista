@@ -112,7 +112,7 @@ $app->get('/fb-callback', function () {
 
     print_r($me);
 
-    echo 'Logged in as ' . $me->getName();
+    echo 'Logged in as ' . $me->getEmail();
 });
 
 # REGISTER

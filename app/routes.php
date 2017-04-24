@@ -68,21 +68,13 @@ $app->get('/fb-callback', function () {
         'default_graph_version' => 'v2.2',
     ]);
 
-    print_r($fb->getUser());
-    exit;
-
-    $helper = $fb->getRedirectLoginHelper();
-
     try {
+        $helper = $fb->getRedirectLoginHelper();
         $accessToken = $helper->getAccessToken();
     } catch(Facebook\Exceptions\FacebookResponseException $e) {
-        // When Graph returns an error
-        echo 'Graph returned an error: ' . $e->getMessage();
-        exit;
+        die('Graph returned an error: ' . $e->getMessage());
     } catch(Facebook\Exceptions\FacebookSDKException $e) {
-        // When validation fails or other local issues
-        echo 'Facebook SDK returned an error: ' . $e->getMessage();
-        exit;
+        die('Facebook SDK returned an error: ' . $e->getMessage());
     }
 
     if (! isset($accessToken)) {
@@ -99,22 +91,26 @@ $app->get('/fb-callback', function () {
         exit;
     }
 
-    // The OAuth 2.0 client handler helps us manage access tokens
-    $oAuth2Client = $fb->getOAuth2Client();
-
     if (! $accessToken->isLongLived()) {
-        // Exchanges a short-lived access token for a long-lived one
         try {
+            $oAuth2Client = $fb->getOAuth2Client();
             $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
-            exit;
+            die("<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n");
         }
     }
 
-    die('TOKEN -> ' . (string) $accessToken);
+    try {
+        $response = $fb->get('/me', (string) $accessToken);
+    } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        die('Graph returned an error: ' . $e->getMessage());
+    } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        die('Facebook SDK returned an error: ' . $e->getMessage());
+    }
 
-    $_SESSION['fb_access_token'] = (string) $accessToken;
+    $me = $response->getGraphUser();
+
+    echo 'Logged in as ' . $me->getEmail();
 });
 
 # REGISTER

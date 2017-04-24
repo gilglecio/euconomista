@@ -39,7 +39,7 @@ class FacebookAuthController
     {
         $fb = $this->getFB();
         $helper = $fb->getRedirectLoginHelper();
-        $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', ['email']);
+        $loginUrl = $helper->getLoginUrl(APP_URL . '/fb-callback', ['email', 'name']);
 
         return $response->withJson([
             'fb_login_url' => $loginUrl
@@ -80,14 +80,6 @@ class FacebookAuthController
             } catch (Facebook\Exceptions\FacebookSDKException $e) {
                 die("<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n");
             }
-        }
-
-        try {
-            $response = $fb->get('/me?fields=id,name,email', (string) $accessToken);
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
-            die('Graph returned an error: ' . $e->getMessage());
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
-            die('Facebook SDK returned an error: ' . $e->getMessage());
         }
 
         $me = $fb->getLastResponse()->getGraphUser();

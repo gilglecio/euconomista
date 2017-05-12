@@ -8,12 +8,24 @@
 
     <h2>Lançamento</h2>
 
-    <button autofocus onclick="start()">Novo lançamento</button><br><br>
+    <button autofocus onclick="start()">Iniciar</button><br><br>
 
-    <input type="text" name="natureza" placeholder="Receita ou Despesa?"><br>
-    <input type="text" name="pessoa" placeholder="Nome Pessoa"><br>
-    <input type="number" name="valor" placeholder="Valor do documento"><br>
-    <input type="date" name="vencimento" placeholder="Data de vencimento"><br>
+    Natureza: 
+    <select name="natureza">
+        <option value=""></option>
+        <option value="receita">Receita</option>
+        <option value="despesa">Despesa</option>
+    </select><br>
+    Pessoa: 
+    <select name="pessoa">
+        <option value=""></option>
+        <option value="fernando">Fernando</option>
+        <option value="joão">João</option>
+        <option value="daniel">Daniel</option>
+        <option value="maria">Maria</option>
+    </select><br>
+    Valor: <input type="number" step="0.01" name="valor" placeholder="Valor do documento"><br>
+    Vencimento: <input type="date" name="vencimento" placeholder="Data de vencimento"><br>
  
  	<script type="text/javascript" src="jquery-3.2.1.slim.min.js"></script>
 

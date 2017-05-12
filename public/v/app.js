@@ -1,5 +1,12 @@
-var pessoa;
-var pessoas = ['fernando', 'maria', 'daniel', 'joão']
+var people;
+var category;
+
+var peoples = {}
+var categories = {}
+
+extractSelect('people_id', peoples)
+extractSelect('category_id', categories)
+
 var dates = {
     'anteontem': Date.today().addDays(-2).toString('yyyy-MM-dd'),
     'ontem': Date.today().addDays(-1).toString('yyyy-MM-dd'),
@@ -10,12 +17,21 @@ var dates = {
 
 var fields = {
     natureza: $('[name=natureza]'),
-    pessoa: $('[name=pessoa]'),
-    valor: $('[name=valor]'),
-    vencimento: $('[name=vencimento]')
-}
 
-start()
+    people_id: $('[name=people_id]'),
+    people: $('[name=people]'),
+
+    category_id: $('[name=category_id]'),
+    category: $('[name=category]'),
+
+    value: $('[name=value]'),
+
+    data_emissao: $('[name=data_emissao]'),
+    data_vencimento: $('[name=data_vencimento]'),
+    data_liquidacao: $('[name=data_liquidacao]'),
+
+    description: $('[name=description]')
+}
 
 function start() {
     ask('Receita ou Despesa?', askNatureza)
@@ -29,9 +45,9 @@ function askNatureza(error, r) {
     } else {
 
         if (r.out == 'receita' || r.out == 'despesa') {
-            fields.natureza.val(r.out)
+            fields.natureza.val(r.out == 'receita' ? 1 : 2)
             ask('Quem é a pessoa?', askPessoa)
-            fields.pessoa.focus()
+            fields.people_id.focus()
         } else {
             ask('Responda "Receita" ou "Despesa"', askNatureza)
         }
@@ -44,20 +60,53 @@ function askPessoa(error, r) {
         ask('Tente de novo', askPessoa)
     } else {
 
-        pessoa = r.out;
+        people = r.out;
 
-        if ($.inArray(pessoa, pessoas) == -1) {
-            ask(pessoa + ' não está cadastrado. Deseja cadastrar?', askAddPessoa)
+        if ($.inArray(people, Object.keys(array_flip(peoples))) == -1) {
+            ask(people + ' não está cadastrado. Deseja cadastrar?', askAddPessoa)
         } else {
-            askValor(pessoa)
+            var flip = array_flip(peoples)
+            fields.people_id.val(flip[people])
+            ask('Qual a categoria?', askCategory)
+            fields.category_id.focus()
         }
     }
 }
 
-function askValor(pessoa) {
-    fields.pessoa.val(pessoa)
-    ask('Qual o valor do documento?', askValorDocumento)
-    fields.valor.focus()
+function askCategory(error, r) {
+
+    if (error) {
+        ask('Tente de novo', askCategory)
+    } else {
+
+        category = r.out;
+
+        if ($.inArray(category, Object.keys(array_flip(categories))) == -1) {
+            ask('Categoria "' + category + '" não está cadastrada. Deseja cadastrar?', askAddCategory)
+        } else {
+            var flip = array_flip(categories)
+            fields.category_id.val(flip[category])
+            fields.value.focus()
+            ask('Qual o valor do documento?', askValorDocumento)
+        }
+    }
+}
+
+function askAddCategory(error, r) {
+    if (error) {
+        ask('Tente de novo', askAddPessoa)
+    } else {
+        if (r.out == 'sim') {
+            $('#add-category-link').click()
+            fields.category.val(category)
+            ask('Qual o valor do documento?', askValorDocumento)
+            fields.value.focus()
+        } else if (r.out == 'não') {
+            ask('Diga o nome de outra categoria', askCategory)
+        } else {
+            ask('Responda "sim" ou "não"', askAddPessoa)
+        }
+    }
 }
 
 function askAddPessoa(error, r) {
@@ -65,8 +114,10 @@ function askAddPessoa(error, r) {
         ask('Tente de novo', askAddPessoa)
     } else {
         if (r.out == 'sim') {
-            speak(pessoa + ' foi cadastrada.')
-            askValor(pessoa)
+            $('#add-people-link').click()
+            fields.people.val(people)
+            ask('Qual a categoria?', askCategory)
+            fields.category_id.focus()
         } else if (r.out == 'não') {
             ask('Diga o nome de outra pessoa', askPessoa)
         } else {
@@ -79,11 +130,11 @@ function askValorDocumento(error, r) {
     if (error) {
         ask('Tente de novo', askValorDocumento)
     } else {
-        var value = parseFloat(r.out.replace('r$ ', ''))
+        var value = parseFloat(r.out.replace('r$ ', '').replace(',', '.'))
         console.log('valor', value)
-        fields.valor.val(value)
+        fields.value.val(value)
         ask('Qual a data de vencimento?', askDataVencimento)
-        fields.vencimento.focus()
+        fields.data_vencimento.focus()
     }
 }
 
@@ -95,14 +146,14 @@ function askDataVencimento(error, r) {
         var date = r.out
 
         if (inDataList(date)) {
-            fields.vencimento.val(dates[date])
+            fields.data_vencimento.val(dates[date])
             submit()
         } else {
             date = date.replace(/ de /gi, ' ')
             date = Date.parse(date)
 
             if (date) {
-                fields.vencimento.val(date.toString('yyyy-MM-dd'))
+                fields.data_vencimento.val(date.toString('yyyy-MM-dd'))
                 submit()
             } else {
                 ask('A data de vencimento pode ser: "' + Object.keys(dates).join('", "') + '". Ou, por exemplo "10 de janeiro de 2002"', askDataVencimento)
@@ -116,12 +167,12 @@ function askSubmit(error, r) {
         ask('Tente de novo', askSubmit)
     } else {
         if (r.out == 'sim') {
-            speak('Lançamento salvo com sucesso')
-            ask('Deseja fazer outro lançamento?', askStart)
-            clearForm()
+            $('[type=submit]').click()
+                // speak('Lançamento salvo com sucesso')
+                // ask('Deseja fazer outro lançamento?', askStart)
+                // clearForm()
         } else if (r.out == 'não') {
             ask('Deseja fazer outro lançamento?', askStart)
-            clearForm()
         } else {
             ask('Vai salvar esta misera "sim" ou "não".', askSubmit)
         }
@@ -143,24 +194,15 @@ function askStart(error, r) {
 }
 
 function clearForm() {
-    fields.natureza.val('')
-    fields.pessoa.val('')
-    fields.valor.val('')
-    fields.vencimento.val('')
+    fields.natureza.val(1)
+    fields.people.val('')
+    fields.value.val('')
+    fields.data_emissao.val('')
+    fields.data_vencimento.val('')
+    fields.data_liquidacao.val('')
+    fields.description.val('')
 }
 
 function submit() {
-    ask('Confirmar ' + strNatureza(fields.natureza.val(), fields.pessoa.val()) + ', no valor de ' + fields.valor.val() + ' para ' + Date.parse(fields.vencimento.val()).toString('dd/MM/yyyy'), askSubmit)
-}
-
-function strNatureza(natureza, pessoa) {
-    if (natureza == 'receita') {
-        return 'Recebimento de ' + pessoa
-    }
-
-    return 'Pagamento para ' + pessoa
-}
-
-function inDataList(date) {
-    return $.inArray(date, Object.keys(dates)) != -1
+    ask('Confirmar ' + strNatureza(fields.natureza.val(), people) + ', no valor de R$ ' + fields.value.val() + ' para ' + Date.parse(fields.data_vencimento.val()).toString('dd/MM/yyyy'), askSubmit)
 }

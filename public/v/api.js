@@ -64,3 +64,36 @@ function speak(text, callback) {
 
     speechSynthesis.speak(speech);
 }
+
+function strNatureza(natureza, people) {
+    if (natureza == 'receita') {
+        return 'Recebimento de ' + people
+    }
+
+    return 'Pagamento para ' + people
+}
+
+function inDataList(date) {
+    return $.inArray(date, Object.keys(dates)) != -1
+}
+
+function extractSelect(name, output) {
+
+    $('[name=' + name + '] option').map(function (i, e) {
+        if ($(e).attr('value')) {
+            output[$(e).attr('value')] = $(e).text().toLowerCase()
+        }
+    }).filter(e => e)
+}
+
+function array_flip(trans) {
+    var key, tmp_ar = {};
+
+    for (key in trans) {
+        if (trans.hasOwnProperty(key)) {
+            tmp_ar[trans[key]] = key;
+        }
+    }
+
+    return tmp_ar;
+}

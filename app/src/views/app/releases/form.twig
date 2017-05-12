@@ -90,8 +90,18 @@
     			<button {% if data.id %} onclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn btn-primary" type="submit">Salvar</button>
 
     			<a class="btn btn-link" href="/app/releases">Voltar</a>
+
+                <button type="button" class="btn btn-link" onclick="start()">Comando de Voz</button><br><br>
     		</div>
     	</div>
     </form>
+
+    <script type="text/javascript" src="/v/jquery-3.2.1.slim.min.js"></script>
+
+    <script type="text/javascript" src="/v/date.js"></script>
+    <script type="text/javascript" src="/v/date-pt-BR.js"></script>
+
+    <script type="text/javascript" src="/v/api.js"></script>
+    <script type="text/javascript" src="/v/app.js"></script>
 
 {% endblock %}

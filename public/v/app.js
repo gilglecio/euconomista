@@ -49,8 +49,8 @@ function start(voice) {
         $('#btn-start').addClass('btn-danger')
 
         ask('Recebimento ou Pagamento?', askNatureza)
-        fields.voice.val('ADD_RELEASE')
         fields.natureza.focus()
+        fields.voice.val('ADD_RELEASE')
     }
 }
 
@@ -75,6 +75,12 @@ function askPessoa(error, answer) {
     if (error) {
         ask('Tente de novo', askPessoa)
     } else {
+
+        if (answer == 'editar natureza') {
+            ask('Recebimento ou Pagamento?', askNatureza)
+            fields.natureza.focus()
+            return
+        }
 
         people = answer;
 
@@ -113,6 +119,13 @@ function askAddCategory(error, answer) {
     if (error) {
         ask('Tente de novo', askAddCategory)
     } else {
+
+        if (answer == 'editar pessoa') {
+            ask('Quem é a pessoa?', askPessoa)
+            fields.people_id.focus()
+            return
+        }
+
         if (answer == 'sim') {
             $('#add-category-link').click()
             fields.category.val(category)
@@ -147,11 +160,18 @@ function askValorDocumento(error, answer) {
     if (error) {
         ask('Tente de novo', askValorDocumento)
     } else {
+
+        if (answer == 'editar categoria') {
+            ask('Qual a categoria?', askCategory)
+            fields.category_id.focus()
+            return
+        }
+
         var value = parseFloat(answer.replace('r$ ', '').replace(',', '.'))
         console.log('valor', value)
 
         if (isNaN(value)) {
-            ask('Apenas centavos eu não entendo, diga um valor maior que R$ 1 real', askValorDocumento)
+            ask('Apenas centavos eu não entendo, diga um valor maior que R$ 1', askValorDocumento)
         } else {
             
             fields.value.val(value)
@@ -165,6 +185,12 @@ function askDataVencimento(error, answer) {
     if (error) {
         ask('Tente de novo', askDataVencimento)
     } else {
+
+        if (answer == 'editar valor') {
+            ask('Qual o valor do documento?', askValorDocumento)
+            fields.value.focus()
+            return
+        }
 
         var date = answer
 

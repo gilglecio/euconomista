@@ -16,8 +16,7 @@ function ask(text, callback) {
             console.log('ERROR', e)
             if (callback) {
                 recognition.stop()
-                $('#output').html('')
-                $('#btn-start').removeClass('btn-danger')
+                clearOutput()
                 callback('não entendo');
             }
         };
@@ -29,19 +28,19 @@ function ask(text, callback) {
                 var out = e.results[0][0].transcript.toLowerCase()
                 console.log('OUT', out)
                 recognition.stop()
-                $('#output').html('')
-                $('#btn-start').removeClass('btn-danger')
-                callback(null, {
-                    out: out,
-                    confidence: e.results[0][0].confidence
-                });
+                clearOutput()
+                callback(null, out)
+                // callback(null, {
+                //     out: out,
+                //     confidence: e.results[0][0].confidence
+                // });
             }
         }
 
         $('#btn-start').addClass('btn-danger')
 
         // start listening
-        recognition.start();
+        recognition.start()
     });
 }
 
@@ -73,6 +72,11 @@ function speak(text, callback) {
     console.log('speak')
 
     speechSynthesis.speak(speech);
+}
+
+function clearOutput() {
+    $('#output').html('')
+    $('#btn-start').removeClass('btn-danger')
 }
 
 function strNatureza(natureza, people) {

@@ -48,7 +48,7 @@ function start(voice) {
 
         $('#btn-start').addClass('btn-danger')
 
-        ask('Receita ou Despesa?', askNatureza)
+        ask('Recebimento ou Pagamento?', askNatureza)
         fields.voice.val('ADD_RELEASE')
         fields.natureza.focus()
     }
@@ -60,12 +60,12 @@ function askNatureza(error, answer) {
         ask('Tente de novo', askNatureza)
     } else {
 
-        if (answer == 'receita' || answer == 'despesa') {
-            fields.natureza.val(answer == 'receita' ? 1 : 2)
+        if (answer == 'recebimento' || answer == 'pagamento') {
+            fields.natureza.val(answer == 'recebimento' ? 1 : 2)
             ask('Quem é a pessoa?', askPessoa)
             fields.people_id.focus()
         } else {
-            ask('Responda "Receita" ou "Despesa"', askNatureza)
+            ask('Responda "Recebimento" ou "Pagamento"', askNatureza)
         }
     }
 }

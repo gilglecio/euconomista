@@ -32,6 +32,15 @@
 
     <form class="form-horizontal" method="post" action="/app/releases">
 
+        <div class="form-group">
+            <div class="col-xs-9 col-xs-offset-3">
+                <button title="Clique para iniciar" type="button" id="btn-start" class="btn btn-default" onclick="start()">
+                    <img src="/assets/microphone.png" width="25">
+                    <span id="output"></span>
+                </button>
+            </div>
+        </div>
+
         <input type="hidden" name="id" value="{{ data.id }}">
 		<input type="hidden" name="voice" value="">
 
@@ -95,8 +104,6 @@
     			<button {% if data.id %} onclick="return confirm('Confirma a edição do lançamento nº {{ data.number }}?')" {% endif %} class="btn btn-primary" type="submit">Salvar</button>
 
     			<a class="btn btn-link" href="/app/releases">Voltar</a>
-
-                <button type="button" class="btn btn-link" onclick="start()">Comando de Voz</button><br><br>
     		</div>
     	</div>
     </form>

@@ -36,10 +36,17 @@ var fields = {
 
 function start(voice) {
 
+    if (!('webkitSpeechRecognition' in window)) {
+        alert('Este navegador não tem suporte, use o Chrome!');
+        return
+    }
+
     if (voice == 'ADDED_RELEASE') {
         speak('Lançamento salvo com sucesso')
         ask('Deseja fazer outro lançamento?', askStart)
     } else {
+
+        $('#btn-start').addClass('btn-danger')
 
         ask('Receita ou Despesa?', askNatureza)
         fields.voice.val('ADD_RELEASE')

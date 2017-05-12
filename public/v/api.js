@@ -5,6 +5,8 @@ function ask(text, callback) {
 
         console.log(text, 'Aguardando resosta...')
 
+        $('#output').html('&nbsp;&nbsp;&nbsp;' + text)
+
         // get answer
         var recognition = new webkitSpeechRecognition();
         recognition.continuous = false;
@@ -14,6 +16,8 @@ function ask(text, callback) {
             console.log('ERROR', e)
             if (callback) {
                 recognition.stop()
+                $('#output').html('')
+                $('#btn-start').removeClass('btn-danger')
                 callback('não entendo');
             }
         };
@@ -25,12 +29,16 @@ function ask(text, callback) {
                 var out = e.results[0][0].transcript.toLowerCase()
                 console.log('OUT', out)
                 recognition.stop()
+                $('#output').html('')
+                $('#btn-start').removeClass('btn-danger')
                 callback(null, {
                     out: out,
                     confidence: e.results[0][0].confidence
                 });
             }
         }
+
+        $('#btn-start').addClass('btn-danger')
 
         // start listening
         recognition.start();

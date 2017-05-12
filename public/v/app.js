@@ -57,8 +57,10 @@ function start(voice) {
 function askNatureza(error, answer) {
 
     if (error) {
-        ask('Tente de novo', askNatureza)
+        denovo(askNatureza)
     } else {
+
+        delete attemps.askNatureza
 
         if (answer == 'recebimento' || answer == 'pagamento') {
             fields.natureza.val(answer == 'recebimento' ? 1 : 2)
@@ -73,8 +75,10 @@ function askNatureza(error, answer) {
 function askPessoa(error, answer) {
 
     if (error) {
-        ask('Tente de novo', askPessoa)
+        denovo(askPessoa)
     } else {
+
+        delete attemps.askPessoa
 
         if (answer == 'editar natureza') {
             ask('Recebimento ou Pagamento?', askNatureza)
@@ -98,8 +102,10 @@ function askPessoa(error, answer) {
 function askCategory(error, answer) {
 
     if (error) {
-        ask('Tente de novo', askCategory)
+        denovo(askCategory)
     } else {
+
+        delete attemps.askCategory
 
         category = answer;
 
@@ -117,8 +123,10 @@ function askCategory(error, answer) {
 function askAddCategory(error, answer) {
 
     if (error) {
-        ask('Tente de novo', askAddCategory)
+        denovo(askAddCategory)
     } else {
+
+        delete attemps.askAddCategory
 
         if (answer == 'editar pessoa') {
             ask('Quem é a pessoa?', askPessoa)
@@ -141,8 +149,11 @@ function askAddCategory(error, answer) {
 
 function askAddPessoa(error, answer) {
     if (error) {
-        ask('Tente de novo', askAddPessoa)
+        denovo(askAddPessoa)
     } else {
+
+        delete attemps.askAddPessoa
+
         if (answer == 'sim') {
             $('#add-people-link').click()
             fields.people.val(people)
@@ -158,8 +169,10 @@ function askAddPessoa(error, answer) {
 
 function askValorDocumento(error, answer) {
     if (error) {
-        ask('Tente de novo', askValorDocumento)
+        denovo(askValorDocumento)
     } else {
+
+        delete attemps.askValorDocumento
 
         if (answer == 'editar categoria') {
             ask('Qual a categoria?', askCategory)
@@ -173,7 +186,7 @@ function askValorDocumento(error, answer) {
         if (isNaN(value)) {
             ask('Apenas centavos eu não entendo, diga um valor maior que R$ 1', askValorDocumento)
         } else {
-            
+
             fields.value.val(value)
             ask('Qual a data de vencimento?', askDataVencimento)
             fields.data_vencimento.focus()
@@ -181,10 +194,52 @@ function askValorDocumento(error, answer) {
     }
 }
 
+var attemps = {}
+
+function denovo(callback) {
+
+    var fn = functionName(callback)
+    var askstr = 'Tente de novo'
+
+    if (attemps[fn] == 1) {
+        askstr = 'Ta difícil! Bem devagar... repita novamente'
+    }
+
+    if (attemps[fn] == 2) {
+        askstr = 'Vamos ficar aqui até o brasil ganhar a copa? Vai, De novo...'
+    }
+
+    if (attemps[fn] >= 3) {
+        speak('Deu ruim, vou recarregar a página', function () {
+            location.reload()
+        })
+        return
+    }
+
+    if (!attemps[fn]) {
+        attemps[fn] = 0
+    }
+
+    attemps[fn]++
+
+    console.log('attemps', attemps)
+
+    ask(askstr, callback)
+}
+
+function functionName(fun) {
+    var ret = fun.toString();
+    ret = ret.substr('function '.length);
+    ret = ret.substr(0, ret.indexOf('('));
+    return ret;
+}
+
 function askDataVencimento(error, answer) {
     if (error) {
-        ask('Tente de novo', askDataVencimento)
+        denovo(askDataVencimento)
     } else {
+        
+        delete attemps.askDataVencimento
 
         if (answer == 'editar valor') {
             ask('Qual o valor do documento?', askValorDocumento)
@@ -213,7 +268,7 @@ function askDataVencimento(error, answer) {
 
 function askSubmit(error, answer) {
     if (error) {
-        ask('Tente de novo', askSubmit)
+        denovo(askSubmit)
     } else {
         if (answer == 'sim' || answer == 'concerteza') {
             $('[type=submit]').click()
@@ -227,7 +282,7 @@ function askSubmit(error, answer) {
 
 function askStart(error, answer) {
     if (error) {
-        ask('Tente de novo', askStart)
+        denovo(askStart)
     } else {
         if (answer == 'sim' || answer == 'vamos nessa') {
             location.href = location.href.split('?')[0] + '?voice=ADD_RELEASE';

@@ -51,7 +51,7 @@ function speak(text, callback) {
     speech.text = text;
     speech.lang = 'pt-BR';
     speech.rate = 1.3;
-    speech.pitch = .55;
+    // speech.pitch = .55;
 
     speech.onend = function () {
         console.log('speech end')

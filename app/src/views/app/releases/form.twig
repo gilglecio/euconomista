@@ -12,6 +12,10 @@
     	$(this).closest('.form-group').remove();
     	el.find('input').focus();
     })
+
+    {% if voice %}
+        start('{{ voice }}')
+    {% endif %}
 	</script>
 {% endblock %}
 
@@ -28,7 +32,8 @@
 
     <form class="form-horizontal" method="post" action="/app/releases">
 
-		<input type="hidden" name="id" value="{{ data.id }}">
+        <input type="hidden" name="id" value="{{ data.id }}">
+		<input type="hidden" name="voice" value="">
 
     	<div class="form-group">
     		<label for="natureza" class="control-label no-padding-right col-xs-3">Natureza</label>

@@ -30,12 +30,21 @@ var fields = {
     data_vencimento: $('[name=data_vencimento]'),
     data_liquidacao: $('[name=data_liquidacao]'),
 
-    description: $('[name=description]')
+    description: $('[name=description]'),
+    voice: $('[name=voice]')
 }
 
-function start() {
-    ask('Receita ou Despesa?', askNatureza)
-    fields.natureza.focus()
+function start(voice) {
+
+    if (voice == 'ADDED_RELEASE') {
+        speak('Lançamento salvo com sucesso')
+        ask('Deseja fazer outro lançamento?', askStart)
+    } else {
+
+        ask('Receita ou Despesa?', askNatureza)
+        fields.voice.val('ADD_RELEASE')
+        fields.natureza.focus()
+    }
 }
 
 function askNatureza(error, r) {
@@ -168,13 +177,10 @@ function askSubmit(error, r) {
     } else {
         if (r.out == 'sim') {
             $('[type=submit]').click()
-                // speak('Lançamento salvo com sucesso')
-                // ask('Deseja fazer outro lançamento?', askStart)
-                // clearForm()
         } else if (r.out == 'não') {
             ask('Deseja fazer outro lançamento?', askStart)
         } else {
-            ask('Vai salvar esta misera "sim" ou "não".', askSubmit)
+            ask('Vai salvar "sim" ou "não".', askSubmit)
         }
     }
 }
@@ -184,9 +190,10 @@ function askStart(error, r) {
         ask('Tente de novo', askStart)
     } else {
         if (r.out == 'sim') {
-            start()
+            location.href = location.href.split('?')[0] + '?voice=ADD_RELEASE';
         } else if (r.out == 'não') {
             speak('Fico a disposição, obrigada!')
+            location.href = '/app'
         } else {
             ask('Deseja fazer outro lançamento?', askStart)
         }
@@ -204,5 +211,5 @@ function clearForm() {
 }
 
 function submit() {
-    ask('Confirmar ' + strNatureza(fields.natureza.val(), people) + ', no valor de R$ ' + fields.value.val() + ' para ' + Date.parse(fields.data_vencimento.val()).toString('dd/MM/yyyy'), askSubmit)
+    ask('Confirmar ' + strNatureza(fields.natureza.val(), people) + ', no valor de R$ ' + fields.value.val().replace(',', ' reais ') + ' para ' + Date.parse(fields.data_vencimento.val()).toString('dd/MM/yyyy'), askSubmit)
 }

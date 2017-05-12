@@ -176,12 +176,16 @@ final class ReleasesController extends Controller
 
         $data['title'] = 'Novo Lançamento';
 
-        if ($args['release_id']) {
+        if (isset($args['release_id'])) {
             $data['title'] = 'Lançamento nº ' . $data['data']['number'];
         }
 
         $data['categories'] = Category::find('all', ['order' => 'name asc']);
         $data['peoples'] = People::find('all', ['order' => 'name asc']);
+
+        if ($voice = $request->getQueryParam('voice')) {
+            $data['voice'] = $voice;
+        }
 
         $this->view->render($response, 'app/releases/form.twig', $data);
         
@@ -229,6 +233,8 @@ final class ReleasesController extends Controller
      */
     public function save(Request $request, Response $response, array $args)
     {
+        $voice = $request->getParsedBodyParam('voice');
+
         try {
             $fields = [
                 'id' => $request->getParsedBodyParam('id'),
@@ -259,6 +265,10 @@ final class ReleasesController extends Controller
         }
 
         $this->success('Sucesso!');
+
+        if ($voice == 'ADD_RELEASE') {
+            return $response->withRedirect('/app/releases/form?voice=ADDED_RELEASE');    
+        }
 
         return $response->withRedirect('/app/releases');
     }

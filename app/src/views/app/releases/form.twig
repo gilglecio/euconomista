@@ -12,10 +12,6 @@
     	$(this).closest('.form-group').remove();
     	el.find('input').focus();
     })
-
-    {% if voice %}
-        start('{{ voice }}')
-    {% endif %}
 	</script>
 {% endblock %}
 
@@ -115,5 +111,13 @@
 
     <script type="text/javascript" src="/v/api.js"></script>
     <script type="text/javascript" src="/v/app.js"></script>
+
+    <script type="text/javascript">
+        {% if voice %}
+            setTimeout(function () {
+                start('{{ voice }}')
+            }, 1000)
+        {% endif %}
+    </script>
 
 {% endblock %}

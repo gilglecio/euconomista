@@ -54,14 +54,14 @@ function start(voice) {
     }
 }
 
-function askNatureza(error, r) {
+function askNatureza(error, answer) {
 
     if (error) {
-        ask('Tente de novo', askPessoa)
+        ask('Tente de novo', askNatureza)
     } else {
 
-        if (r.out == 'receita' || r.out == 'despesa') {
-            fields.natureza.val(r.out == 'receita' ? 1 : 2)
+        if (answer == 'receita' || answer == 'despesa') {
+            fields.natureza.val(answer == 'receita' ? 1 : 2)
             ask('Quem é a pessoa?', askPessoa)
             fields.people_id.focus()
         } else {
@@ -70,13 +70,13 @@ function askNatureza(error, r) {
     }
 }
 
-function askPessoa(error, r) {
+function askPessoa(error, answer) {
 
     if (error) {
         ask('Tente de novo', askPessoa)
     } else {
 
-        people = r.out;
+        people = answer;
 
         if ($.inArray(people, Object.keys(array_flip(peoples))) == -1) {
             ask(people + ' não está cadastrado. Deseja cadastrar?', askAddPessoa)
@@ -89,13 +89,13 @@ function askPessoa(error, r) {
     }
 }
 
-function askCategory(error, r) {
+function askCategory(error, answer) {
 
     if (error) {
         ask('Tente de novo', askCategory)
     } else {
 
-        category = r.out;
+        category = answer;
 
         if ($.inArray(category, Object.keys(array_flip(categories))) == -1) {
             ask('Categoria "' + category + '" não está cadastrada. Deseja cadastrar?', askAddCategory)
@@ -108,16 +108,17 @@ function askCategory(error, r) {
     }
 }
 
-function askAddCategory(error, r) {
+function askAddCategory(error, answer) {
+
     if (error) {
-        ask('Tente de novo', askAddPessoa)
+        ask('Tente de novo', askAddCategory)
     } else {
-        if (r.out == 'sim') {
+        if (answer == 'sim') {
             $('#add-category-link').click()
             fields.category.val(category)
             ask('Qual o valor do documento?', askValorDocumento)
             fields.value.focus()
-        } else if (r.out == 'não') {
+        } else if (answer == 'não') {
             ask('Diga o nome de outra categoria', askCategory)
         } else {
             ask('Responda "sim" ou "não"', askAddPessoa)
@@ -125,16 +126,16 @@ function askAddCategory(error, r) {
     }
 }
 
-function askAddPessoa(error, r) {
+function askAddPessoa(error, answer) {
     if (error) {
         ask('Tente de novo', askAddPessoa)
     } else {
-        if (r.out == 'sim') {
+        if (answer == 'sim') {
             $('#add-people-link').click()
             fields.people.val(people)
             ask('Qual a categoria?', askCategory)
             fields.category_id.focus()
-        } else if (r.out == 'não') {
+        } else if (answer == 'não') {
             ask('Diga o nome de outra pessoa', askPessoa)
         } else {
             ask('Responda "sim" ou "não"', askAddPessoa)
@@ -142,24 +143,30 @@ function askAddPessoa(error, r) {
     }
 }
 
-function askValorDocumento(error, r) {
+function askValorDocumento(error, answer) {
     if (error) {
         ask('Tente de novo', askValorDocumento)
     } else {
-        var value = parseFloat(r.out.replace('r$ ', '').replace(',', '.'))
+        var value = parseFloat(answer.replace('r$ ', '').replace(',', '.'))
         console.log('valor', value)
-        fields.value.val(value)
-        ask('Qual a data de vencimento?', askDataVencimento)
-        fields.data_vencimento.focus()
+
+        if (isNaN(value)) {
+            ask('Apenas centavos eu não entendo, diga um valor maior que R$ 1 real', askValorDocumento)
+        } else {
+            
+            fields.value.val(value)
+            ask('Qual a data de vencimento?', askDataVencimento)
+            fields.data_vencimento.focus()
+        }
     }
 }
 
-function askDataVencimento(error, r) {
+function askDataVencimento(error, answer) {
     if (error) {
         ask('Tente de novo', askDataVencimento)
     } else {
 
-        var date = r.out
+        var date = answer
 
         if (inDataList(date)) {
             fields.data_vencimento.val(dates[date])
@@ -178,13 +185,13 @@ function askDataVencimento(error, r) {
     }
 }
 
-function askSubmit(error, r) {
+function askSubmit(error, answer) {
     if (error) {
         ask('Tente de novo', askSubmit)
     } else {
-        if (r.out == 'sim') {
+        if (answer == 'sim' || answer == 'concerteza') {
             $('[type=submit]').click()
-        } else if (r.out == 'não') {
+        } else if (answer == 'não') {
             ask('Deseja fazer outro lançamento?', askStart)
         } else {
             ask('Vai salvar "sim" ou "não".', askSubmit)
@@ -192,13 +199,13 @@ function askSubmit(error, r) {
     }
 }
 
-function askStart(error, r) {
+function askStart(error, answer) {
     if (error) {
         ask('Tente de novo', askStart)
     } else {
-        if (r.out == 'sim') {
+        if (answer == 'sim' || answer == 'vamos nessa') {
             location.href = location.href.split('?')[0] + '?voice=ADD_RELEASE';
-        } else if (r.out == 'não') {
+        } else if (answer == 'não') {
             speak('Fico a disposição, obrigada!')
             location.href = '/app'
         } else {

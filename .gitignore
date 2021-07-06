@@ -1,4 +1,5 @@
 vendor/
+.mysql
 log/*
 cache/*
 *.local

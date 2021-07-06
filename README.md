@@ -1,3 +1,8 @@
+# Version
+
+PHP 5.5.9 CLI
+MYSQL 5.5.62
+
 # EuConomista
 
 - clone repo

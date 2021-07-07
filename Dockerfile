@@ -1,13 +1,12 @@
 FROM debian:jessie
 
-VOLUME ["/var/www"]
-
 RUN apt-get update && \
     apt-get install -y \
       locales \
       apache2 \
       php5 \
       curl \
+      git \
       php5-cli \
       libapache2-mod-php5 \
       php5-gd \
@@ -19,7 +18,8 @@ RUN apt-get update && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN apt-get install -y node npm
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs --force-yes
 RUN npm install -g bower
 
 COPY apache_default /etc/apache2/sites-available/000-default.conf

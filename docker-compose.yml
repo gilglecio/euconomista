@@ -2,11 +2,11 @@ version: '3'
 
 services:
   api:
-    # env_file:
-    #   - ./.env
     build: .
     container_name: euconomista_api
     working_dir: /var/www
+    depends_on:
+      - mysql
     volumes:
       - .:/var/www
     ports:
@@ -17,9 +17,9 @@ services:
     image: mysql:5.6
     container_name: euconomista_db
     volumes:
-      - ./.mysql:/var/lib/mysql
+      - mysqldbvolume:/var/lib/mysql
     ports:
-      - "3308:3306"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=euconomista
       - MYSQL_DATABASE=euconomista
@@ -30,3 +30,7 @@ services:
 networks:
   euconomista:
     external: true
+
+volumes:
+  mysqldbvolume:
+    driver: local

@@ -3,6 +3,7 @@ return [
     'settings' => [
         // comment this line when deploy to production environment
         'displayErrorDetails' => true,
+        'addContentLengthHeader' => false,
         // View settings
         'view' => [
             'template_path' => __DIR__ . '/src/views',

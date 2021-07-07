@@ -21,10 +21,10 @@ $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/app/src/'], 
  * @var EntityManager
  */
 $entityManager = EntityManager::create([
-    'dbname' => $db->dbname,
-    'user' => $db->username,
-    'password' => $db->password,
-    'host' => $db->host,
+    'dbname' => $db['dbname'],
+    'user' => $db['username'],
+    'password' => $db['password'],
+    'host' => $db['host'],
     'driver' => 'mysqli',
 ], $config);
 

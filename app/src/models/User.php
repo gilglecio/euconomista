@@ -135,6 +135,7 @@ class User extends Model implements UserAuthInterface
             'entity' => isset($fields['entity']) ? $fields['entity'] : null,
             'name' => $fields['name'],
             'email' => $fields['email'],
+            'status' => 1, // USUÁRIO CONFIRMADO
             'password' => $fields['password']
         ]);
 

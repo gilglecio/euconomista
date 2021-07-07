@@ -9,6 +9,7 @@
     #ServerName www.example.com
 
     ServerAdmin webmaster@localhost
+
     DocumentRoot /var/www/public
 
     <Directory /var/www/public>

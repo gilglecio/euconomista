@@ -31,7 +31,7 @@ use ActiveRecord\Config;
 $settings = require __DIR__ . '/app/settings.php';
 $env = require __DIR__ . '/app/env.php';
 
-$settings['settings'] = array_merge($settings['settings'], (array) $env);
+$settings['settings'] = array_merge($settings['settings'], $env);
 
 Config::initialize(function ($cfg) use ($settings) {
     $db = $settings['settings']['db'];
@@ -41,20 +41,20 @@ Config::initialize(function ($cfg) use ($settings) {
         // 'development' => 'mysql://username:password@localhost/database_name'
         'test' => sprintf(
             '%s://%s:%s@%s/%s?charset=utf8',
-            $db->driver,
-            $db->username,
-            $db->password,
-            $db->host,
-            $db->dbname . '_test'
+            $db['driver'],
+            $db['username'],
+            $db['password'],
+            $db['host'],
+            $db['dbname'] . '_test'
         ),
 
         'development' => sprintf(
             '%s://%s:%s@%s/%s?charset=utf8',
-            $db->driver,
-            $db->username,
-            $db->password,
-            $db->host,
-            $db->dbname
+            $db['driver'],
+            $db['username'],
+            $db['password'],
+            $db['host'],
+            $db['dbname']
         )
     ]);
 

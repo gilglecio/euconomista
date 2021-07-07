@@ -40,11 +40,11 @@ $container['mailer'] = function ($c) {
 
     $settings = $c->get('settings');
 
-    $mailer->Host       = $settings['mailer']->host;
-    $mailer->Username   = $settings['mailer']->username;
-    $mailer->Password   = $settings['mailer']->password;
-    $mailer->Port       = $settings['mailer']->port;
-    $mailer->SMTPSecure = $settings['mailer']->secure;
+    $mailer->Host       = $settings['mailer']['host'];
+    $mailer->Username   = $settings['mailer']['username'];
+    $mailer->Password   = $settings['mailer']['password'];
+    $mailer->Port       = $settings['mailer']['port'];
+    $mailer->SMTPSecure = $settings['mailer']['secure'];
 
     $mailer->SMTPAuth = true;
     $mailer->SMTPDebug = true;

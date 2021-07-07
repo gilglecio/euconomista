@@ -1,5 +1,0 @@
-#!/bin/bash
-
-rm log/app.log
-
-php -S localhost:3000 -t public .htrouter.php

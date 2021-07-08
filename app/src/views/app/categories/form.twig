@@ -33,7 +33,7 @@
 	    		<div class="col-xs-9 col-xs-offset-3">
 	    			<button {% if data.id %}onclick="return confirm('Confirma a edição de \'{{ data.name }}\'?')"{% endif %} class="btn btn-primary" type="submit">Salvar</button>
 
-	    			<a class="btn btn-link" href onclick="history.back()">Voltar</a>
+	    			<a class="btn btn-link" href="javascript:history.go(-1)">Voltar</a>
 	    		</div>
 	    	</div>
 	    </form>

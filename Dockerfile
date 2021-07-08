@@ -27,5 +27,10 @@ COPY run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 RUN a2enmod rewrite
 
+WORKDIR /var/www
+
+RUN mkdir log && chmod -r 777 log
+RUN mkdir cache && chmod -r 777 cache
+
 EXPOSE 80
 CMD ["/usr/local/bin/run"]

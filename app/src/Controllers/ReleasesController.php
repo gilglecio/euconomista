@@ -50,12 +50,24 @@ final class ReleasesController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $current = new \Datetime($args['date']);
+        $today_year = (int) (new \Datetime())->format('Y');
 
         $prev_month = clone $current;
         $next_month = clone $current;
 
         $prev_month->sub(new \Dateinterval('P1M'));
         $next_month->add(new \Dateinterval('P1M'));
+
+        $prev_month_year = '';
+        $next_month_year = '';
+
+        if ((int) $prev_month->format('Y') != $today_year) {
+            $prev_month_year = ' ' . $prev_month->format('Y');
+        }
+
+        if ((int) $next_month->format('Y') != $today_year) {
+            $next_month_year = ' ' . $next_month->format('Y');
+        }
 
         $condition = '((status = 1 and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))';
 
@@ -83,7 +95,6 @@ final class ReleasesController extends Controller
             'value' => 0,
             'color' => null,
         ];
-
 
         foreach ($rows as $row) {
             $balance['value'] += $row['_value'];
@@ -127,11 +138,11 @@ final class ReleasesController extends Controller
 
             'prev' => [
                 'link' => $prev_month->format('Y-m'),
-                'month' => Toolkit::monthBr($prev_month->format('M'))
+                'month' => Toolkit::monthBr($prev_month->format('M')) . $prev_month_year
             ],
             'next' => [
                 'link' => $next_month->format('Y-m'),
-                'month' => Toolkit::monthBr($next_month->format('M'))
+                'month' => Toolkit::monthBr($next_month->format('M')) . $next_month_year
             ],
         ]);
         

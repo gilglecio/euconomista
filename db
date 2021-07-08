@@ -2,4 +2,4 @@
 
 PARAMNS=$1
 
-./vendor/bin/doctrine-migrations migrations:$PARAMNS
+./vendor/doctrine/migrations/bin/doctrine-migrations migrations:$PARAMNS

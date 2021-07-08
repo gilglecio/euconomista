@@ -20,6 +20,7 @@
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/liquidar">Liquidar</a>
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/prorrogar">Prorrogar</a>
         <a class="btn btn-default" href="/app/releases/{{ release.id }}/parcelar">Parcelar</a>
+        <a class="btn btn-link" href="javascript:history.go(-1)">Voltar</a>
         {% endif %}
 
         {% if canDesfazer and not release.child_id %}

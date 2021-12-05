@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Category;
 use Domain\Category\Usecase\AddNewCategory;
 use Domain\Category\Usecase\CategoryInput;
+
 use App\Infra\PHPActiveRecord\AddNewCategoryRepository;
 use App\Infra\PHPActiveRecord\SearchCategoryRepository;
 

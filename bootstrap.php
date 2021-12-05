@@ -28,6 +28,8 @@ require $composer;
 use Slim\App;
 use ActiveRecord\Config;
 
+ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
+
 $settings = require __DIR__ . '/app/settings.php';
 $env = require __DIR__ . '/app/env.php';
 

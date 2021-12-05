@@ -14,7 +14,7 @@ services:
     network_mode: euconomista
 
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7
     container_name: euconomista_db
     volumes:
       - mysqldbvolume:/var/lib/mysql

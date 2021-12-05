@@ -16,6 +16,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 use Category;
+use Domain\Category\Usecase\AddNewCategory;
+use Domain\Category\Usecase\CategoryInput;
+use App\Infra\PHPActiveRecord\AddNewCategoryRepository;
+use App\Infra\PHPActiveRecord\SearchCategoryRepository;
 
 /**
  * Responsável pelas rotas de acesso as categorias.
@@ -95,11 +99,22 @@ final class CategoriesController extends Controller
     public function save(Request $request, Response $response, array $args)
     {
         try {
-            Category::generate([
-                'id' => $request->getParsedBodyParam('id'),
-                'name' => $request->getParsedBodyParam('name'),
-                'hexcolor' => $request->getParsedBodyParam('hexcolor'),
-            ]);
+
+            $saveCategoryRepository = new AddNewCategoryRepository;
+            $searchCategoryRepository = new SearchCategoryRepository;
+
+            $usecase = new AddNewCategory($saveCategoryRepository, $searchCategoryRepository);
+
+            $data = new CategoryInput();
+            $data->setName($request->getParsedBodyParam('name'));
+
+            $usecase->handle($data);
+
+            // Category::generate([
+            //     'id' => $request->getParsedBodyParam('id'),
+            //     'name' => $request->getParsedBodyParam('name'),
+            //     'hexcolor' => $request->getParsedBodyParam('hexcolor'),
+            // ]);
         } catch (\Exception $e) {
             return $this->redirectWithError($response, $e->getMessage(), '/app/categories/form');
         }

@@ -270,7 +270,7 @@ function askSubmit(error, answer) {
     if (error) {
         denovo(askSubmit)
     } else {
-        if (answer == 'sim' || answer == 'concerteza') {
+        if (answer == 'sim' || answer == 'com certeza') {
             $('[type=submit]').click()
         } else if (answer == 'não') {
             ask('Deseja fazer outro lançamento?', askStart)
@@ -287,7 +287,7 @@ function askStart(error, answer) {
         if (answer == 'sim' || answer == 'vamos nessa') {
             location.href = location.href.split('?')[0] + '?voice=ADD_RELEASE';
         } else if (answer == 'não') {
-            speak('Fico a disposição, obrigada!')
+            speak('Fico a disposição!')
             location.href = '/app'
         } else {
             ask('Deseja fazer outro lançamento?', askStart)

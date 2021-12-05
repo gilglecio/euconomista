@@ -1,5 +1,5 @@
 vendor/
-log/*
-cache/*
 /public/assets
 backups/*
+node_modules
+nodesource_setup.sh

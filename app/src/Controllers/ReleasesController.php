@@ -1,18 +1,5 @@
 <?php
 
-/**
- * ReleasesController class
- *
- * @package App\Controller
- * @version v1.0
- *
- * @uses Psr\Http\Message\ServerRequestInterface
- * @uses Psr\Http\Message\ResponseInterface
- * @uses App\Util\Toolkit
- * @uses Release
- * @uses People
- * @uses Category
- */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -24,29 +11,10 @@ use Release;
 use People;
 use Category;
 
-/**
- * Controller responsável pelas rotas de acesso e movimentação dos lançamentos.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class ReleasesController extends Controller
 {
-    /**
-     * Título da página
-     *
-     * @var string
-     */
     protected $title = 'Lançamentos';
 
-    /**
-     * Renderiza a grid de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function index(Request $request, Response $response, array $args)
     {
         $current = new \Datetime($args['date']);
@@ -71,9 +39,6 @@ final class ReleasesController extends Controller
 
         $condition = '((status = 1 and data_vencimento between ? and ?) or (data_vencimento < ? and status = 1 and \'' . date('Y-m') .'\' = \'' . $current->format('Y-m') . '\'))';
 
-        /**
-         * @var array
-         */
         $rows = Release::find('all', [
             'order' => 'status asc, data_vencimento asc',
             'conditions' => [
@@ -84,9 +49,6 @@ final class ReleasesController extends Controller
             ]
         ]);
 
-        /**
-         * @var array
-         */
         $rows = Release::gridFormat($rows);
 
         $extract = Release::extract($current->format('Y-m'));
@@ -149,15 +111,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulário para editar e adicionar novos lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @throws \Exception Lançamento não localizado.
-     * @return Response
-     */
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
@@ -203,14 +156,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulário agrupar lançamentos, e gerar um lançamento só.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @return Response
-     */
     public function group(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
@@ -233,15 +178,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Recebe o post do formulário de inclusão/edição de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function save(Request $request, Response $response, array $args)
     {
         $voice = $request->getParsedBodyParam('voice');
@@ -284,15 +220,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases');
     }
 
-    /**
-     * Recebe o post do formulário de agrupamento de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function saveGroup(Request $request, Response $response, array $args)
     {
         try {
@@ -325,33 +252,14 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases');
     }
 
-    /**
-     * Renderiza a grid com as alterações que o lançamento sofreu ao longo do tempo
-     * como emissão, e quitações.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @throws \Exception Lançamento não localizado.
-     * @return Response
-     */
     public function logs(Request $request, Response $response, array $args)
     {
-        /**
-         * @var Release
-         */
         if (! $release = Release::find($args['release_id'])) {
             throw new \Exception('Lançamento não localizado.');
         }
 
-        /**
-         * @var array
-         */
         $rows = $release->logs;
 
-        /**
-         * @var array
-         */
         $rows = array_map(function ($r) {
             $row = $r->to_array();
 
@@ -384,15 +292,6 @@ final class ReleasesController extends Controller
         ]);
     }
 
-    /**
-     * Renderiza o formulário para liquidação de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @throws \Exception Lançamento não localizado.
-     * @return Response
-     */
     public function liquidarForm(Request $request, Response $response, array $args)
     {
         if (! $release = Release::find($args['release_id'])) {
@@ -415,15 +314,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulário para prorrogação de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @throws \Exception Lançamento não localizado.
-     * @return Response
-     */
     public function prorrogarForm(Request $request, Response $response, array $args)
     {
         if (! $release = Release::find($args['release_id'])) {
@@ -446,15 +336,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulário para parcelamento de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     * @throws \Exception Lançamento não localizado.
-     * @return Response
-     */
     public function parcelarForm(Request $request, Response $response, array $args)
     {
         if (! $release = Release::find($args['release_id'])) {
@@ -481,16 +362,6 @@ final class ReleasesController extends Controller
         return $response;
     }
 
-    /**
-     * Recebe o post do formulário de prorrogacao e envia as informações passados
-     * da view para o model salvar no banco de dados.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function parcelar(Request $request, Response $response, array $args)
     {
         try {
@@ -513,16 +384,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
-    /**
-     * Recebe o post do formulário de liquidação e envia as informações passados
-     * da view para o model salvar no banco de dados.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function liquidar(Request $request, Response $response, array $args)
     {
         try {
@@ -545,16 +406,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
-    /**
-     * Recebe o post do formulário de prorrogacao e envia as informações passados
-     * da view para o model salvar no banco de dados.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function prorrogar(Request $request, Response $response, array $args)
     {
         try {
@@ -576,15 +427,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
-    /**
-     * Utilizada para desfazimento de ações feitas no lançamento. As ações são desfeitas da última para a primeira.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function desfazer(Request $request, Response $response, array $args)
     {
         try {
@@ -602,15 +444,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases/' . $args['release_id'] . '/logs');
     }
 
-    /**
-     * Cancela um agrupamento de lançamentos.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function ungroup(Request $request, Response $response, array $args)
     {
         try {
@@ -628,15 +461,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases');
     }
 
-    /**
-     * Utilizada para apagar um lançamento isolado.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function delete(Request $request, Response $response, array $args)
     {
         try {
@@ -654,15 +478,6 @@ final class ReleasesController extends Controller
         return $response->withRedirect('/app/releases');
     }
 
-    /**
-     * Utilizada para apagar todos os lançamentos que possuem vinculo entre si, este vículo é criado quando um lançamento parcelado.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function deleteAll(Request $request, Response $response, array $args)
     {
         try {

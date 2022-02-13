@@ -1,14 +1,5 @@
 <?php
 
-/**
- * SupportController class
- *
- * @package App\Controller
- * @version v1.0
- *
- * @uses Psr\Http\Message\ServerRequestInterface
- * @uses Psr\Http\Message\ResponseInterface
- */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -16,29 +7,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 use User;
 use App\Auth\AuthSession;
 
-/**
- * Support
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class SupportController extends Controller
 {
-    /**
-     * Título da página
-     *
-     * @var string
-     */
     protected $title = 'Suporte';
 
-    /**
-     * Renderiza a pagina dos relatórios.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
@@ -49,15 +21,6 @@ final class SupportController extends Controller
         return $response;
     }
 
-    /**
-     * Envia o e-mail para o suporte.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function send(Request $request, Response $response, array $args)
     {
         try {

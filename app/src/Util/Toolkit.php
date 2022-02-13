@@ -1,29 +1,9 @@
 <?php
 
-/**
- * Toolkit class
- *
- * @package App\Util
- * @subpackage
- * @version v1.0
- */
 namespace App\Util;
 
-/**
- * Kit de ferramentas útils.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class Toolkit
 {
-    /**
-     * Traduz os meses de inglês para português
-     *
-     * @author Gilglécio Santos de Oliveira <gilglecio_765@hotmail.com>
-     * @author Fernando Dutra Neres <fernando@inova2b.com.br>
-     * @param  string $month Mês com 3 dígitos em inglês
-     * @return string        Mês com 3 dígitos em português
-     */
     public static function monthBr($month)
     {
         return [
@@ -44,9 +24,6 @@ final class Toolkit
 
     /**
      * Retorna uma hash única e confiável.
-     *
-     * @param string $concat Usado para adicionar um sufixo a hash.
-     * @return string Hash sha1
      */
     public static function uniqHash($concat = '')
     {
@@ -55,10 +32,6 @@ final class Toolkit
 
     /**
      * Recebe um valor float e aplica formatação.
-     *
-     * @param float   $value     Valor para ser formatado.
-     * @param integer $precision Precisão das cadas decimaos, se não informada será 2.
-     * @return string Valor formatado.
      */
     public static function showMoney($value, $precision = 2)
     {
@@ -68,9 +41,6 @@ final class Toolkit
     /**
      * Recebe um valor formatado e remove a formatação.
      * Se o valor já extiver sem formatação, nada é feito.
-     *
-     * @param float   $value     Valor para remover a ser formatado.
-     * @return string Valor sem formatado.
      */
     public static function dbMoney($value)
     {

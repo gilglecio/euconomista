@@ -1,66 +1,32 @@
 <?php
 
-/**
- * Model User.
- */
-
 use App\Interfaces\UserAuthInterface;
 use App\Auth\AuthSession;
 
-/**
- * Esta classe faz referencia a tabela `users` no banco de dados.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 class User extends Model implements UserAuthInterface
 {
     const STATUS_UNCONFIRMED = 0;
     const STATUS_CONFIRMED = 1;
 
-    /**
-     * Validação de campos obrigatŕios.
-     *
-     * @var array
-     */
     public static $validates_presence_of = [
         ['name'],
         ['email'],
         ['password'],
     ];
 
-    /**
-     * Validação para saber se o email passado é válido.
-     *
-     * @var array
-     */
     public static $validates_format_of = [
         ['email', 'with' => '/^.*?@.*$/']
     ];
 
-    /**
-     * Validação para não permitir que exista dois usuários com dois emails iguais.
-     *
-     * @var array
-     */
     public static $validates_uniqueness_of = [
         ['email']
     ];
 
-    /**
-     * Validação para definir a quantidade de caracteres campo a campo.
-     *
-     * @var array
-     */
     public static $validates_length_of = [
         ['name', 'within' => [3, 45]],
         ['email', 'within' => [5, 60]]
     ];
 
-    /**
-     * Define os relacionamentos 1:N.
-     *
-     * @var array
-     */
     public static $has_many = [
         ['categories'],
         ['peoples'],
@@ -68,24 +34,11 @@ class User extends Model implements UserAuthInterface
         ['releases']
     ];
 
-    /**
-     * Callbacks que devem ser executados toda vez que um usuário é criado.
-     *
-     * - O callback `setUserAndEntity` serve para setar
-     * automaticamente a coluna `entity` e a coluna `user_id`.
-     * - O callback `encryptPassword` é invocado para encriptar a senha do usuário.
-     * @var array
-     */
     public static $before_create = [
         'setUserAndEntity',
         'encryptPassword'
     ];
 
-    /**
-     * Encripta a senha do usuário.
-     *
-     * @return void
-     */
     public function encryptPassword()
     {
         $this->assign_attribute('password', password_hash($this->password, PASSWORD_DEFAULT));
@@ -94,9 +47,6 @@ class User extends Model implements UserAuthInterface
     /**
      * Retorna o id, entity, password e name do usuário.
      * Método utilizado na authenticação.
-     *
-     * @param string $email
-     * @return \stdClass
      */
     public function getIdEntityPasswordStatusAndNameByEmail($email)
     {
@@ -119,18 +69,8 @@ class User extends Model implements UserAuthInterface
         ];
     }
 
-    /**
-     * Salva um usuário no banco de dados.
-     *
-     * @param array $fields
-     * @throws \Exception Mensagem de erro do model.
-     * @return User
-     */
     public static function generate($fields)
     {
-        /**
-         * @var User
-         */
         $row = self::create([
             'entity' => isset($fields['entity']) ? $fields['entity'] : null,
             'name' => $fields['name'],
@@ -151,21 +91,8 @@ class User extends Model implements UserAuthInterface
         return explode(' ', $this->name)[0];
     }
 
-    /**
-     * Apaga uma usuário pelo ID.
-     * Verifica o usuário pode ser apagado.
-     *
-     * @param integer $user_id
-     * @throws \Exception User está sendo usada por '{$relation}'.
-     * @throws \Exception Você não pode apagar a si mesmo.
-     * @throws \Exception Usuário <user_id> não foi apagada.
-     * @return boolean
-     */
     public static function remove($user_id)
     {
-        /**
-         * @var User
-         */
         if (! $user = self::find($user_id)) {
             throw new \Exception('Usuário não localizado.');
         }
@@ -187,12 +114,6 @@ class User extends Model implements UserAuthInterface
         return true;
     }
 
-    /**
-     * Personaliza a descrição dos logs, ao criar, editar e apagar.
-     *
-     * @param string $action A ação pode ser `create`, `update` ou `destroy`.
-     * @return string Frase personalizada confirme ação.
-     */
     public function getLogDescription($action)
     {
         return [

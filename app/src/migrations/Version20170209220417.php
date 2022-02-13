@@ -5,14 +5,8 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20170209220417 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $db = $this->connection;
@@ -23,10 +17,7 @@ class Version20170209220417 extends AbstractMigration
             $db->query('update releases set parent_id = null where id = ' . $row['id']);           
         }
     }
-
-    /**
-     * @param Schema $schema
-     */
+    
     public function down(Schema $schema)
     {
         $db = $this->connection;

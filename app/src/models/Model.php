@@ -1,155 +1,66 @@
 <?php
 
-/**
- * Abstracti Model class.
- *
- * @uses App\Auth\AuthSession
- * @uses ActiveRecord\SQLBuilder
- * @uses UserLog
- */
-
 use App\Auth\AuthSession;
 use ActiveRecord\SQLBuilder;
 
 use UserLog;
 
-/**
- * Classe abstrata para o models.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 abstract class Model extends ActiveRecord\Model
 {
-    /**
-     * Quando um registro e apagado ou editado, o registro fica armzenado para ser backpiado em log.
-     *
-     * @var ActiveRecord\Model
-     */
     public $backup_for_log;
 
-    /**
-     * Callbacks invocados antes do registro ser atualizado.
-     *
-     * @var array
-     */
     public static $before_update = [
         'saveBackup'
     ];
 
-    /**
-     * Callbacks invocados antes do registro ser apagado.
-     *
-     * @var array
-     */
     public static $before_destroy = [
         'saveBackup'
     ];
 
-    /**
-     * Callbacks invocados antes do registro ser criado.
-     *
-     * @var array
-     */
     public static $before_create = [
         'setUserAndEntity'
     ];
 
-    /**
-     * Callbacks invocados depois que o registro é criado.
-     *
-     * @var array
-     */
     public static $after_create = [
         'userLogCreate'
     ];
 
-    /**
-     * Callbacks invocados depois que o registro é atualizado.
-     *
-     * @var array
-     */
     public static $after_update = [
         'userLogUpdate'
     ];
 
-    /**
-     * Callbacks invocados depois que o registro é apagado.
-     *
-     * @var array
-     */
     public static $after_destroy = [
         'userLogDestroy'
     ];
 
-    /**
-     * Define os relacionamentos 1:N.
-     *
-     * @var array
-     */
     public static $has_many = [];
 
-    /**
-     * Define os reacionamentos 1:1.
-     *
-     * @var array
-     */
     public static $has_one = [];
 
-    /**
-     * Salva o registro na propriedade `backup_for_log`.
-     *
-     * @return void
-     */
     public function saveBackup()
     {
         $this->backup_for_log = static::find($this->id);
     }
 
-    /**
-     * Este método é invocado após uma restauração de backup de registro.
-     *
-     * @return void
-     */
     public function afterRestored()
     {
     }
 
-    /**
-     * Generate user log after create.
-     *
-     * @return void
-     */
     public function userLogCreate()
     {
         $this->userLog('create');
     }
 
-    /**
-     * Generate user log after update.
-     *
-     * @return void
-     */
     public function userLogUpdate()
     {
         $this->userLog('update');
     }
 
-    /**
-     * Generate user log after destroy.
-     *
-     * @return void
-     */
     public function userLogDestroy()
     {
         $this->userLog('destroy');
     }
 
-    /**
-     * Generate user log by action.
-     *
-     * @param string $action
-     * @return void
-     */
     public function userLog($action)
     {
         UserLog::register([
@@ -158,10 +69,6 @@ abstract class Model extends ActiveRecord\Model
         ]);
     }
 
-    /**
-     * Retorna o primeiro erro ocorrido.
-     * @return string
-     */
     public function getFisrtError()
     {
         $errors = $this->errors->get_raw_errors();
@@ -169,48 +76,18 @@ abstract class Model extends ActiveRecord\Model
         return $message;
     }
 
-    /**
-     * Adiciona automaticamente a entity
-     * e o usuário que está criando o registro.
-     *
-     * @return void
-     */
     public function setUserAndEntity()
     {
-        /**
-         * @var integer
-         */
         $this->entity = AuthSession::getEntity();
-
-        /**
-         * @var integer
-         */
         $this->user_id = AuthSession::getUserId();
     }
 
-    /**
-     * Pecorre os relacionamentos 1:N e 1:1
-     * e verifica se o registro está em us por algum deles.
-     *
-     * @throws \Exception <called class> está send usado por '<relation>'
-     * @return void
-     */
     public function inUsed()
     {
-        /**
-         * Relacionamentos
-         *
-         * @var array
-         */
         $relations = array_merge(static::$has_many, static::$has_one);
 
         foreach ($relations as $relation) {
 
-            /**
-             * Nome do relacionamento um para muitos.
-             *
-             * @var string
-             */
             $relation = $relation[0];
 
             if (count($this->{$relation})) {
@@ -219,11 +96,6 @@ abstract class Model extends ActiveRecord\Model
         }
     }
 
-    /**
-     * Persnalizado para quando exista um usuário autenticado, as consultas ao banco de dados seja feita incluindo o id da `entity` do usuário logado.
-     *
-     * @return any
-     */
     public static function find()
     {
         $class = get_called_class();
@@ -286,12 +158,6 @@ abstract class Model extends ActiveRecord\Model
         return $single ? (!empty($list) ? $list[0] : null) : $list;
     }
 
-    /**
-     * Generic description for user log.
-     *
-     * @param string $action
-     * @return string Description
-     */
     public function getLogDescription($action)
     {
         $model = get_called_class();

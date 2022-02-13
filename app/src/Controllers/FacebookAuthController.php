@@ -1,14 +1,7 @@
 <?php
 
-/**
- * FacebookAuthController
- *
- * @package App\Controller
- * @version v1.0
- */
 namespace App\Controller;
 
-use Facebook\Facebook as Fb;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 
@@ -20,11 +13,6 @@ use UserLog;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-/**
- * User authentication
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 class FacebookAuthController
 {
     public function callback(Request $request, Response $response, array $args)

@@ -1,18 +1,7 @@
 <?php
 
-/**
- * ReleaseLog model.
- *
- * @uses App\Util\Toolkit
- */
-
 use App\Util\Toolkit;
 
-/**
- * Esta classe faz referencia a tabela `release_logs` no banco de dados.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class ReleaseLog extends Model
 {
     const ACTION_EMISSAO = 1;
@@ -23,30 +12,15 @@ final class ReleaseLog extends Model
     const ACTION_PRORROGAR = 6;
     const ACTION_PARCELAR = 7;
 
-    /**
-     * Define os relacionamentos 1:1.
-     *
-     * @var array
-     */
     public static $belongs_to = [
         ['release'],
         ['user']
     ];
 
-    /**
-     * Define os relacionamentos 1:N.
-     *
-     * @var array
-     */
     public static $has_many = [
         ['childs', 'class_name' => 'ReleaseLog', 'foreign_key' => 'parent_id']
     ];
 
-    /**
-     * Validação de campos obrigatórios.
-     *
-     * @var array
-     */
     public static $validates_presence_of = [
         ['action'],
         ['value'],
@@ -54,12 +28,6 @@ final class ReleaseLog extends Model
         ['release_id']
     ];
 
-    /**
-     * Retorna o valor da coluna `action` por extenso.
-     * Em caso de log de liquidação, é feito um tratamento com base na natureza do lançamento.
-     *
-     * @return string
-     */
     public function getActionName()
     {
         return [
@@ -76,24 +44,14 @@ final class ReleaseLog extends Model
     /**
      * Aplica o backup no lançamento.
      * Logo após o log é apagado.
-     *
-     * @throws \Exception Falha ao apagar o log #{$this->id}.
-     * @throws \Exception Mensagem de erro do model.
-     * @throws \Exception Lançamento não localizado.
-     * @return boolean
      */
     public function rollback()
     {
         /**
          * Estado do lançamento antes do log ser realizado.
-         *
-         * @var array
          */
         $backup = (array) json_decode($this->backup);
 
-        /**
-         * @var Release
-         */
         if (! $release = Release::find($backup['id'])) {
             throw new \Exception('Lançamento não localizado.');
         }
@@ -127,11 +85,6 @@ final class ReleaseLog extends Model
         return true;
     }
 
-    /**
-     * Apaga os logs relacionados.
-     *
-     * @return void
-     */
     public function deleteChilds()
     {
         foreach ($this->childs as $log) {
@@ -139,12 +92,6 @@ final class ReleaseLog extends Model
         }
     }
 
-    /**
-     * Personaliza a descrição do log.
-     *
-     * @param string $action
-     * @return string Description
-     */
     public function getLogDescription($action)
     {
         $natureza = strtolower($this->release->getNaturezaName());

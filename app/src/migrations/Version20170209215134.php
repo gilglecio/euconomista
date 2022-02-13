@@ -5,14 +5,8 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20170209215134 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('releases');
@@ -30,9 +24,6 @@ class Version20170209215134 extends AbstractMigration
         ], 'fk_releases_child_id');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $table = $schema->getTable('releases');

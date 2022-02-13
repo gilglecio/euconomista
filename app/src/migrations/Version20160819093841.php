@@ -5,14 +5,8 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Create table `users`
- */
 class Version20160819093841 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->createTable('users');
@@ -67,9 +61,6 @@ class Version20160819093841 extends AbstractMigration
         ], 'fk_users_user_id');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $schema->dropTable('users');

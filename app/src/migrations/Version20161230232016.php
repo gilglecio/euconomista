@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20161230232016 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('categories');
@@ -22,9 +19,6 @@ class Version20161230232016 extends AbstractMigration
         ]);
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $table = $schema->getTable('categories');

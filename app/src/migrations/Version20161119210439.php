@@ -5,14 +5,8 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Create user `user@mail.com` with password `123456`
- */
 class Version20161119210439 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->addSql("
@@ -26,9 +20,6 @@ class Version20161119210439 extends AbstractMigration
         ");
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $this->addSql('delete from users where id = 1');

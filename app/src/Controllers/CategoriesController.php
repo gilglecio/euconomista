@@ -1,15 +1,5 @@
 <?php
 
-/**
- * CategoriesController class
- *
- * @package App\Controller
- * @version v1.0
- *
- * @uses Psr\Http\Message\ServerRequestInterface
- * @uses Psr\Http\Message\ResponseInterface
- * @uses Category
- */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,29 +12,10 @@ use Domain\Category\Usecase\CategoryInput;
 use App\Infra\PHPActiveRecord\AddNewCategoryRepository;
 use App\Infra\PHPActiveRecord\SearchCategoryRepository;
 
-/**
- * Responsável pelas rotas de acesso as categorias.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class CategoriesController extends Controller
 {
-    /**
-     * Título da página
-     *
-     * @var string
-     */
     protected $title = 'Categorias';
 
-    /**
-     * Renderiza a página com a lista de categorias cadastradas.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function index(Request $request, Response $response, array $args)
     {
         $this->view->render($response, 'app/categories/index.twig', [
@@ -58,15 +29,6 @@ final class CategoriesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulaio de inclusão e edição de categoria.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
@@ -88,15 +50,6 @@ final class CategoriesController extends Controller
         return $response;
     }
 
-    /**
-     * Recebe o post do frmulário de categoria.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function save(Request $request, Response $response, array $args)
     {
         try {
@@ -125,15 +78,6 @@ final class CategoriesController extends Controller
         return $response->withRedirect('/app/categories');
     }
 
-    /**
-     * Apaga uma categoria pelo ID.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function delete(Request $request, Response $response, array $args)
     {
         try {

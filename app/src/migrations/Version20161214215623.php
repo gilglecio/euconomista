@@ -11,17 +11,11 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20161214215623 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->addSql("ALTER TABLE  `releases` CHANGE  `process`  `process` VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL");
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $this->addSql("ALTER TABLE  `releases` CHANGE  `process`  `process` VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL");

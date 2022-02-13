@@ -1,15 +1,5 @@
 <?php
 
-/**
- * PeoplesController class
- *
- * @package App\Controller
- * @version v1.0
- *
- * @uses Psr\Http\Message\ServerRequestInterface
- * @uses Psr\Http\Message\ResponseInterface
- * @uses People
- */
 namespace App\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,29 +7,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use People;
 
-/**
- * Reponse pelas rotas de exibição e manipulação de pesosas.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class PeoplesController extends Controller
 {
-    /**
-     * Título da página
-     *
-     * @var string
-     */
     protected $title = 'Pessoas';
 
-    /**
-     * Renderiza a pagina com o lista de pessoa cadastradas.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function index(Request $request, Response $response, array $args)
     {
         $this->view->render($response, 'app/peoples/index.twig', [
@@ -53,15 +24,6 @@ final class PeoplesController extends Controller
         return $response;
     }
 
-    /**
-     * Renderiza o formulário para inclusão e dição de pessoas.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function form(Request $request, Response $response, array $args)
     {
         $data = ['messages' => $this->getMessages()];
@@ -82,15 +44,6 @@ final class PeoplesController extends Controller
         return $response;
     }
 
-    /**
-     * Recebe o post do formulário de pessoas.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function save(Request $request, Response $response, array $args)
     {
         try {
@@ -107,15 +60,6 @@ final class PeoplesController extends Controller
         return $response->withRedirect('/app/peoples');
     }
 
-    /**
-     * Apaga uma pessoa pelo ID.
-     *
-     * @param Request  $request
-     * @param Response $response
-     * @param array    $args
-     *
-     * @return Response
-     */
     public function delete(Request $request, Response $response, array $args)
     {
         try {

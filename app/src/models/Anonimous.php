@@ -1,44 +1,17 @@
 <?php
 
-/**
- * Anonimous model
- */
-
-use App\Mail\Mailer;
 use App\Util\Toolkit;
 
-/**
- * Esta classe faz referencia a tabela `users` no banco de dados.
- *
- * @author Gilglécio Santos de Oliveira <gilglecio.dev@gmail.com>
- */
 final class Anonimous extends User
 {
-    /**
-     * Nome da tabela.
-     *
-     * @var string
-     */
     public static $table_name = 'users';
 
-    /**
-     * Este método foi reescrito para que não seja setado a coluna `entity` e `user_id` automaticamente.
-     */
     public function setUserAndEntity()
     {
         $this->confirm_email_token = ENV_TEST ? sha1($this->email) : Toolkit::uniqHash($this->id);
         $this->confirm_email_token_date = (new \Datetime())->add(new \Dateinterval('P1D'));
     }
 
-    /**
-     * Faz o cadastro de um usuário de fora do sistema.
-     *
-     * @param array $fields
-     * @throws \Exception As senhas não conferem.
-     * @throws \Exception Usuário já cadastrado no sistema.
-     * @throws \Exception Nenhum registro localizado.
-     * @return User
-     */
     public static function register($fields)
     {
         if ($fields['password'] != $fields['confirm_password']) {

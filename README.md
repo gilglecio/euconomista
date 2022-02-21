@@ -3,6 +3,7 @@
 - Clone repo
 - Enter into /euconomista
 - Run `docker-compose up -d`
+- Run `docker network create euconomista`
 - Run `docker exec -it euconomista_api composer install`
 - Run `docker exec -it euconomista_api bower install`
 - Run `docker exec -it euconomista_api ./db migrate`

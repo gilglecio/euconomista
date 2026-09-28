@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use Slim\Views\Twig;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer
 {

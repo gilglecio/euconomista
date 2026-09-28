@@ -2,12 +2,12 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 class Version20161216214822 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('users');
 
@@ -36,7 +36,7 @@ class Version20161216214822 extends AbstractMigration
         ]);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable('users');
 

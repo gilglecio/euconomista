@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use Facebook\Exceptions\FacebookResponseException;
-use Facebook\Exceptions\FacebookSDKException;
+use RuntimeException;
 
 use App\Auth\Facebook;
 use App\Auth\AuthSession;
@@ -17,54 +16,27 @@ class FacebookAuthController
 {
     public function callback(Request $request, Response $response, array $args)
     {
-        $fb = Facebook::getFB();
+        $params = $request->getQueryParams();
 
-        try {
-            $helper = $fb->getRedirectLoginHelper();
-            $accessToken = $helper->getAccessToken();
-        } catch(FacebookResponseException $e) {
-            die('Graph returned an error: ' . $e->getMessage());
-        } catch(FacebookSDKException $e) {
-            die('Facebook SDK returned an error: ' . $e->getMessage());
+        if (isset($params['error'])) {
+            return $response->withStatus(401)->write('Error: ' . ($params['error_description'] ?? $params['error']));
         }
 
-        if (! isset($accessToken)) {
-            if ($helper->getError()) {
-                header('HTTP/1.0 401 Unauthorized');
-                echo "Error: " . $helper->getError() . "\n";
-                echo "Error Code: " . $helper->getErrorCode() . "\n";
-                echo "Error Reason: " . $helper->getErrorReason() . "\n";
-                echo "Error Description: " . $helper->getErrorDescription() . "\n";
-            } else {
-                header('HTTP/1.0 400 Bad Request');
-                echo 'Bad request';
-            }
-            exit;
-        }
-
-        if (! $accessToken->isLongLived()) {
-            try {
-                $oAuth2Client = $fb->getOAuth2Client();
-                $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-            } catch (FacebookSDKException $e) {
-                die("<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n");
-            }
+        if (empty($params['code'])) {
+            return $response->withStatus(400)->write('Bad request');
         }
 
         try {
-            $me = $fb->get('/me?fields=id,name,email', (string) $accessToken);
-        } catch(FacebookResponseException $e) {
-            die('Graph returned an error: ' . $e->getMessage());
-        } catch(FacebookSDKException $e) {
-            die('Facebook SDK returned an error: ' . $e->getMessage());
+            $accessToken = Facebook::getAccessToken($params['code'], $params['state'] ?? '');
+            $me = Facebook::getUser($accessToken);
+        } catch (RuntimeException $e) {
+            die('Facebook returned an error: ' . $e->getMessage());
         }
 
-        $me = $me->getGraphUser();
-
-        if (! $attemp = AuthSession::attempFb(new User, $me->getEmail())) {
+        if (! $attemp = AuthSession::attempFb(new User, $me['email'])) {
             $user = Anonimous::register([
-                'name' => $me->getName(),
-                'email' => $me->getEmail(),
+                'name' => $me['name'],
+                'email' => $me['email'],
                 'password' => sha1($accessToken),
                 'confirm_password' => sha1($accessToken)
             ]);
@@ -74,7 +46,7 @@ class FacebookAuthController
             $user->save();
         }
 
-        if (! $attemp = AuthSession::attempFb(new User, $me->getEmail())) {
+        if (! $attemp = AuthSession::attempFb(new User, $me['email'])) {
             die('User not creator');
         }
 

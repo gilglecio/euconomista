@@ -3,7 +3,6 @@
 use App\Auth\AuthSession;
 use ActiveRecord\SQLBuilder;
 
-use UserLog;
 
 abstract class Model extends ActiveRecord\Model
 {

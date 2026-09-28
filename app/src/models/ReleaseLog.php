@@ -108,6 +108,6 @@ final class ReleaseLog extends Model
         return [
             'create' => "{$name} {$natureza} nº {$this->release->number} '{$this->release->people->name}' R$ {$value}, #{$this->id}.",
             'destroy' => $destroy,
-        ][$action];
+        ][$action] ?? null;
     }
 }

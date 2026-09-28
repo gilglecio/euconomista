@@ -10,7 +10,7 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-define('APP_URL', 'https://' . $_SERVER['HTTP_HOST']);
+define('APP_URL', getenv('APP_URL') ?: 'https://' . $_SERVER['HTTP_HOST']);
 define('ENV_TEST', APP_URL == 'http://localhost:3002');
 define('ENV_PROD', APP_URL == 'https://euconomista.com.br');
 
@@ -30,6 +30,9 @@ use ActiveRecord\Config;
 
 ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
 
+// MySQL 8 rejeita datas no formato RFC 2822 (padrão do AR) em condições de consulta
+ActiveRecord\DateTime::$DEFAULT_FORMAT = 'db';
+
 $settings = require __DIR__ . '/app/settings.php';
 $env = require __DIR__ . '/app/env.php';
 
@@ -37,8 +40,9 @@ $settings['settings'] = array_merge($settings['settings'], $env);
 
 Config::initialize(function ($cfg) use ($settings) {
     $db = $settings['settings']['db'];
-    
-    $cfg->set_model_directory($settings['settings']['models_path']);
+
+    $cfg->set_logger(new Psr\Log\NullLogger());
+
     $cfg->set_connections([
         // 'development' => 'mysql://username:password@localhost/database_name'
         'test' => sprintf(

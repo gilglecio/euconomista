@@ -35,7 +35,7 @@ final class Category extends Model
             }
 
             $row->name = $fields['name'];
-            $row->hexcolor = $fields['hexcolor'];
+            $row->hexcolor = $fields['hexcolor'] ?? null;
             $row->save();
         } else {
 
@@ -45,7 +45,7 @@ final class Category extends Model
 
             $row = self::create([
                 'name' => $fields['name'],
-                'hexcolor' => $fields['hexcolor'],
+                'hexcolor' => $fields['hexcolor'] ?? null,
             ]);
         }
 
@@ -99,7 +99,7 @@ final class Category extends Model
     {
         return [
             'create' => "Criou a categotia '{$this->name}'.",
-            'update' => "Alterou o nome da categoria '{$this->backup_for_log->name}' para '{$this->name}'.",
+            'update' => "Alterou o nome da categoria '{$this->backup_for_log?->name}' para '{$this->name}'.",
             'destroy' => "Apagou a categoria '{$this->name}'.",
         ][$action];
     }

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Message
 {
@@ -13,19 +13,19 @@ class Message
         $this->mailer = $mailer;
     }
     
-    public function to($address, $name = null)
+    public function to($address, $name = '')
     {
-        $this->mailer->addAddress($address, utf8_decode($name));
+        $this->mailer->addAddress($address, $name);
     }
 
     public function subject($subject)
     {
-        $this->mailer->Subject = utf8_decode($subject);
+        $this->mailer->Subject = $subject;
     }
 
     public function body($body)
     {
-        $this->mailer->Body = utf8_decode($body);
+        $this->mailer->Body = $body;
     }
 
     public function from($from)
@@ -35,6 +35,6 @@ class Message
     
     public function fromName($fromName)
     {
-        $this->mailer->FromName = utf8_decode($fromName);
+        $this->mailer->FromName = $fromName;
     }
 }

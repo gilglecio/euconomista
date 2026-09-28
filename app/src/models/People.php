@@ -84,7 +84,7 @@ final class People extends Model
     {
         return [
             'create' => "Adicionou '{$this->name}' em pessoas.",
-            'update' => "Alterou o nome de '{$this->backup_for_log->name}' para '{$this->name}'.",
+            'update' => "Alterou o nome de '{$this->backup_for_log?->name}' para '{$this->name}'.",
             'destroy' => "Apagou '{$this->name}' de pessoas.",
         ][$action];
     }

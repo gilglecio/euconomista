@@ -2,12 +2,12 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 class Version20161214211146 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('releases');
         
@@ -24,7 +24,7 @@ class Version20161214211146 extends AbstractMigration
         ], 'fk_releases_parent_id');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable('releases');
 

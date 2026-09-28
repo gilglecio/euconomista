@@ -4,8 +4,9 @@ use Slim\Views\TwigExtension;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
 
-use Twig_Extension_Debug;
+use Twig\Extension\DebugExtension;
 use App\Mail\Mailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -24,7 +25,7 @@ $container['view'] = function ($c) {
 
     // Add extensions
     $view->addExtension(new TwigExtension($c->get('router'), $c->get('request')->getUri()));
-    $view->addExtension(new Twig_Extension_Debug());
+    $view->addExtension(new DebugExtension());
 
     return $view;
 };
@@ -46,10 +47,11 @@ $container['mailer'] = function ($c) {
     $mailer->Port       = $settings['mailer']['port'];
     $mailer->SMTPSecure = $settings['mailer']['secure'];
 
-    $mailer->SMTPAuth = true;
+    $mailer->CharSet = PHPMailer::CHARSET_UTF8;
+    $mailer->SMTPAuth = $settings['mailer']['password'] !== '';
     $mailer->SMTPDebug = true;
     $mailer->isHTML(true);
-    $mailer->IsSMTP(true);
+    $mailer->isSMTP();
 
     return new Mailer($c->view, $mailer);
 };

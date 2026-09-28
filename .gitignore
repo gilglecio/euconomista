@@ -2,4 +2,4 @@ vendor/
 /public/assets
 backups/*
 node_modules
-nodesource_setup.sh
+nodesource_setup.sh.env

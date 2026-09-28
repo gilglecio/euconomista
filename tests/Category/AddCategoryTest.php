@@ -1,8 +1,10 @@
 <?php
 
-class AddCategoryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AddCategoryTest extends TestCase
 {
-    public function test_add_category()
+    public function test_add_category(): void
     {
         $this->assertTrue(true);
     }

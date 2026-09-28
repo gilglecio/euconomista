@@ -1,35 +1,48 @@
-version: '3'
+name: euconomista
 
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: euconomista_api
     working_dir: /var/www
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     volumes:
       - .:/var/www
     ports:
-      - "3000:80"
-    network_mode: euconomista
+      - "${APP_PORT:-3010}:80"
+    environment:
+      - APP_URL=http://localhost:${APP_PORT:-3010}
+      - DB_HOST=mysql
+      - DB_NAME=euconomista
+      - DB_USER=euconomista
+      - DB_PASSWORD=euconomista
+      - MAIL_HOST=${MAIL_HOST:-host.docker.internal}
+      - MAIL_PORT=${MAIL_PORT:-1025}
+      - MAIL_SECURE=${MAIL_SECURE:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8.4
     container_name: euconomista_db
     volumes:
       - mysqldbvolume:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "${DB_PORT:-3316}:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=euconomista
       - MYSQL_DATABASE=euconomista
       - MYSQL_USER=euconomista
       - MYSQL_PASSWORD=euconomista
-    network_mode: euconomista
-
-networks:
-  euconomista:
-    external: true
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-peuconomista"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 volumes:
   mysqldbvolume:

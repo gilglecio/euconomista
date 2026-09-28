@@ -280,7 +280,7 @@ final class Release extends Model
             /**
              * Sera TRUE se a data de liquidação for informada.
              */
-            $liquidar = !! $fields['data_liquidacao'];
+            $liquidar = ! empty($fields['data_liquidacao']);
 
             for ($i=0; $i < $quantity; $i++) {
 
@@ -929,6 +929,7 @@ final class Release extends Model
             self::STATUS_EM_ATRASO => 'Vencido',
             self::STATUS_GROUPED => 'Agrupada',
             self::STATUS_LIQUIDADO => 'Liquidado',
+            self::STATUS_PARCELADO => 'Parcelado',
         ][$status];
     }
 

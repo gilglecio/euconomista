@@ -14,8 +14,6 @@ return [
             ],
         ],
 
-        'models_path' => __DIR__ . '/src/models',
-
         // monolog settings
         'logger' => [
             'name' => 'app',

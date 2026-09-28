@@ -2,7 +2,7 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20161230232016 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable('categories');
         $table->addColumn('hexcolor', 'string', [
@@ -19,7 +19,7 @@ class Version20161230232016 extends AbstractMigration
         ]);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable('categories');
         $table->dropColumn('hexcolor');
